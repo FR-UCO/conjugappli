@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Aprender Francés - 100 Verbos</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0055A4">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+        
+        :root { 
+            --fr-blue: #0055A4; 
+            --fr-red: #EF4135; 
+            --fr-purple: #8e44ad;
+            --fr-orange: #f39c12;
+            --bg: #F8F9FA;
+            --text: #2C3E50;
+            --white: #FFFFFF;
+        }
+        
+        body { 
+            font-family: 'Nunito', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text); 
+            margin: 0; 
+            padding: 0; 
+            line-height: 1.6;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            padding-bottom: 90px;
+        }
+
+        input, select {
+            user-select: auto;
+            -webkit-user-select: auto;
+        }
+        
+        header {
+            background: var(--white);
+            padding: 15px; 
+            text-align: center; 
+            color: var(--fr-blue); 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            font-weight: 700;
+            font-size: 1.2em;
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+
+        header span { font-size: 0.7em; color: #7f8c8d; font-weight: 400; display: block; margin-top: 5px; }
+
+        .streak-container { position: absolute; left: 15px; top: 15px; font-size: 0.9em; display: flex; align-items: center; gap: 5px; background: #fff5e6; padding: 4px 10px; border-radius: 20px; color: #d35400; border: 1px solid #ffe0b2; font-weight: bold; }
+        
+        nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--white); display: flex; justify-content: space-around; padding: 10px 0 calc(10px + env(safe-area-inset-bottom)) 0; box-shadow: 0 -4px 15px rgba(0,0,0,0.1); border-radius: 20px 20px 0 0; z-index: 100; }
+        nav button { background: none; color: #888; border: none; padding: 8px; font-size: 12px; cursor: pointer; transition: 0.3s; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 25%; }
+        nav button span.icon { font-size: 22px; }
+        nav button:hover, nav button.active { color: var(--fr-blue); }
+
+        button:active, .btn-action:active { transform: scale(0.95); transition: transform 0.1s; }
+        
+        .container { max-width: 900px; margin: 15px auto; padding: 15px; background: var(--white); border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow: hidden; }
+        
+        .section { display: none; animation: fadeIn 0.4s; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        h2 { color: var(--fr-blue); border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 0;}
+        h3 { color: var(--text); margin-top: 25px; }
+        h4 { color: #555; margin-bottom: 5px; }
+
+        /* FLASHCARDS */
+        .flashcard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .flashcard-container { perspective: 1200px; width: 100%; height: 100%; margin: 0 auto; }
+        .flashcard { width: 100%; height: 100%; position: relative; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; cursor: pointer; }
+        .flashcard.flipped { transform: rotateY(180deg); }
+        .flashcard-front, .flashcard-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 16px; box-sizing: border-box; padding: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+        .flashcard-front { background: #fdfdfd; border: 2px solid #eee; }
+        .flashcard-front:hover { border-color: var(--fr-blue); }
+        .flashcard-front.irregular-border { border-color: var(--fr-orange) !important; box-shadow: 0 0 12px rgba(243, 156, 18, 0.2); border-width: 3px; }
+        
+        .flashcard-back { background-color: #002D62 !important; color: #FFFFFF !important; border: 2px solid #002D62 !important; transform: rotateY(180deg) translateZ(1px); }
+        .flashcard-back .es, .flashcard-back div { color: #FFFFFF !important; font-weight: bold; text-align: center; }
+        
+        /* Grid Cards Specifics */
+        .flashcard-grid .flashcard-container { height: 160px; }
+        .flashcard-grid .flashcard-front .icon { font-size: 3.5em; display: block; }
+        .flashcard-grid .flashcard-front .fr { font-size: 1.2em; font-weight: bold; margin-top: 10px; color: var(--text); }
+        .flashcard-grid .flashcard-back .es { font-size: 1.5em; }
+
+        /* SWIPE MODE (Grandes Cartes Éclair) */
+        .swipe-wrapper { text-align: center; margin-bottom: 40px; padding-bottom: 30px; border-bottom: 2px dashed #ddd; }
+        #swipe-card-container { width: 320px; height: 280px; margin: 0 auto; touch-action: pan-y; }
+        #swipe-card-container .flashcard-front .icon { font-size: 5.5em; margin-bottom: 15px; }
+        #swipe-card-container .flashcard-front .fr { font-size: 1.8em; font-weight: 800; color: var(--fr-blue); }
+        #swipe-card-container .flashcard-back .es { font-size: 2.2em; }
+        
+        .swipe-controls { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 25px; }
+        .swipe-btn { background: #ffffff; border: 2px solid #ddd; font-size: 1.5em; width: 60px; height: 60px; border-radius: 50%; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); color: var(--fr-blue); }
+        .swipe-btn:hover { background: var(--fr-blue); color: white; border-color: var(--fr-blue); transform: scale(1.1); }
+        .swipe-instructions { color: #7f8c8d; font-size: 0.9em; margin-top: 20px; font-style: italic; }
+
+        /* GENERAL UI */
+        input, select { width: 100%; padding: 14px; margin: 10px 0; border: 2px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 16px; font-family: 'Nunito', sans-serif; }
+        input:focus, select:focus { outline: none; border-color: var(--fr-blue); }
+        .btn-action { background: var(--fr-blue); color: white; border: none; padding: 14px; border-radius: 10px; font-size: 16px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; margin-top: 10px;}
+        .btn-action:hover { background: #003d7a; }
+        
+        /* THEORY & GRAMMAR */
+        .theory-box { background: #fafafa; padding: 20px; border-left: 5px solid var(--fr-red); margin-bottom: 25px; border-radius: 0 8px 8px 0; border: 1px solid #eee; border-left-width: 5px; }
+        .theory-box h3 { margin-top: 0; color: var(--fr-red); }
+        .grammar-table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 15px; font-size: 0.9em; }
+        .grammar-table th, .grammar-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        .grammar-table th { background-color: #f0f0f0; }
+        .highlight { color: var(--fr-red); font-weight: bold; }
+        .note { display: inline-block; background: #fff3cd; color: #856404; padding: 8px 15px; border-radius: 5px; margin-top: 10px; margin-bottom: 10px; font-size: 0.95em; border: 1px solid #ffeeba; }
+        
+        .negative-box { background-color: #f1f2f6; border-left: 4px solid #57606f; padding: 10px 15px; margin-top: 15px; border-radius: 0 5px 5px 0; font-size: 0.95em; }
+        .negative-box h4 { margin-top: 0; color: #2f3542; margin-bottom: 8px; }
+
+        .vander-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em;}
+        .vander-table td { padding: 4px 8px; border: 1px solid #ddd; }
+        .vander-table strong { color: var(--fr-red); }
+
+        /* QUIZ */
+        .quiz-card { text-align: center; padding: 20px; background: #fafafa; border-radius: 10px; border: 1px solid #eee;}
+        .quiz-icon { font-size: 4em; }
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 5px; font-weight: bold; display: none; text-align: center; animation: fadeIn 0.3s; }
+        .correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .wrong { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        
+        .quiz-setup { max-width: 500px; margin: 0 auto; }
+        .score-display { font-size: 2.5em; color: var(--fr-blue); font-weight: bold; margin: 20px 0; }
+        .mistakes-container { background: #fff; border: 1px solid #f5c6cb; padding: 15px; border-radius: 8px; text-align: left; max-height: 300px; overflow-y: auto; font-size: 0.95em; }
+        .mistake-item { border-bottom: 1px solid #eee; padding-bottom: 12px; margin-bottom: 12px; }
+        .mistake-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+        .progress-container { width: 100%; background-color: #e9ecef; border-radius: 8px; margin-bottom: 15px; height: 10px; overflow: hidden; }
+        .progress-bar { height: 100%; background-color: var(--fr-blue); width: 0%; transition: width 0.4s ease; }
+
+        /* Menu Grammaire */
+        .gram-menu { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+        .gram-btn { background: var(--white); color: var(--fr-blue); border: 2px solid var(--fr-blue); padding: 8px 12px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 0.9em; transition: all 0.3s ease; flex: 1 1 calc(33% - 8px); text-align: center; }
+        .gram-btn:hover, .gram-btn.active { background: var(--fr-blue); color: var(--white); }
+        .gram-btn-special { color: var(--fr-purple); border-color: var(--fr-purple); }
+        .gram-btn-special:hover, .gram-btn-special.active { background: var(--fr-purple); color: var(--white); }
+        .gram-btn-orange { color: var(--fr-orange); border-color: var(--fr-orange); }
+        .gram-btn-orange:hover, .gram-btn-orange.active { background: var(--fr-orange); color: var(--white); }
+
+        .theory-content { display: none; animation: fadeIn 0.4s; }
+        .theory-content.active { display: block; }
+
+        /* MODE SOMBRE */
+        body.dark-mode { --bg: #121212; --text: #E0E0E0; --white: #1E1E1E; --fr-blue: #66B2FF; --fr-purple: #bb86fc; }
+        body.dark-mode .flashcard-front, body.dark-mode .theory-box, body.dark-mode .quiz-card { background: #1E1E1E; border-color: #333; }
+        body.dark-mode .flashcard-grid .flashcard-front .fr { color: #E0E0E0; }
+        body.dark-mode .grammar-table th { background-color: #2C2C2C; }
+        body.dark-mode .grammar-table td, body.dark-mode .vander-table td { border-color: #444; }
+        body.dark-mode .mistake-item { background: #1E1E1E; border-color: #444; }
+        body.dark-mode input, body.dark-mode select { background: #121212; color: #E0E0E0; border-color: #444; }
+        body.dark-mode nav button { color: #888; }
+        body.dark-mode nav button.active { color: var(--fr-blue); }
+        body.dark-mode .progress-container { background-color: #333; }
+        body.dark-mode .gram-btn { background: #1E1E1E; color: #66B2FF; border-color: #66B2FF; }
+        body.dark-mode .gram-btn:hover, body.dark-mode .gram-btn.active { background: #66B2FF; color: #1E1E1E; }
+        body.dark-mode .gram-btn-special { color: var(--fr-purple); border-color: var(--fr-purple); }
+        body.dark-mode .gram-btn-special:hover, body.dark-mode .gram-btn-special.active { background: var(--fr-purple); color: #1E1E1E; }
+        body.dark-mode .gram-btn-orange { color: #f39c12; border-color: #f39c12; }
+        body.dark-mode .gram-btn-orange:hover, body.dark-mode .gram-btn-orange.active { background: #f39c12; color: #1E1E1E; }
+        body.dark-mode .negative-box { background-color: #2f3542; border-left-color: #a4b0be; color: #dfe4ea; }
+        body.dark-mode .negative-box h4 { color: #ffffff; }
+        body.dark-mode .streak-container { background: #2c1f00; color: #ffb74d; border-color: #5d4037; }
+        body.dark-mode .swipe-wrapper { border-bottom-color: #444; }
+        body.dark-mode .swipe-btn { background: #1E1E1E; border-color: #444; }
+
+        /* --- STYLE DES BADGES --- */
+        .badge-card {
+        background: var(--white);
+        border: 2px solid var(--fr-orange);
+        border-radius: 12px;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        font-weight: bold;
+        color: var(--fr-orange);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+        .badge-card span {
+        font-size: 2rem;
+    }
+        .badge-title {
+        font-size: 0.9rem;
+        color: var(--text);
+    }
+    body.dark-mode .badge-card {
+        background: #2f3542; /* ou une autre couleur sombre de ton choix */
+        color: var(--fr-orange);
+    }
+    body.dark-mode .badge-title {
+        color: #ffffff;
+    }
+    .badge-date {
+    font-size: 0.75rem;
+    color: #7f8c8d;
+    margin-top: -5px;
+    font-weight: normal;
+    }
+    body.dark-mode .badge-date {
+    color: #bdc3c7;
+    }
+    #answer-input, #vocab-input {
+    text-transform: lowercase;
+    }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="streak-container" title="Días consecutivos revisando">🔥 <span id="streak-count">0</span></div>
+    🇫🇷 Aprender Francés
+    <span>Vocabulario, Gramática y Conjugación (100 verbos)</span>
+    <button id="theme-toggle" onclick="toggleTheme()" style="position: absolute; right: 15px; top: 15px; background: none; border: none; font-size: 22px; cursor: pointer;">🌙</button>
+</header>
+
+<div class="container">
+    
+    <div id="sec-flashcards" class="section active">
+        
+        <h2>Descubrir la pronunciación</h2>
+        <p style="text-align: center;">Desliza a la izquierda o derecha para cambiar de carta. <strong>Toca la carta para ver la traducción.</strong></p>
+        
+        <div class="swipe-wrapper" id="flashcards-swipe">
+            <div style="font-weight: bold; color: var(--fr-blue); margin-bottom: 10px;" id="swipe-counter">Carta 1 / 100</div>
+            
+            <div id="swipe-card-container"></div>
+            
+            <div class="swipe-controls">
+                <button class="swipe-btn" onclick="prevSwipe()" title="Anterior">◀</button>
+                <button class="swipe-btn" onclick="flipSwipe()" title="Traducir y Escuchar" style="font-size: 1.2em;">🔃</button>
+                <button class="swipe-btn" onclick="nextSwipe()" title="Siguiente">▶</button>
+            </div>
+            <p class="swipe-instructions">📱 <em>El audio se reproduce automáticamente al cambiar de carta o al tocarla.</em></p>
+        </div>
+
+        <h2>Lista Completa</h2>
+        <p>Los verbos con un <strong>borde naranja</strong> son irregulares o pronominales.</p>
+
+        <div class="flashcard-grid" id="flashcards-grid"></div>
+
+    </div>
+
+    <div id="sec-vocab" class="section">
+        <h2>Pon a prueba tu vocabulario</h2>
+        
+        <div id="vocab-setup" class="quiz-card quiz-setup">
+            <h3>Configura tu test de vocabulario</h3>
+            <label style="text-align: left; display: block; margin-top: 15px; font-weight: bold;">Número de palabras:</label>
+            <select id="vocab-qty-select">
+                <option value="10">10 verbos</option>
+                <option value="15">15 verbos</option>
+                <option value="20">20 verbos</option>
+                <option value="50">50 verbos</option>
+                <option value="100">Todos (100 verbos)</option>
+            </select>
+            <button class="btn-action" style="margin-top: 25px;" onclick="startVocabQuiz()">🚀 Comenzar test</button>
+        </div>
+
+        <div id="vocab-play" class="quiz-card" style="display: none;">
+            <div id="vocab-progress" style="font-weight: bold; color: var(--fr-blue); margin-bottom: 5px;">Palabra 1 / 10</div>
+            <div class="progress-container"><div id="vocab-progress-bar" class="progress-bar"></div></div>
+            
+            <div class="quiz-icon" id="vocab-icon">❓</div>
+            <p><i id="vocab-es">Traducción</i></p>
+            <input type="text" id="vocab-input" placeholder="Tu respuesta..." autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off">
+            <button id="vocab-btn-check" class="btn-action" onclick="checkVocab()">Comprobar</button>
+            <div id="vocab-feedback" class="feedback"></div>
+            <button id="vocab-btn-next" class="btn-action" style="margin-top: 15px; background: #34495e; display: none;" onclick="advanceVocab()">Siguiente ➔</button>
+        </div>
+
+        <div id="vocab-results" class="quiz-card" style="display: none;">
+            <h3>¡Test de vocabulario terminado! 🎉</h3>
+            <div id="vocab-score-display" class="score-display"></div>
+            <div id="vocab-mistakes-display" style="margin-top: 20px;"></div>
+            <button class="btn-action" style="margin-top: 20px;" onclick="resetVocabQuiz()">Hacer otro test</button>
+        </div>
+    </div>
+
+     <div id="sec-theory" class="section">
+        <h2>Lecciones de Gramática</h2>
+        
+        <div class="gram-menu">
+            <button class="gram-btn active" onclick="showGrammar('gram-present', this)">Présent</button>
+            <button class="gram-btn gram-btn-orange" onclick="showGrammar('gram-pronominal', this)">Pronominaux (se...)</button>
+            <button class="gram-btn" onclick="showGrammar('gram-pc', this)">Passé Composé</button>
+            <button class="gram-btn gram-btn-special" onclick="showGrammar('gram-pp', this)">Participes passés</button>
+            <button class="gram-btn" onclick="showGrammar('gram-imparfait', this)">Imparfait</button>
+            <button class="gram-btn" onclick="showGrammar('gram-pqp', this)">Plus-que-parfait</button>
+            <button class="gram-btn" onclick="showGrammar('gram-futur', this)">Futur Simple</button>
+            <button class="gram-btn" onclick="showGrammar('gram-proche', this)">Futur Proche</button>
+            <button class="gram-btn" onclick="showGrammar('gram-recent', this)">Passé Récent</button>
+        </div>
+
+        <div id="gram-present" class="theory-content active">
+            <div class="theory-box">
+                <h3>Le Présent de l'Indicatif (El Presente)</h3>
+                <p>Se utiliza para describir acciones que ocurren en el momento de hablar, verdades generales o rutinas.</p>
+                <p>A diferencia del español, en francés <strong>siempre se debe escribir y pronunciar el pronombre sujeto</strong> (je, tu, il...).</p>
+                
+                <div class="note">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>Je mange une pomme.</em> (Como una manzana).<br>• <em>Nous habitons à Paris.</em> (Vivimos en París).</div>
+                
+                <table class="grammar-table">
+                    <tr><th>Pronombre</th><th>-ER (parler)</th><th>-IR (finir)</th><th>-RE (vendre)</th></tr>
+                    <tr><td>Je</td><td>parl<span class="highlight">-e</span></td><td>fin<span class="highlight">-is</span></td><td>vend<span class="highlight">-s</span></td></tr>
+                    <tr><td>Tu</td><td>parl<span class="highlight">-es</span></td><td>fin<span class="highlight">-is</span></td><td>vend<span class="highlight">-s</span></td></tr>
+                    <tr><td>Il/Elle/On</td><td>parl<span class="highlight">-e</span></td><td>fin<span class="highlight">-it</span></td><td>vend<span class="highlight">-</span></td></tr>
+                    <tr><td>Nous</td><td>parl<span class="highlight">-ons</span></td><td>fin<span class="highlight">-issons</span></td><td>vend<span class="highlight">-ons</span></td></tr>
+                    <tr><td>Vous</td><td>parl<span class="highlight">-ez</span></td><td>fin<span class="highlight">-issez</span></td><td>vend<span class="highlight">-ez</span></td></tr>
+                    <tr><td>Ils/Elles</td><td>parl<span class="highlight">-ent</span></td><td>fin<span class="highlight">-issent</span></td><td>vend<span class="highlight">-ent</span></td></tr>
+                </table>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación rodea al verbo conjugado: <strong>ne + verbo + pas</strong>.</p>
+                    <p>• Je <strong>ne</strong> parle <strong>pas</strong> anglais. <em>(No hablo inglés)</em>.</p>
+                    <p>• Il <strong>n'</strong>aime <strong>pas</strong> le chocolat. <em>(No le gusta el chocolate)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-pronominal" class="theory-content">
+            <div class="theory-box" style="border-left-color: var(--fr-orange);">
+                <h3 style="color: var(--fr-orange);">Les Verbes Pronominaux (Verbos reflexivos)</h3>
+                <p>Son verbos que se realizan a uno mismo (ej: <em>se laver</em> - lavarse). Siempre necesitan un <strong>pronombre reflexivo</strong> que concuerda con el sujeto.</p>
+                
+                <table class="grammar-table">
+                    <tr><td>Je <strong>me</strong> / <strong>m'</strong></td><td>Nous <strong>nous</strong></td></tr>
+                    <tr><td>Tu <strong>te</strong> / <strong>t'</strong></td><td>Vous <strong>vous</strong></td></tr>
+                    <tr><td>Il/Elle/On <strong>se</strong> / <strong>s'</strong></td><td>Ils/Elles <strong>se</strong> / <strong>s'</strong></td></tr>
+                </table>
+                <div class="note">💡 Se usa <strong>m', t', s'</strong> cuando el verbo empieza por vocal o 'h' muda.</div>
+
+                <h4>Conjugación afirmativa</h4>
+                <p>• <strong>Présent:</strong> Je <u>me</u> lève à 7h. <em>(Me levanto a las 7)</em>.</p>
+                <p>• <strong>Passé Composé:</strong> Siempre usan el auxiliar <strong>ÊTRE</strong>. <br><em>Elle s'est lavé<strong>e</strong>. / Nous nous sommes levé<strong>s</strong>.</em></p>
+                <p>• <strong>Futur Proche:</strong> El pronombre va antes del infinitivo. <br><em>Je vais <u>me</u> coucher.</em></p>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación "ne ... pas" rodea el bloque [pronombre + verbo].</p>
+                    <p>• <strong>Présent:</strong> Je <strong>ne</strong> me lève <strong>pas</strong> tôt. <em>(No me levanto temprano)</em>.</p>
+                    <p>• <strong>Passé Composé:</strong> Je <strong>ne</strong> me suis <strong>pas</strong> douché. <em>(No me he duchado)</em>.</p>
+                    <p>• <strong>Futur Proche:</strong> Tu <strong>ne</strong> vas <strong>pas</strong> te promener. <em>(No vas a pasear)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-pc" class="theory-content">
+            <div class="theory-box" style="border-left-color: #27ae60;">
+                <h3 style="color: #27ae60;">Le Passé Composé (Pretérito Perfecto / Indefinido)</h3>
+                <p>Se utiliza para acciones pasadas puntuales, específicas y terminadas.</p>
+                <p><strong>Formación:</strong> Auxiliar (<strong>Avoir</strong> o <strong>Être</strong> en presente) + <strong>Participio Pasado</strong>.</p>
+                
+                <div class="note">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>J'ai mangé au restaurant.</em> (He comido en el restaurante).<br>• <em>Elle est allée à l'école.</em> (Ella ha ido a la escuela).</div>
+
+                <h4 style="margin-top: 15px;">¿Avoir o Être? La regla DR & MRS VANDERTRAMP</h4>
+<p>El 90% de los verbos usan "Avoir". Los siguientes verbos de movimiento/estado y TODOS los verbos pronominales usan <strong>Être</strong>:</p>
+
+            <table class="vander-table" style="width: 100%; text-align: left; border-collapse: collapse;">
+                <tr><td colspan="3" style="text-align:center; background:#f0f0f0; color:#333; padding: 8px;"><strong>DR & MRS</strong></td></tr>
+                <tr><td><strong>D</strong>evenir</td><td>convertirse</td><td><em>devenu</em></td></tr>
+                <tr><td><strong>R</strong>evenir</td><td>volver</td><td><em>revenu</em></td></tr>
+                <tr><td><strong>M</strong>onter</td><td>subir</td><td><em>monté</em></td></tr>
+                <tr><td><strong>R</strong>ester</td><td>quedarse</td><td><em>resté</em></td></tr>
+                <tr><td><strong>S</strong>ortir</td><td>salir</td><td><em>sorti</em></td></tr>
+
+                <tr><td colspan="3" style="text-align:center; background:#f0f0f0; color:#333; padding: 8px; margin-top: 10px;"><strong>VANDERTRAMP</strong></td></tr>
+                <tr><td><strong>V</strong>enir</td><td>venir</td><td><em>venu</em></td></tr>
+                <tr><td><strong>A</strong>ller</td><td>ir</td><td><em>allé</em></td></tr>
+                <tr><td><strong>N</strong>aître</td><td>nacer</td><td><em>né</em></td></tr>
+                <tr><td><strong>D</strong>escendre</td><td>bajar</td><td><em>descendu</em></td></tr>
+                <tr><td><strong>E</strong>ntrer</td><td>entrar</td><td><em>entré</em></td></tr>
+                <tr><td><strong>R</strong>entrer</td><td>volver a entrar</td><td><em>rentré</em></td></tr>
+                <tr><td><strong>T</strong>omber</td><td>caer</td><td><em>tombé</em></td></tr>
+                <tr><td><strong>R</strong>etourner</td><td>regresar</td><td><em>retourné</em></td></tr>
+                <tr><td><strong>A</strong>rriver</td><td>llegar</td><td><em>arrivé</em></td></tr>
+                <tr><td><strong>M</strong>ourir</td><td>morir</td><td><em>mort</em></td></tr>
+                <tr><td><strong>P</strong>artir</td><td>irse</td><td><em>parti</em></td></tr>
+                
+                <tr><td colspan="3" style="text-align:center; color:#555; background:#fdfdfd; padding: 12px;"><em>+ Todos los verbos reflexivos<br>(se doucher, se lever...)</em></td></tr>
+            </table>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación rodea ÚNICAMENTE al verbo auxiliar (avoir/être).</p>
+                    <p>• Je <strong>n'</strong>ai <strong>pas</strong> mangé. <em>(No he comido)</em>.</p>
+                    <p>• Ils <strong>ne</strong> sont <strong>pas</strong> venus. <em>(Ellos no han venido)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-pp" class="theory-content">
+            <div class="theory-box" style="border-left-color: var(--fr-purple);">
+                <h3 style="color: var(--fr-purple);">Dictionnaire: 100 Participes Passés Irréguliers</h3>
+                <p>Encuentra rápidamente el auxiliar y el participio pasado de los verbos irregulares más comunes.</p>
+                
+                <input type="text" id="search-pp" placeholder="🔍 Escribe un verbo en francés o español..." onkeyup="filterPP()" style="margin-bottom: 15px; border: 2px solid var(--fr-purple);">
+                
+                <div style="max-height: 500px; overflow-y: auto; border: 1px solid #ddd; border-radius: 8px;">
+                    <table class="grammar-table" id="table-pp" style="margin: 0; border: none;">
+                        <thead style="position: sticky; top: 0; z-index: 1;">
+                            <tr><th>Infinitivo</th><th>Passé Composé</th><th>Español</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>abattre</strong></td><td>avoir <span class="highlight">abattu</span></td><td>derribar</td></tr>
+                            <tr><td><strong>admettre</strong></td><td>avoir <span class="highlight">admis</span></td><td>admitir</td></tr>
+                            <tr><td><strong>aller</strong></td><td>être <span class="highlight">allé</span></td><td>ir</td></tr>
+                            <tr><td><strong>apercevoir</strong></td><td>avoir <span class="highlight">aperçu</span></td><td>percibir</td></tr>
+                            <tr><td><strong>apparaître</strong></td><td>être <span class="highlight">apparu</span></td><td>aparecer</td></tr>
+                            <tr><td><strong>appartenir</strong></td><td>avoir <span class="highlight">appartenu</span></td><td>pertenecer</td></tr>
+                            <tr><td><strong>apprendre</strong></td><td>avoir <span class="highlight">appris</span></td><td>aprender</td></tr>
+                            <tr><td><strong>asseoir</strong></td><td>avoir <span class="highlight">assis</span></td><td>sentar</td></tr>
+                            <tr><td><strong>atteindre</strong></td><td>avoir <span class="highlight">atteint</span></td><td>alcanzar</td></tr>
+                            <tr><td><strong>attendre</strong></td><td>avoir <span class="highlight">attendu</span></td><td>esperar</td></tr>
+                            <tr><td><strong>avoir</strong></td><td>avoir <span class="highlight">eu</span></td><td>tener / haber</td></tr>
+                            <tr><td><strong>battre</strong></td><td>avoir <span class="highlight">battu</span></td><td>batir / golpear</td></tr>
+                            <tr><td><strong>boire</strong></td><td>avoir <span class="highlight">bu</span></td><td>beber</td></tr>
+                            <tr><td><strong>comprendre</strong></td><td>avoir <span class="highlight">compris</span></td><td>comprender</td></tr>
+                            <tr><td><strong>conclure</strong></td><td>avoir <span class="highlight">conclu</span></td><td>concluir</td></tr>
+                            <tr><td><strong>conduire</strong></td><td>avoir <span class="highlight">conduit</span></td><td>conducir</td></tr>
+                            <tr><td><strong>connaître</strong></td><td>avoir <span class="highlight">connu</span></td><td>conocer</td></tr>
+                            <tr><td><strong>consentir</strong></td><td>avoir <span class="highlight">consenti</span></td><td>consentir</td></tr>
+                            <tr><td><strong>construire</strong></td><td>avoir <span class="highlight">construit</span></td><td>construir</td></tr>
+                            <tr><td><strong>contredire</strong></td><td>avoir <span class="highlight">contredit</span></td><td>contradecir</td></tr>
+                            <tr><td><strong>convaincre</strong></td><td>avoir <span class="highlight">convaincu</span></td><td>convencer</td></tr>
+                            <tr><td><strong>convenir</strong></td><td>être/avoir <span class="highlight">convenu</span></td><td>convenir</td></tr>
+                            <tr><td><strong>courir</strong></td><td>avoir <span class="highlight">couru</span></td><td>correr</td></tr>
+                            <tr><td><strong>couvrir</strong></td><td>avoir <span class="highlight">couvert</span></td><td>cubrir</td></tr>
+                            <tr><td><strong>craindre</strong></td><td>avoir <span class="highlight">craint</span></td><td>temer</td></tr>
+                            <tr><td><strong>croire</strong></td><td>avoir <span class="highlight">cru</span></td><td>creer</td></tr>
+                            <tr><td><strong>cuire</strong></td><td>avoir <span class="highlight">cuit</span></td><td>cocinar / cocer</td></tr>
+                            <tr><td><strong>décevoir</strong></td><td>avoir <span class="highlight">déçu</span></td><td>decepcionar</td></tr>
+                            <tr><td><strong>découvrir</strong></td><td>avoir <span class="highlight">découvert</span></td><td>descubrir</td></tr>
+                            <tr><td><strong>décrire</strong></td><td>avoir <span class="highlight">décrit</span></td><td>describir</td></tr>
+                            <tr><td><strong>déduire</strong></td><td>avoir <span class="highlight">déduit</span></td><td>deducir</td></tr>
+                            <tr><td><strong>défendre</strong></td><td>avoir <span class="highlight">défendu</span></td><td>defender / prohibir</td></tr>
+                            <tr><td><strong>descendre</strong></td><td>être/avoir <span class="highlight">descendu</span></td><td>bajar</td></tr>
+                            <tr><td><strong>détruire</strong></td><td>avoir <span class="highlight">détruit</span></td><td>destruir</td></tr>
+                            <tr><td><strong>devenir</strong></td><td>être <span class="highlight">devenu</span></td><td>convertirse</td></tr>
+                            <tr><td><strong>devoir</strong></td><td>avoir <span class="highlight">dû</span></td><td>deber</td></tr>
+                            <tr><td><strong>dire</strong></td><td>avoir <span class="highlight">dit</span></td><td>decir</td></tr>
+                            <tr><td><strong>disparaître</strong></td><td>avoir <span class="highlight">disparu</span></td><td>desaparecer</td></tr>
+                            <tr><td><strong>dormir</strong></td><td>avoir <span class="highlight">dormi</span></td><td>dormir</td></tr>
+                            <tr><td><strong>écrire</strong></td><td>avoir <span class="highlight">écrit</span></td><td>escribir</td></tr>
+                            <tr><td><strong>élire</strong></td><td>avoir <span class="highlight">élu</span></td><td>elegir</td></tr>
+                            <tr><td><strong>endormir</strong></td><td>avoir <span class="highlight">endormi</span></td><td>adormecer</td></tr>
+                            <tr><td><strong>entendre</strong></td><td>avoir <span class="highlight">entendu</span></td><td>escuchar / oír</td></tr>
+                            <tr><td><strong>entreprendre</strong></td><td>avoir <span class="highlight">entrepris</span></td><td>emprender</td></tr>
+                            <tr><td><strong>envoyer</strong></td><td>avoir <span class="highlight">envoyé</span></td><td>enviar</td></tr>
+                            <tr><td><strong>éteindre</strong></td><td>avoir <span class="highlight">éteint</span></td><td>apagar</td></tr>
+                            <tr><td><strong>être</strong></td><td>avoir <span class="highlight">été</span></td><td>ser / estar</td></tr>
+                            <tr><td><strong>faire</strong></td><td>avoir <span class="highlight">fait</span></td><td>hacer</td></tr>
+                            <tr><td><strong>falloir</strong></td><td>avoir <span class="highlight">fallu</span></td><td>ser necesario</td></tr>
+                            <tr><td><strong>fuir</strong></td><td>avoir <span class="highlight">fui</span></td><td>huir</td></tr>
+                            <tr><td><strong>interdire</strong></td><td>avoir <span class="highlight">interdit</span></td><td>prohibir</td></tr>
+                            <tr><td><strong>intervenir</strong></td><td>être <span class="highlight">intervenu</span></td><td>intervenir</td></tr>
+                            <tr><td><strong>joindre</strong></td><td>avoir <span class="highlight">joint</span></td><td>unir / contactar</td></tr>
+                            <tr><td><strong>lire</strong></td><td>avoir <span class="highlight">lu</span></td><td>leer</td></tr>
+                            <tr><td><strong>maintenir</strong></td><td>avoir <span class="highlight">maintenu</span></td><td>mantener</td></tr>
+                            <tr><td><strong>mentir</strong></td><td>avoir <span class="highlight">menti</span></td><td>mentir</td></tr>
+                            <tr><td><strong>mettre</strong></td><td>avoir <span class="highlight">mis</span></td><td>poner</td></tr>
+                            <tr><td><strong>mordre</strong></td><td>avoir <span class="highlight">mordu</span></td><td>morder</td></tr>
+                            <tr><td><strong>mourir</strong></td><td>être <span class="highlight">mort</span></td><td>morir</td></tr>
+                            <tr><td><strong>naître</strong></td><td>être <span class="highlight">né</span></td><td>nacer</td></tr>
+                            <tr><td><strong>nuire</strong></td><td>avoir <span class="highlight">nui</span></td><td>perjudicar</td></tr>
+                            <tr><td><strong>obtenir</strong></td><td>avoir <span class="highlight">obtenu</span></td><td>obtener</td></tr>
+                            <tr><td><strong>offrir</strong></td><td>avoir <span class="highlight">offert</span></td><td>ofrecer</td></tr>
+                            <tr><td><strong>ouvrir</strong></td><td>avoir <span class="highlight">ouvert</span></td><td>abrir</td></tr>
+                            <tr><td><strong>paraître</strong></td><td>avoir <span class="highlight">paru</span></td><td>parecer</td></tr>
+                            <tr><td><strong>partir</strong></td><td>être <span class="highlight">parti</span></td><td>irse / salir</td></tr>
+                            <tr><td><strong>peindre</strong></td><td>avoir <span class="highlight">peint</span></td><td>pintar</td></tr>
+                            <tr><td><strong>perdre</strong></td><td>avoir <span class="highlight">perdu</span></td><td>perder</td></tr>
+                            <tr><td><strong>permettre</strong></td><td>avoir <span class="highlight">permis</span></td><td>permitir</td></tr>
+                            <tr><td><strong>plaire</strong></td><td>avoir <span class="highlight">plu</span></td><td>gustar</td></tr>
+                            <tr><td><strong>pleuvoir</strong></td><td>avoir <span class="highlight">plu</span></td><td>llover</td></tr>
+                            <tr><td><strong>pouvoir</strong></td><td>avoir <span class="highlight">pu</span></td><td>poder</td></tr>
+                            <tr><td><strong>prendre</strong></td><td>avoir <span class="highlight">pris</span></td><td>tomar</td></tr>
+                            <tr><td><strong>produire</strong></td><td>avoir <span class="highlight">produit</span></td><td>producir</td></tr>
+                            <tr><td><strong>promettre</strong></td><td>avoir <span class="highlight">promis</span></td><td>prometer</td></tr>
+                            <tr><td><strong>recevoir</strong></td><td>avoir <span class="highlight">reçu</span></td><td>recibir</td></tr>
+                            <tr><td><strong>reconnaître</strong></td><td>avoir <span class="highlight">reconnu</span></td><td>reconocer</td></tr>
+                            <tr><td><strong>réduire</strong></td><td>avoir <span class="highlight">réduit</span></td><td>reducir</td></tr>
+                            <tr><td><strong>rendre</strong></td><td>avoir <span class="highlight">rendu</span></td><td>devolver / rendir</td></tr>
+                            <tr><td><strong>répondre</strong></td><td>avoir <span class="highlight">répondu</span></td><td>responder</td></tr>
+                            <tr><td><strong>résoudre</strong></td><td>avoir <span class="highlight">résolu</span></td><td>resolver</td></tr>
+                            <tr><td><strong>rire</strong></td><td>avoir <span class="highlight">ri</span></td><td>reír</td></tr>
+                            <tr><td><strong>savoir</strong></td><td>avoir <span class="highlight">su</span></td><td>saber</td></tr>
+                            <tr><td><strong>sentir</strong></td><td>avoir <span class="highlight">senti</span></td><td>sentir / oler</td></tr>
+                            <tr><td><strong>servir</strong></td><td>avoir <span class="highlight">servi</span></td><td>servir</td></tr>
+                            <tr><td><strong>sortir</strong></td><td>être/avoir <span class="highlight">sorti</span></td><td>salir</td></tr>
+                            <tr><td><strong>souffrir</strong></td><td>avoir <span class="highlight">souffert</span></td><td>sufrir</td></tr>
+                            <tr><td><strong>sourire</strong></td><td>avoir <span class="highlight">souri</span></td><td>sonreír</td></tr>
+                            <tr><td><strong>se souvenir</strong></td><td>être <span class="highlight">souvenu</span></td><td>acordarse</td></tr>
+                            <tr><td><strong>suffire</strong></td><td>avoir <span class="highlight">suffi</span></td><td>bastar</td></tr>
+                            <tr><td><strong>suivre</strong></td><td>avoir <span class="highlight">suivi</span></td><td>seguir</td></tr>
+                            <tr><td><strong>se taire</strong></td><td>être <span class="highlight">tu</span></td><td>callarse</td></tr>
+                            <tr><td><strong>tenir</strong></td><td>avoir <span class="highlight">tenu</span></td><td>sostener / tener</td></tr>
+                            <tr><td><strong>traduire</strong></td><td>avoir <span class="highlight">traduit</span></td><td>traducir</td></tr>
+                            <tr><td><strong>valoir</strong></td><td>avoir <span class="highlight">valu</span></td><td>valer</td></tr>
+                            <tr><td><strong>vendre</strong></td><td>avoir <span class="highlight">vendu</span></td><td>vender</td></tr>
+                            <tr><td><strong>venir</strong></td><td>être <span class="highlight">venu</span></td><td>venir</td></tr>
+                            <tr><td><strong>vivre</strong></td><td>avoir <span class="highlight">vécu</span></td><td>vivir</td></tr>
+                            <tr><td><strong>voir</strong></td><td>avoir <span class="highlight">vu</span></td><td>ver</td></tr>
+                            <tr><td><strong>vouloir</strong></td><td>avoir <span class="highlight">voulu</span></td><td>querer</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-imparfait" class="theory-content">
+            <div class="theory-box" style="border-left-color: #f39c12;">
+                <h3 style="color: #f39c12;">L'Imparfait (Pretérito Imperfecto)</h3>
+                <p>Se utiliza para <strong>describir</strong> en el pasado (clima, estado físico/emocional) o para hablar de <strong>hábitos y rutinas pasadas</strong>.</p>
+                <p><strong>Formación:</strong> Se toma la raíz de la 1ª persona del plural (<em>Nous</em>) del presente, se quita la terminación <em>-ons</em>, y se añaden las terminaciones del imperfecto: <strong>-ais, -ais, -ait, -ions, -iez, -aient</strong>.</p>
+                
+                <div class="note">
+                    💡 <strong>Ejemplo con Parler:</strong><br>
+                    1. Presente: Nous <em>parl</em>ons.<br>
+                    2. Raíz: <strong>parl-</strong><br>
+                    3. Imparfait: Je parl<strong>ais</strong>, Tu parl<strong>ais</strong>, Il parl<strong>ait</strong>, Nous parl<strong>ions</strong>...
+                </div>
+
+                <p><strong>La única excepción:</strong> El verbo <em>Être</em>. Su raíz es <strong>ét-</strong> <em>(j'étais, tu étais, il était...)</em>.</p>
+
+                <div class="note">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>Quand j'étais petit, je jouais au foot.</em> (Cuando era pequeño, jugaba al fútbol).<br>• <em>Il faisait très beau hier.</em> (Hacía muy buen clima ayer).</div>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación rodea al verbo conjugado en imperfecto.</p>
+                    <p>• Je <strong>ne</strong> savais <strong>pas</strong> la vérité. <em>(No sabía la verdad)</em>.</p>
+                    <p>• Nous <strong>n'</strong>avions <strong>pas</strong> d'argent. <em>(No teníamos dinero)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-pqp" class="theory-content">
+            <div class="theory-box" style="border-left-color: #8e44ad;">
+                <h3 style="color: #8e44ad;">Le Plus-que-parfait (Pluscuamperfecto)</h3>
+                <p>Expresa una acción pasada que ocurrió <strong>antes de otra acción pasada</strong> (El "pasado del pasado").</p>
+                <p><strong>Formación:</strong> Auxiliar (<strong>Avoir</strong> o <strong>Être</strong>) conjugado en <em>Imparfait</em> + <strong>Participio Pasado</strong>.</p>
+                
+                <div class="note">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>J'<strong>avais</strong> déjà <strong>mangé</strong> quand tu as appelé.</em> (Ya había comido cuando llamaste).<br>• <em>Elle <strong>était partie</strong> avant minuit.</em> (Ella se había ido antes de medianoche).</div>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación rodea al auxiliar conjugado en imperfecto.</p>
+                    <p>• Je <strong>n'</strong>avais <strong>pas</strong> fini mes devoirs. <em>(No había terminado mis deberes)</em>.</p>
+                    <p>• Ils <strong>n'</strong>étaient <strong>pas</strong> rentrés. <em>(Ellos no habían vuelto)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-futur" class="theory-content">
+            <div class="theory-box" style="border-left-color: #2980b9;">
+                <h3 style="color: #2980b9;">Le Futur Simple (Futuro Simple)</h3>
+                <p>Se utiliza para acciones futuras lejanas, predicciones o promesas.</p>
+                <p><strong>Formación regular:</strong> Verbo en <strong>infinitivo completo</strong> + las terminaciones: <strong>-ai, -as, -a, -ons, -ez, -ont</strong>. <em>(Para los verbos que terminan en -RE, se les quita la "e" final, ej: vendr ➔ je vendrai)</em>.</p>
+                
+                <h4 style="margin-top: 15px;">⚡ Raíces Irregulares (Las terminaciones son siempre las mismas)</h4>
+                <div class="irregular-grid">
+                    <div class="irregular-item">Être ➔ <strong>ser-</strong> <em>(je serai)</em></div>
+                    <div class="irregular-item">Avoir ➔ <strong>aur-</strong> <em>(j'aurai)</em></div>
+                    <div class="irregular-item">Aller ➔ <strong>ir-</strong> <em>(j'irai)</em></div>
+                    <div class="irregular-item">Faire ➔ <strong>fer-</strong> <em>(je ferai)</em></div>
+                    <div class="irregular-item">Pouvoir ➔ <strong>pourr-</strong> <em>(je pourrai)</em></div>
+                    <div class="irregular-item">Vouloir ➔ <strong>voudr-</strong> <em>(je voudrai)</em></div>
+                    <div class="irregular-item">Savoir ➔ <strong>saur-</strong> <em>(je saurai)</em></div>
+                    <div class="irregular-item">Voir ➔ <strong>verr-</strong> <em>(je verrai)</em></div>
+                </div>
+
+                <div class="note" style="margin-top:15px;">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>Demain, je finirai mon travail.</em> (Mañana, terminaré mi trabajo).<br>• <em>Tu iras en France l'année prochaine.</em> (Irás a Francia el próximo año).</div>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación rodea al verbo en futuro.</p>
+                    <p>• Je <strong>ne</strong> sortirai <strong>pas</strong> ce soir. <em>(No saldré esta noche)</em>.</p>
+                    <p>• Il <strong>ne</strong> fera <strong>pas</strong> beau demain. <em>(No hará buen clima mañana)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-proche" class="theory-content">
+            <div class="theory-box" style="border-left-color: #16a085;">
+                <h3 style="color: #16a085;">Le Futur Proche (Futuro Próximo)</h3>
+                <p>Expresa una acción que va a ocurrir de forma inminente o una intención segura (Equivale a "Ir a + infinitivo").</p>
+                <p><strong>Formación:</strong> Verbo <strong>Aller en presente</strong> <em>(vais, vas, va, allons, allez, vont)</em> + verbo principal en <strong>Infinitivo</strong>.</p>
+                
+                <div class="note">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>Je vais manger dans cinq minutes.</em> (Voy a comer en cinco minutos).<br>• <em>Nous allons regarder un film.</em> (Vamos a ver una película).</div>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación rodea ÚNICAMENTE al verbo <em>Aller</em> conjugado. El infinitivo queda fuera.</p>
+                    <p>• Je <strong>ne</strong> vais <strong>pas</strong> sortir. <em>(No voy a salir)</em>.</p>
+                    <p>• Ils <strong>ne</strong> vont <strong>pas</strong> pleurer. <em>(Ellos no van a llorar)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-recent" class="theory-content">
+            <div class="theory-box" style="border-left-color: #c0392b;">
+                <h3 style="color: #c0392b;">Le Passé Récent (Pasado Reciente)</h3>
+                <p>Expresa una acción que acaba de suceder instantáneamente (Equivale a "Acabar de + infinitivo").</p>
+                <p><strong>Formación:</strong> Verbo <strong>Venir en presente</strong> <em>(viens, viens, vient, venons, venez, viennent)</em> + la preposición <strong>de / d'</strong> + verbo en <strong>Infinitivo</strong>.</p>
+                
+                <div class="note">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>Je viens de me réveiller.</em> (Acabo de despertarme).<br>• <em>Le train vient d'arriver.</em> (El tren acaba de llegar).</div>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación rodea al verbo <em>Venir</em> conjugado.</p>
+                    <p>• Il <strong>ne</strong> vient <strong>pas</strong> de pleuvoir. <em>(No acaba de llover)</em>.</p>
+                    <p>• Nous <strong>ne</strong> venons <strong>pas</strong> de le voir. <em>(No acabamos de verlo)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-subj" class="theory-content">
+            <div class="theory-box" style="border-left-color: #e84393;">
+                <h3 style="color: #e84393;">Le Subjonctif Présent (Subjuntivo)</h3>
+                <p>Se utiliza para expresar <strong>duda, deseo, emoción, voluntad, obligación o necesidad</strong>. Casi siempre va introducido por la palabra <em>"que"</em>.</p>
+                <p><strong>Formación:</strong> Se toma la raíz de la 3ª persona del plural (<em>Ils</em>) del presente, se le quita <em>-ent</em>, y se añaden las terminaciones: <strong>-e, -es, -e, -ions, -iez, -ent</strong>.</p>
+                
+                <h4 style="margin-top: 15px;">⚡ Los verbos totalmente irregulares:</h4>
+                <ul style="font-size: 0.9em; margin-top: 0;">
+                    <li><strong>Être:</strong> que je sois, que tu sois, qu'il soit, que nous soyons, que vous soyez, qu'ils soient.</li>
+                    <li><strong>Avoir:</strong> que j'aie, que tu aies, qu'il ait, que nous ayons, que vous ayez, qu'ils aient.</li>
+                    <li><strong>Faire:</strong> que je fasse...</li>
+                    <li><strong>Pouvoir:</strong> que je puisse...</li>
+                    <li><strong>Savoir:</strong> que je sache...</li>
+                    <li><strong>Aller:</strong> que j'aille...</li>
+                </ul>
+
+                <div class="note">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>Il faut que je parte.</em> (Es necesario que me vaya).<br>• <em>Je veux que tu viennes.</em> (Quiero que vengas).</div>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación rodea al verbo en subjuntivo.</p>
+                    <p>• Il est important que tu <strong>ne</strong> parles <strong>pas</strong>. <em>(Es importante que no hables)</em>.</p>
+                    <p>• Je doute qu'il <strong>ne</strong> réussisse <strong>pas</strong>. <em>(Dudo que no lo logre)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-cond-pres" class="theory-content">
+            <div class="theory-box" style="border-left-color: #0984e3;">
+                <h3 style="color: #0984e3;">Le Conditionnel Présent (Condicional Simple)</h3>
+                <p>Se utiliza para expresar <strong>cortesía, deseos, consejos, hipótesis o futuros desde el pasado</strong>.</p>
+                <p><strong>Fórmula mágica de la hipótesis:</strong> Si + Imparfait ➔ Conditionnel Présent.</p>
+                
+                <p><strong>Formación:</strong> Es una mezcla. Se usa la RAÍZ del <em>Futur Simple</em> (normalmente el infinitivo) + las TERMINACIONES del <em>Imparfait</em> (<strong>-ais, -ais, -ait, -ions, -iez, -aient</strong>).</p>
+
+                <div class="note">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>Je voudrais un café, s'il vous plaît.</em> (Quisiera un café - Cortesía).<br>• <em>Si j'avais de l'argent, j'achèterais une maison.</em> (Si tuviera dinero, compraría una casa - Hipótesis).</div>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación rodea al verbo en condicional.</p>
+                    <p>• Je <strong>ne</strong> ferais <strong>pas</strong> ça à ta place. <em>(Yo no haría eso en tu lugar)</em>.</p>
+                    <p>• Il <strong>n'</strong>aimerait <strong>pas</strong> cette chanson. <em>(A él no le gustaría esta canción)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-cond-pas" class="theory-content">
+            <div class="theory-box" style="border-left-color: #6c5ce7;">
+                <h3 style="color: #6c5ce7;">Le Conditionnel Passé (Condicional Compuesto)</h3>
+                <p>Se utiliza para expresar <strong>arrepentimientos, reproches, o una hipótesis no realizada en el pasado</strong>.</p>
+                <p><strong>Fórmula de la hipótesis irreal:</strong> Si + Plus-que-parfait ➔ Conditionnel Passé.</p>
+                
+                <p><strong>Formación:</strong> Auxiliar (<strong>Avoir</strong> o <strong>Être</strong>) conjugado en <em>Condicional Presente</em> + el <strong>Participio Pasado</strong> del verbo.</p>
+
+                <div class="note">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>J'aurais voulu être un artiste.</em> (Me hubiera gustado ser un artista - Arrepentimiento).<br>• <em>Si tu m'avais appelé, je serais venu.</em> (Si me hubieras llamado, habría venido).</div>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>Como en todos los tiempos compuestos, la negación rodea ÚNICAMENTE al auxiliar.</p>
+                    <p>• Je <strong>n'</strong>aurais <strong>pas</strong> dit ça. <em>(Yo no habría dicho eso)</em>.</p>
+                    <p>• Tu <strong>ne</strong> serais <strong>pas</strong> tombé si tu avais fait attention. <em>(No te habrías caído si hubieras prestado atención)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="sec-conj" class="section">
+        <h2>Practicar la conjugación</h2>
+        <div id="conj-setup" class="quiz-card quiz-setup">
+            <h3>Configura tu test</h3>
+            <label style="text-align: left; display: block; margin-top: 15px; font-weight: bold;">Elige el tiempo verbal:</label>
+            <select id="conj-tense-select">
+                <option value="present">Présent de l'indicatif</option>
+                <option value="past">Passé Composé</option>
+                <option value="imparfait" selected>Imparfait</option>
+                <option value="futur_proche">Futur proche</option>
+                <option value="passe_recent">Passé récent</option>
+                <option value="future">Future simple</option>
+                <option value="mixed" style="font-weight: bold;">🔀 Todos los tiempos</option>
+            </select>
+            <label style="text-align: left; display: block; margin-top: 15px; font-weight: bold;">Número de preguntas:</label>
+            <select id="conj-qty-select">
+                <option value="10">10 verbos</option>
+                <option value="15">15 verbos</option>
+                <option value="20">20 verbos</option>
+                <option value="30">30 verbos</option>
+                <option value="50">50 verbos</option>
+                <option value="100">100 verbos</option>
+            </select>
+            <button id="btn-continue-conj" class="btn-action" style="margin-top: 25px; background-color: #f39c12; display: none;" onclick="continueConjQuiz()">🔄 Continuar la partida anterior</button>
+            <button class="btn-action" style="margin-top: 15px;" onclick="startConjQuiz()">🚀 Comenzar test nuevo</button>
+        </div>
+
+        <div id="conj-play" class="quiz-card" style="display: none;">
+            <div id="conj-progress" style="font-weight: bold; color: var(--fr-blue); margin-bottom: 5px;">Pregunta 1 / 10</div>
+            <div class="progress-container"><div id="conj-progress-bar" class="progress-bar"></div></div>
+            <div id="conj-tense-display" style="color: #7f8c8d; font-style: italic; margin-bottom: 15px;"></div>
+            <h3 id="conj-prompt">Je ___ (manger) la pomme.</h3>
+            <p><i id="conj-es">Yo como</i></p>
+            <input type="text" id="answer-input" placeholder="Tu respuesta..." autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off">
+            <button id="conj-btn-check" class="btn-action" onclick="checkConj()">Comprobar</button>
+            <div id="conj-feedback" class="feedback"></div>
+            <button id="conj-btn-next" class="btn-action" style="margin-top: 15px; background: #34495e; display: none;" onclick="advanceConj()">Siguiente ➔</button>
+        </div>
+
+        <div id="conj-results" class="quiz-card" style="display: none;">
+            <h3>¡Test terminado! 🎉</h3>
+            <div id="conj-score-display" class="score-display"></div>
+            <div id="conj-mistakes-display" style="margin-top: 20px;"></div>
+            <button class="btn-action" style="margin-top: 20px;" onclick="resetConjQuiz()">Hacer otro test</button>
+        </div>
+    </div>
+</div>
+
+<div id="sec-badges" class="section">
+    <div class="header-container">
+        <h2>Mis Trofeos 🏅</h2>
+    </div>
+    <div style="padding: 15px; text-align: center; margin-bottom: 20px;">
+        <p>¡Consigue un 80% de aciertos para ganar insignias!</p>
+    </div>
+    <div id="badges-grid" class="grid-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 15px;">
+    </div>
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="resetBadges()" style="background:none; border:none; color:#bdc3c7; font-size:0.75rem; text-decoration:underline; cursor:pointer;">Reiniciar mis trofeos</button>
+    </div>
+</div>
+
+<nav id="bottom-nav">
+    <button onclick="switchTab('sec-flashcards')" class="nav-btn active" id="btn-sec-flashcards"><span class="icon">🃏</span>Tarjetas</button>
+    <button onclick="switchTab('sec-vocab')" class="nav-btn" id="btn-sec-vocab"><span class="icon">📝</span>Vocabulario</button>
+    <button onclick="switchTab('sec-theory')" class="nav-btn" id="btn-sec-theory"><span class="icon">📖</span>Gramática</button>
+    <button onclick="switchTab('sec-conj')" class="nav-btn" id="btn-sec-conj"><span class="icon">✍️</span>Conjugación</button>
+    <button onclick="switchTab('sec-badges'); renderBadges();" class="nav-btn" id="btn-sec-badges"><span class="icon">🏅</span>Badges</button>
+</nav>
+
+<script>
+// --- BASE DE DONNÉES ÉTENDUE : 100 VERBES ---
+const verbs = [
+    { fr: "parler", es: "hablar", icon: "🗣️", group: "er", aux: "avoir", pp: "parlé", comp: "français" },
+    { fr: "manger", es: "comer", icon: "🍝", group: "er", aux: "avoir", pp: "mangé", comp: "une pizza" },
+    { fr: "regarder", es: "mirar", icon: "👀", group: "er", aux: "avoir", pp: "regardé", comp: "un film" },
+    { fr: "écouter", es: "escuchar", icon: "🎧", group: "er", aux: "avoir", pp: "écouté", comp: "de la musique" },
+    { fr: "travailler", es: "trabajar", icon: "💼", group: "er", aux: "avoir", pp: "travaillé", comp: "au bureau" },
+    { fr: "étudier", es: "estudiar", icon: "📚", group: "er", aux: "avoir", pp: "étudié", comp: "la leçon" },
+    { fr: "chanter", es: "cantar", icon: "🎤", group: "er", aux: "avoir", pp: "chanté", comp: "une belle chanson" },
+    { fr: "danser", es: "bailar", icon: "💃", group: "er", aux: "avoir", pp: "dansé", comp: "toute la nuit" },
+    { fr: "acheter", es: "comprar", icon: "🛍️", group: "er", aux: "avoir", pp: "acheté", irreg: true, comp: "du pain" },
+    { fr: "payer", es: "pagar", icon: "💳", group: "er", aux: "avoir", pp: "payé", irreg: true, comp: "l'addition" },
+    { fr: "chercher", es: "buscar", icon: "🔍", group: "er", aux: "avoir", pp: "cherché", comp: "les clés" },
+    { fr: "trouver", es: "encontrar", icon: "🎯", group: "er", aux: "avoir", pp: "trouvé", comp: "la solution" },
+    { fr: "penser", es: "pensar", icon: "🤔", group: "er", aux: "avoir", pp: "pensé", comp: "à l'avenir" },
+    { fr: "appeler", es: "llamar", icon: "📱", group: "er", aux: "avoir", pp: "appelé", irreg: true, comp: "un ami" },
+    { fr: "aimer", es: "amar", icon: "❤️", group: "er", aux: "avoir", pp: "aimé", comp: "le chocolat" },
+    { fr: "marcher", es: "caminar", icon: "🚶‍♂️", group: "er", aux: "avoir", pp: "marché", comp: "dans le parc" },
+    { fr: "cuisiner", es: "cocinar", icon: "🍳", group: "er", aux: "avoir", pp: "cuisiné", comp: "un bon repas" },
+    { fr: "voyager", es: "viajar", icon: "✈️", group: "er", aux: "avoir", pp: "voyagé", comp: "en train" },
+    { fr: "arriver", es: "llegar", icon: "🏁", group: "er", aux: "etre", pp: "arrivé", comp: "en retard" },
+    { fr: "jouer", es: "jugar", icon: "⚽", group: "er", aux: "avoir", pp: "joué", comp: "au football" },
+
+    { fr: "finir", es: "terminar", icon: "✅", group: "ir", aux: "avoir", pp: "fini", comp: "les devoirs" },
+    { fr: "choisir", es: "elegir", icon: "👉", group: "ir", aux: "avoir", pp: "choisi", comp: "un livre" },
+    { fr: "réussir", es: "lograr", icon: "🎓", group: "ir", aux: "avoir", pp: "réussi", comp: "l'examen" },
+    { fr: "grandir", es: "crecer", icon: "🌱", group: "ir", aux: "avoir", pp: "grandi", comp: "très vite" },
+    { fr: "dormir", es: "dormir", icon: "🛌", group: "ir3", aux: "avoir", pp: "dormi", irreg: true, comp: "profondément" },
+    { fr: "partir", es: "irse", icon: "🚂", group: "ir3", aux: "etre", pp: "parti", irreg: true, comp: "en vacances" },
+    { fr: "sortir", es: "salir", icon: "🚪", group: "ir3", aux: "etre", pp: "sorti", irreg: true, comp: "avec des amis" },
+    { fr: "sentir", es: "sentir", icon: "👃", group: "ir3", aux: "avoir", pp: "senti", irreg: true, comp: "les fleurs" },
+    { fr: "ouvrir", es: "abrir", icon: "🔓", group: "ir3", aux: "avoir", pp: "ouvert", irreg: true, comp: "la porte" },
+    { fr: "offrir", es: "ofrecer", icon: "🎁", group: "ir3", aux: "avoir", pp: "offert", irreg: true, comp: "un cadeau" },
+
+    { fr: "vendre", es: "vender", icon: "🏪", group: "re", aux: "avoir", pp: "vendu", comp: "la voiture" },
+    { fr: "attendre", es: "esperar", icon: "⏳", group: "re", aux: "avoir", pp: "attendu", comp: "le bus" },
+    { fr: "répondre", es: "responder", icon: "💬", group: "re", aux: "avoir", pp: "répondu", comp: "au teléfono" },
+    { fr: "entendre", es: "escuchar", icon: "👂", group: "re", aux: "avoir", pp: "entendu", comp: "un bruit" },
+    { fr: "perdre", es: "perder", icon: "📉", group: "re", aux: "avoir", pp: "perdu", comp: "le match" },
+    { fr: "lire", es: "leer", icon: "📖", group: "re", aux: "avoir", pp: "lu", irreg: true, comp: "un roman" },
+    { fr: "écrire", es: "escribir", icon: "✍️", group: "re", aux: "avoir", pp: "écrit", irreg: true, comp: "une lettre" },
+    { fr: "prendre", es: "tomar", icon: "🖐️", group: "re", aux: "avoir", pp: "pris", irreg: true, comp: "le métro" },
+    { fr: "mettre", es: "poner", icon: "📥", group: "re", aux: "avoir", pp: "mis", irreg: true, comp: "le manteau" },
+    { fr: "comprendre", es: "entender", icon: "💡", group: "re", aux: "avoir", pp: "compris", irreg: true, comp: "la question" },
+    { fr: "connaître", es: "conocer", icon: "🤝", group: "re", aux: "avoir", pp: "connu", irreg: true, comp: "la vérité" },
+    { fr: "croire", es: "creer", icon: "🙏", group: "re", aux: "avoir", pp: "cru", irreg: true, comp: "aux fantômes" },
+    { fr: "voir", es: "ver", icon: "👁️", group: "oir", aux: "avoir", pp: "vu", irreg: true, comp: "un oiseau" },
+    { fr: "pouvoir", es: "poder", icon: "💪", group: "oir", aux: "avoir", pp: "pu", irreg: true, comp: "le faire" },
+    { fr: "vouloir", es: "querer", icon: "🎯", group: "oir", aux: "avoir", pp: "voulu", irreg: true, comp: "un café" },
+    { fr: "devoir", es: "deber", icon: "⚠️", group: "oir", aux: "avoir", pp: "dû", irreg: true, comp: "partir tôt" },
+    { fr: "être", es: "ser/estar", icon: "🌟", aux: "avoir", pp: "été", irreg: true, comp: "heureux" },
+    { fr: "avoir", es: "tener/haber", icon: "🤲", aux: "avoir", pp: "eu", irreg: true, comp: "un chat" },
+    { fr: "aller", es: "ir", icon: "🗺️", aux: "etre", pp: "allé", irreg: true, comp: "au cinéma" },
+    { fr: "faire", es: "hacer", icon: "🛠️", aux: "avoir", pp: "fait", irreg: true, comp: "du sport" },
+
+    { fr: "boire", es: "beber", icon: "🥛", group: "re", aux: "avoir", pp: "bu", irreg: true, comp: "de l'eau" },
+    { fr: "savoir", es: "saber", icon: "🧠", group: "oir", aux: "avoir", pp: "su", irreg: true, comp: "la respuesta" },
+    { fr: "venir", es: "venir", icon: "🚶", group: "ir3", aux: "etre", pp: "venu", irreg: true, comp: "ici" },
+    { fr: "courir", es: "correr", icon: "🏃", group: "ir3", aux: "avoir", pp: "couru", irreg: true, comp: "un marathon" },
+    { fr: "rire", es: "reír", icon: "😂", group: "re", aux: "avoir", pp: "ri", irreg: true, comp: "beaucoup" },
+    { fr: "conduire", es: "conducir", icon: "🚗", group: "re", aux: "avoir", pp: "conduit", irreg: true, comp: "une voiture" },
+    { fr: "recevoir", es: "recibir", icon: "📬", group: "oir", aux: "avoir", pp: "reçu", irreg: true, comp: "un colis" },
+    { fr: "descendre", es: "bajar", icon: "⬇️", group: "re", aux: "etre", pp: "descendu", comp: "l'escalier" },
+    { fr: "répéter", es: "repetir", icon: "🔁", group: "er", aux: "avoir", pp: "répété", irreg: true, comp: "la phrase" },
+    { fr: "nettoyer", es: "limpiar", icon: "🧹", group: "er", aux: "avoir", pp: "nettoyé", irreg: true, comp: "la maison" },
+
+    { fr: "se lever", root: "lever", es: "levantarse", icon: "🛏️", group: "er", aux: "etre", pp: "levé", pron: true, comp: "tôt" },
+    { fr: "se laver", root: "laver", es: "lavarse", icon: "🧼", group: "er", aux: "etre", pp: "lavé", pron: true, comp: "les mains" },
+    { fr: "se réveiller", root: "réveiller", es: "despertarse", icon: "⏰", group: "er", aux: "etre", pp: "réveillé", pron: true, comp: "à 7h" },
+    { fr: "se coucher", root: "coucher", es: "acostarse", icon: "🛌", group: "er", aux: "etre", pp: "couché", pron: true, comp: "tard" },
+    { fr: "s'habiller", root: "habiller", es: "vestirse", icon: "👕", group: "er", aux: "etre", pp: "habillé", pron: true, comp: "vite" },
+    { fr: "se promener", root: "promener", es: "pasear", icon: "🚶", group: "er", aux: "etre", pp: "promené", pron: true, comp: "au parc" },
+    { fr: "se dépêcher", root: "dépêcher", es: "darse prisa", icon: "⏱️", group: "er", aux: "etre", pp: "dépêché", pron: true, comp: "pour le train" },
+    { fr: "se souvenir", root: "souvenir", es: "acordarse", icon: "💭", group: "ir3", aux: "etre", pp: "souvenu", pron: true, comp: "de tout" },
+    { fr: "tomber", es: "caer", icon: "🍂", group: "er", aux: "etre", pp: "tombé", comp: "par terre" },
+    { fr: "monter", es: "subir", icon: "🧗", group: "er", aux: "etre", pp: "monté", comp: "l'escalier" },
+    { fr: "rester", es: "quedarse", icon: "🏠", group: "er", aux: "etre", pp: "resté", comp: "à la maison" },
+    { fr: "rentrer", es: "volver/entrar", icon: "🔙", group: "er", aux: "etre", pp: "rentré", comp: "chez moi" },
+    { fr: "retourner", es: "regresar", icon: "🔄", group: "er", aux: "etre", pp: "retourné", comp: "en France" },
+    { fr: "oublier", es: "olvidar", icon: "🧠", group: "er", aux: "avoir", pp: "oublié", comp: "son mot de passe" },
+    { fr: "espérer", es: "esperar", icon: "🤞", group: "er", aux: "avoir", pp: "espéré", irreg: true, comp: "un miracle" },
+    { fr: "envoyer", es: "enviar", icon: "📧", group: "er", aux: "avoir", pp: "envoyé", irreg: true, comp: "un message" },
+    { fr: "essayer", es: "intentar", icon: "🎯", group: "er", aux: "avoir", pp: "essayé", irreg: true, comp: "de comprendre" },
+    { fr: "vivre", es: "vivir", icon: "❤️", group: "re", aux: "avoir", pp: "vécu", irreg: true, comp: "en paix" },
+    { fr: "mourir", es: "morir", icon: "🥀", group: "ir3", aux: "etre", pp: "mort", irreg: true, comp: "de rire" },
+    { fr: "naître", es: "nacer", icon: "👶", group: "re", aux: "etre", pp: "né", irreg: true, comp: "en 2000" },
+
+    { fr: "accepter", es: "aceptar", icon: "✅", group: "er", aux: "avoir", pp: "accepté", comp: "l'offre" },
+    { fr: "aider", es: "ayudar", icon: "🤝", group: "er", aux: "avoir", pp: "aidé", comp: "un ami" },
+    { fr: "annuler", es: "cancelar", icon: "❌", group: "er", aux: "avoir", pp: "annulé", comp: "le vol" },
+    { fr: "apporter", es: "traer", icon: "📦", group: "er", aux: "avoir", pp: "apporté", comp: "un dessert" },
+    { fr: "cacher", es: "esconder", icon: "🙈", group: "er", aux: "avoir", pp: "caché", comp: "le trésor" },
+    { fr: "changer", es: "cambiar", icon: "🔄", group: "er", aux: "avoir", pp: "changé", comp: "d'avis" },
+    { fr: "commencer", es: "comenzar", icon: "▶️", group: "er", aux: "avoir", pp: "commencé", comp: "le travail" },
+    { fr: "continuer", es: "continuar", icon: "⏩", group: "er", aux: "avoir", pp: "continué", comp: "à marcher" },
+    { fr: "couper", es: "cortar", icon: "✂️", group: "er", aux: "avoir", pp: "coupé", comp: "le papier" },
+    { fr: "créer", es: "crear", icon: "🎨", group: "er", aux: "avoir", pp: "créé", comp: "un projet" },
+    { fr: "demander", es: "preguntar", icon: "🙋", group: "er", aux: "avoir", pp: "demandé", comp: "de l'aide" },
+    { fr: "donner", es: "dar", icon: "🎁", group: "er", aux: "avoir", pp: "donné", comp: "un conseil" },
+    { fr: "entrer", es: "entrar", icon: "🚪", group: "er", aux: "etre", pp: "entré", comp: "dans la pièce" },
+    { fr: "expliquer", es: "explicar", icon: "🏫", group: "er", aux: "avoir", pp: "expliqué", comp: "la leçon" },
+    { fr: "fermer", es: "cerrar", icon: "🔒", group: "er", aux: "avoir", pp: "fermé", comp: "la fenêtre" },
+    { fr: "gagner", es: "ganar", icon: "🏆", group: "er", aux: "avoir", pp: "gagné", comp: "le concours" },
+    { fr: "montrer", es: "mostrar", icon: "🖼️", group: "er", aux: "avoir", pp: "montré", comp: "la photo" },
+    { fr: "pleurer", es: "llorar", icon: "😢", group: "er", aux: "avoir", pp: "pleuré", comp: "de joie" },
+    { fr: "rencontrer", es: "encontrar(se)", icon: "🫂", group: "er", aux: "avoir", pp: "rencontré", comp: "quelqu'un" },
+    { fr: "utiliser", es: "utilizar", icon: "🛠️", group: "er", aux: "avoir", pp: "utilisé", comp: "un outil" }
+];
+
+const pronouns = ["Je", "Tu", "Il/Elle", "Nous", "Vous", "Ils/Elles"];
+const tenseNamesES = { "present": "Presente de Indicativo", "past": "Passé Composé", "imparfait": "Imperfecto", "futur_proche": "Futuro Próximo", "passe_recent": "Pasado Reciente", "future": "Futuro Simple" };
+
+// LA LIGNE VITALE QUI MANQUAIT EST ICI :
+const validVerbsList = verbs;
+
+// TTS AUTOMATIQUE
+function speak(text) {
+    if ('speechSynthesis' in window) {
+        let msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'fr-FR'; 
+        window.speechSynthesis.speak(msg);
+    }
+}
+
+// NAVIGATION
+function showGrammar(topicId, btnElement) {
+    document.querySelectorAll('.theory-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.gram-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(topicId).classList.add('active');
+    btnElement.classList.add('active');
+}
+
+function switchTab(tabId) {
+    document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    document.getElementById('btn-' + tabId).classList.add('active');
+    
+    if(tabId === 'sec-vocab') {
+        document.getElementById('vocab-setup').style.display = 'block';
+        document.getElementById('vocab-play').style.display = 'none';
+        document.getElementById('vocab-results').style.display = 'none';
+    }
+    if(tabId === 'sec-conj') {
+        document.getElementById('conj-setup').style.display = 'block';
+        document.getElementById('conj-play').style.display = 'none';
+        document.getElementById('conj-results').style.display = 'none';
+        if (localStorage.getItem('conjSaveState')) document.getElementById('btn-continue-conj').style.display = 'block';
+        else document.getElementById('btn-continue-conj').style.display = 'none';
+    }
+    window.scrollTo(0,0);
+}
+
+// STREAK
+function updateStreak() {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    const lastVisit = localStorage.getItem('lastVisit');
+    let streak = parseInt(localStorage.getItem('streak') || "0");
+
+    if (lastVisit) {
+        const lastDate = parseInt(lastVisit);
+        const diffDays = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+        if (diffDays === 1) streak++; 
+        else if (diffDays > 1) streak = 1; 
+    } else streak = 1; 
+
+    localStorage.setItem('streak', streak);
+    localStorage.setItem('lastVisit', today);
+    document.getElementById('streak-count').innerText = streak;
+}
+
+// -------------------------------------------------------------------
+// FLASHCARDS (SWIPE ET GRID)
+// -------------------------------------------------------------------
+let swipeIndex = 0;
+let swipeTouchStartX = 0;
+let swipeTouchStartY = 0;
+
+function createCardHTML(v) {
+    let irregClass = (v.group !== 'er' || v.irreg || v.pron) ? 'irregular-border' : '';
+    let safeFr = v.fr.replace(/'/g, "\\'");
+    return `
+    <div class="flashcard-container">
+        <div class="flashcard" onclick="this.classList.toggle('flipped'); speak('${safeFr}');">
+            <div class="flashcard-front ${irregClass}">
+                <div class="icon">${v.icon}</div>
+                <div class="fr">${v.fr}</div>
+            </div>
+            <div class="flashcard-back">
+                <div class="es">${v.es}</div>
+            </div>
+        </div>
+    </div>`;
+}
+
+function renderSwipeCard() {
+    document.getElementById('swipe-counter').innerText = `Carta ${swipeIndex + 1} / ${verbs.length}`;
+    document.getElementById('swipe-card-container').innerHTML = createCardHTML(verbs[swipeIndex]);
+    
+    setTimeout(() => { speak(verbs[swipeIndex].fr); }, 150); 
+}
+
+function prevSwipe() { if(swipeIndex > 0) { swipeIndex--; renderSwipeCard(); } }
+function nextSwipe() { if(swipeIndex < verbs.length - 1) { swipeIndex++; renderSwipeCard(); } }
+function flipSwipe() { 
+    const card = document.querySelector('#swipe-card-container .flashcard');
+    if(card) { card.classList.toggle('flipped'); speak(verbs[swipeIndex].fr); } 
+}
+
+document.getElementById('swipe-card-container').addEventListener('touchstart', e => {
+    swipeTouchStartX = e.changedTouches[0].screenX;
+    swipeTouchStartY = e.changedTouches[0].screenY;
+});
+document.getElementById('swipe-card-container').addEventListener('touchend', e => {
+    let diffX = e.changedTouches[0].screenX - swipeTouchStartX;
+    let diffY = e.changedTouches[0].screenY - swipeTouchStartY;
+    
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+        if (Math.abs(diffX) > 40) { if (diffX > 0) prevSwipe(); else nextSwipe(); }
+    } else {
+        if (Math.abs(diffY) > 40) flipSwipe();
+    }
+});
+
+
+// -------------------------------------------------------------------
+// VOCABULAIRE
+// -------------------------------------------------------------------
+let vocabScore = 0; let vocabMaxQuestions = 10; let vocabCurrentQuestion = 0; let vocabBag = []; let vocabMistakes = []; let currentVocabObj = null; let isCheckingVocab = false;
+
+function startVocabQuiz() {
+    vocabMaxQuestions = parseInt(document.getElementById('vocab-qty-select').value);
+    vocabScore = 0; vocabCurrentQuestion = 0; vocabMistakes = [];
+    vocabBag = [...verbs].sort(() => Math.random() - 0.5).slice(0, vocabMaxQuestions); 
+    document.getElementById('vocab-setup').style.display = 'none'; document.getElementById('vocab-results').style.display = 'none'; document.getElementById('vocab-play').style.display = 'block';
+    generateVocabQuestion();
+}
+
+function generateVocabQuestion() {
+    if (vocabCurrentQuestion >= vocabMaxQuestions) { endVocabQuiz(); return; }
+    isCheckingVocab = false; vocabCurrentQuestion++;
+    document.getElementById('vocab-progress').innerText = `Palabra ${vocabCurrentQuestion} / ${vocabMaxQuestions}`;
+    document.getElementById('vocab-progress-bar').style.width = ((vocabCurrentQuestion / vocabMaxQuestions) * 100) + "%";
+    document.getElementById('vocab-btn-check').style.display = 'block'; document.getElementById('vocab-btn-next').style.display = 'none'; document.getElementById('vocab-feedback').style.display = "none";
+    
+    currentVocabObj = vocabBag.pop();
+    document.getElementById('vocab-icon').innerText = currentVocabObj.icon; document.getElementById('vocab-es').innerText = currentVocabObj.es;
+    
+    let inputField = document.getElementById('vocab-input'); inputField.disabled = false; inputField.value = ""; inputField.focus();
+}
+
+function checkVocab() {
+    if (isCheckingVocab) return;
+    let inputField = document.getElementById('vocab-input');
+    let ans = inputField.value.trim().toLowerCase().replace(/\s+/g, ' ').replace(/['’´]/g, "'");
+    if (ans === "") return;
+    
+    isCheckingVocab = true; inputField.disabled = true;
+    document.getElementById('vocab-btn-check').style.display = 'none';
+    let fb = document.getElementById('vocab-feedback'); fb.style.display = "block";
+    
+    let correctAns = currentVocabObj.fr.toLowerCase().replace(/['’´]/g, "'");
+    if (ans === correctAns) {
+        vocabScore++; fb.className = "feedback correct"; fb.innerText = "✅ ¡Correcto!";
+        speak(currentVocabObj.fr); setTimeout(generateVocabQuestion, 1000);
+    } else {
+        vocabMistakes.push({ es: currentVocabObj.es, fr: currentVocabObj.fr, actual: ans });
+        fb.className = "feedback wrong"; fb.innerText = `❌ No, era: ${currentVocabObj.fr}`;
+        document.getElementById('vocab-btn-next').style.display = 'block';
+    }
+}
+
+function advanceVocab() { generateVocabQuestion(); }
+
+function endVocabQuiz() {
+    document.getElementById('vocab-play').style.display = 'none'; document.getElementById('vocab-results').style.display = 'block';
+    let percentage = Math.round((vocabScore / vocabMaxQuestions) * 100); let scoreDisplay = document.getElementById('vocab-score-display');
+    scoreDisplay.innerText = `${vocabScore} / ${vocabMaxQuestions} (${percentage}%)`;
+    if(percentage >= 80) scoreDisplay.style.color = "var(--fr-blue)"; else if (percentage >= 50) scoreDisplay.style.color = "#f39c12"; else scoreDisplay.style.color = "var(--fr-red)";
+    let mistakesDisplay = document.getElementById('vocab-mistakes-display');
+    if (vocabMistakes.length > 0) {
+        let mistakesHTML = `<h4 style="text-align: left; color: var(--fr-red);">📝 Resumen de errores:</h4><div class="mistakes-container">`;
+        vocabMistakes.forEach((m, i) => { mistakesHTML += `<div class="mistake-item"><strong>${i+1}. ${m.es}</strong><br><span style="color:#721c24;">❌ Escribiste: ${m.actual}</span><br><span style="color:#155724;">✅ Correcto: <strong>${m.fr}</strong></span></div>`; });
+        mistakesDisplay.innerHTML = mistakesHTML + "</div>"; mistakesDisplay.style.display = 'block';
+    } else mistakesDisplay.style.display = 'none';
+}
+function resetVocabQuiz() { document.getElementById('vocab-setup').style.display = 'block'; document.getElementById('vocab-results').style.display = 'none'; }
+
+function filterPP() {
+    let input = document.getElementById("search-pp"); let filter = input.value.toLowerCase();
+    let table = document.getElementById("table-pp"); let tr = table.getElementsByTagName("tr");
+    for (let i = 1; i < tr.length; i++) {
+        let tdFr = tr[i].getElementsByTagName("td")[0]; let tdEs = tr[i].getElementsByTagName("td")[2]; 
+        if (tdFr || tdEs) {
+            let txtValueFr = tdFr.textContent || tdFr.innerText; let txtValueEs = tdEs.textContent || tdEs.innerText;
+            if (txtValueFr.toLowerCase().indexOf(filter) > -1 || txtValueEs.toLowerCase().indexOf(filter) > -1) tr[i].style.display = ""; else tr[i].style.display = "none";
+        }       
+    }
+}
+
+// -------------------------------------------------------------------
+// MOTEUR DE CONJUGAISON (100% FIABLE ET BLINDÉ)
+// -------------------------------------------------------------------
+let currentConj = null; let conjScore = 0; let conjMaxQuestions = 10; let conjCurrentQuestion = 0; let selectedTenseSetting = "present"; let isCheckingAnswer = false; let verbBag = []; let askedQuestions = []; let quizMistakes = []; 
+
+function conjugatePresent(verb, pIdx) {
+    let vName = verb.root || verb.fr;
+    if (vName === "être") return ["suis", "es", "est", "sommes", "êtes", "sont"][pIdx];
+    if (vName === "avoir") return ["ai", "as", "a", "avons", "avez", "ont"][pIdx];
+    if (vName === "aller") return ["vais", "vas", "va", "allons", "allez", "vont"][pIdx];
+    if (vName === "faire") return ["fais", "fais", "fait", "faisons", "faites", "font"][pIdx];
+    if (vName === "prendre" || vName === "comprendre") { let pref = vName === "comprendre" ? "com" : ""; return [pref+"prends", pref+"prends", pref+"prend", pref+"prenons", pref+"prenez", pref+"prennent"][pIdx]; }
+    if (vName === "voir") return ["vois", "vois", "voit", "voyons", "voyez", "voient"][pIdx];
+    if (vName === "pouvoir") return ["peux", "peux", "peut", "pouvons", "pouvez", "peuvent"][pIdx];
+    if (vName === "vouloir") return ["veux", "veux", "veut", "voulons", "voulez", "veulent"][pIdx];
+    if (vName === "devoir") return ["dois", "dois", "doit", "devons", "devez", "doivent"][pIdx];
+    if (vName === "croire") return ["crois", "crois", "croit", "croyons", "croyez", "croient"][pIdx];
+    if (vName === "connaître") return ["connais", "connais", "connaît", "connaissons", "connaissez", "connaissent"][pIdx];
+    if (vName === "mettre") return ["mets", "mets", "met", "mettons", "mettez", "mettent"][pIdx];
+    if (vName === "lire") return ["lis", "lis", "lit", "lisons", "lisez", "lisent"][pIdx];
+    if (vName === "écrire") return ["écris", "écris", "écrit", "écrivons", "écrivez", "écrivent"][pIdx];
+    if (vName === "boire") return ["bois", "bois", "boit", "buvons", "buvez", "boivent"][pIdx];
+    if (vName === "savoir") return ["sais", "sais", "sait", "savons", "savez", "savent"][pIdx];
+    if (vName === "venir") return ["viens", "viens", "vient", "venons", "venez", "viennent"][pIdx];
+    if (vName === "souvenir") return ["souviens", "souviens", "souvient", "souvenons", "souvenez", "souviennent"][pIdx];
+    if (vName === "courir") return ["cours", "cours", "court", "courons", "courez", "courent"][pIdx];
+    if (vName === "rire") return ["ris", "ris", "rit", "rions", "riez", "rient"][pIdx];
+    if (vName === "conduire") return ["conduis", "conduis", "conduit", "conduisons", "conduisez", "conduisent"][pIdx];
+    if (vName === "recevoir") return ["reçois", "reçois", "reçoit", "recevons", "recevez", "reçoivent"][pIdx];
+    if (vName === "vivre") return ["vis", "vis", "vit", "vivons", "vivez", "vivent"][pIdx];
+    if (vName === "mourir") return ["meurs", "meurs", "meurt", "mourons", "mourez", "meurent"][pIdx];
+    if (vName === "naître") return ["nais", "nais", "naît", "naissons", "naissez", "naissent"][pIdx];
+    if (vName === "envoyer") return ["envoie", "envoies", "envoie", "envoyons", "envoyez", "envoient"][pIdx];
+    if (vName === "espérer") return ["espère", "espères", "espère", "espérons", "espérez", "espèrent"][pIdx];
+    if (vName === "essayer") return ["essaie", "essaies", "essaie", "essayons", "essayez", "essaient"][pIdx];
+    if (vName === "lever") return ["lève", "lèves", "lève", "levons", "levez", "lèvent"][pIdx];
+    if (vName === "promener") return ["promène", "promènes", "promène", "promenons", "promenez", "promènent"][pIdx];
+    if (vName === "acheter") return ["achète", "achètes", "achète", "achetons", "achetez", "achètent"][pIdx];
+    if (vName === "appeler") return ["appelle", "appelles", "appelle", "appelons", "appelez", "appellent"][pIdx];
+    if (vName === "payer") return ["paie", "paies", "paie", "payons", "payez", "paient"][pIdx];
+    if (vName === "nettoyer") return ["nettoie", "nettoies", "nettoie", "nettoyons", "nettoyez", "nettoient"][pIdx];
+    if (vName === "répéter") return ["répète", "répètes", "répète", "répétons", "répétez", "répètent"][pIdx];
+
+    if (vName === "dormir" || vName === "partir" || vName === "sortir" || vName === "sentir") { let rad = vName.slice(0,-3); let radP = vName.slice(0,-2); return [rad+"s", rad+"s", rad+"t", radP+"ons", radP+"ez", radP+"ent"][pIdx]; }
+    if (vName === "ouvrir" || vName === "offrir") { let rad = vName.slice(0,-2); return [rad+"e", rad+"es", rad+"e", rad+"ons", rad+"ez", rad+"ent"][pIdx]; }
+
+    let rad = vName.slice(0, -2);
+    if (verb.group === "er") {
+        if (pIdx === 3) { 
+            if (vName.endsWith("ger")) return rad + "eons"; 
+            if (vName.endsWith("cer")) return rad.slice(0, -1) + "çons"; 
+        }
+        return rad + ["e", "es", "e", "ons", "ez", "ent"][pIdx];
+    }
+    if (verb.group === "ir") return rad + ["is", "is", "it", "issons", "issez", "issent"][pIdx];
+    if (verb.group === "re") return rad + ["s", "s", "", "ons", "ez", "ent"][pIdx];
+}
+
+function conjugateFuture(verb, pIdx) {
+    let vName = verb.root || verb.fr;
+    if (vName === "être") return ["serai", "seras", "sera", "serons", "serez", "seront"][pIdx];
+    if (vName === "avoir") return ["aurai", "auras", "aura", "aurons", "aurez", "auront"][pIdx];
+    if (vName === "aller") return ["irai", "iras", "ira", "irons", "irez", "iront"][pIdx];
+    if (vName === "faire") return ["ferai", "feras", "fera", "ferons", "ferez", "feront"][pIdx];
+    if (vName === "voir") return ["verrai", "verras", "verra", "verrons", "verrez", "verront"][pIdx];
+    if (vName === "pouvoir") return ["pourrai", "pourras", "pourra", "pourrons", "pourrez", "pourront"][pIdx];
+    if (vName === "vouloir") return ["voudrai", "voudras", "voudra", "voudrons", "voudrez", "voudront"][pIdx];
+    if (vName === "devoir") return ["devrai", "devras", "devra", "devrons", "devrez", "devront"][pIdx];
+    if (vName === "savoir") return ["saurai", "sauras", "saura", "saurons", "saurez", "sauront"][pIdx];
+    if (vName === "venir") return ["viendrai", "viendras", "viendra", "viendrons", "viendrez", "viendront"][pIdx];
+    if (vName === "souvenir") return ["souviendrai", "souviendras", "souviendra", "souviendrons", "souviendrez", "souviendront"][pIdx];
+    if (vName === "courir") return ["courrai", "courras", "courra", "courrons", "courrez", "courront"][pIdx];
+    if (vName === "mourir") return ["mourrai", "mourras", "mourra", "mourrons", "mourrez", "mourront"][pIdx];
+    if (vName === "recevoir") return ["recevrai", "recevras", "recevra", "recevrons", "recevrez", "recevront"][pIdx];
+    if (vName === "acheter") return ["achèterai", "achèteras", "achètera", "achèterons", "achèterez", "achèteront"][pIdx];
+    if (vName === "lever") return ["lèverai", "lèveras", "lèvera", "lèverons", "lèverez", "lèveront"][pIdx];
+    if (vName === "promener") return ["promènerai", "promèneras", "promènera", "promènerons", "promènerez", "promèneront"][pIdx];
+    if (vName === "appeler") return ["appellerai", "appelleras", "appellera", "appellerons", "appellerez", "appelleront"][pIdx];
+    if (vName === "payer") return ["paierai", "paieras", "paiera", "paierons", "paierez", "paieront"][pIdx];
+    if (vName === "nettoyer") return ["nettoierai", "nettoieras", "nettoiera", "nettoierons", "nettoierez", "nettoieront"][pIdx];
+    if (vName === "envoyer") return ["enverrai", "enverras", "enverra", "enverrons", "enverrez", "enverront"][pIdx];
+    if (vName === "essayer") return ["essaierai", "essaieras", "essaiera", "essaierons", "essaierez", "essaieront"][pIdx];
+    
+    let base = verb.group === "re" ? vName.slice(0, -1) : vName;
+    return base + ["ai", "as", "a", "ons", "ez", "ont"][pIdx];
+}
+
+function conjugateImparfait(verb, pIdx) {
+    let vName = verb.root || verb.fr;
+    let endings = ["ais", "ais", "ait", "ions", "iez", "aient"];
+    if (vName === "être") return "ét" + endings[pIdx];
+    
+    let proxyVerb = {...verb, fr: vName};
+    let nousPresent = conjugatePresent(proxyVerb, 3); 
+    let rad = nousPresent.slice(0, -3); 
+    if (endings[pIdx].startsWith("i")) { 
+        if (rad.endsWith("ge")) rad = rad.slice(0, -1); 
+        if (rad.endsWith("ç")) rad = rad.slice(0, -1) + "c"; 
+    }
+    return rad + endings[pIdx];
+}
+
+function conjugatePast(verb, pIdx) {
+    let aux = verb.aux === "etre" ? ["suis", "es", "est", "sommes", "êtes", "sont"][pIdx] : ["ai", "as", "a", "avons", "avez", "ont"][pIdx];
+    if (verb.aux === "etre") { 
+        if (pIdx <= 2) return [aux + " " + verb.pp, aux + " " + verb.pp + "e"]; 
+        else return [aux + " " + verb.pp + "s", aux + " " + verb.pp + "es"]; 
+    }
+    return [aux + " " + verb.pp];
+}
+
+function conjugateFuturProche(verb, pIdx) { 
+    return ["vais", "vas", "va", "allons", "allez", "vont"][pIdx] + " " + (verb.root || verb.fr); 
+}
+
+function conjugatePasseRecent(verb, pIdx) { 
+    let vName = verb.root || verb.fr; 
+    let prep = "aeiouyhéèêh".includes(vName.charAt(0).toLowerCase()) ? "d'" : "de ";
+    return ["viens", "viens", "vient", "venons", "venez", "viennent"][pIdx] + " " + prep + vName; 
+}
+
+function getReflexive(pIdx, nextWord) { 
+    return "aeiouyhéèêh".includes(nextWord.charAt(0).toLowerCase()) ? ["m'", "t'", "s'", "nous ", "vous ", "s'"][pIdx] : ["me ", "te ", "se ", "nous ", "vous ", "se "][pIdx]; 
+}
+
+function updateProgressBar() { 
+    document.getElementById('conj-progress-bar').style.width = ((conjCurrentQuestion / conjMaxQuestions) * 100) + "%"; 
+}
+
+function saveProgress() { 
+    localStorage.setItem('conjSaveState', JSON.stringify({ score: conjScore, maxQuestions: conjMaxQuestions, currentQuestion: conjCurrentQuestion, tenseSetting: selectedTenseSetting, verbBag: verbBag, askedQuestions: askedQuestions, quizMistakes: quizMistakes, currentConj: currentConj })); 
+}
+
+function loadProgress(data) {
+    conjScore = data.score; conjMaxQuestions = data.maxQuestions; conjCurrentQuestion = data.currentQuestion; selectedTenseSetting = data.tenseSetting; verbBag = data.verbBag; askedQuestions = data.askedQuestions; quizMistakes = data.quizMistakes || []; currentConj = data.currentConj;
+    document.getElementById('conj-setup').style.display = 'none'; document.getElementById('conj-results').style.display = 'none'; document.getElementById('conj-play').style.display = 'block';
+    document.getElementById('conj-progress').innerText = `Pregunta ${conjCurrentQuestion} / ${conjMaxQuestions}`;
+    document.getElementById('conj-tense-display').innerText = `Tiempo a conjugar: ${tenseNamesES[currentConj.targetTense]}`;
+    document.getElementById('conj-prompt').innerHTML = `${currentConj.verb.icon} <strong>${currentConj.displayPronoun}</strong> ___ (${currentConj.verb.fr}) <span style="color:#7f8c8d; font-weight:normal;">${currentConj.verb.comp}</span>.`;
+    document.getElementById('conj-es').innerText = `Traducción: ${currentConj.verb.es} ${currentConj.verb.comp}`;
+    document.getElementById('conj-btn-check').style.display = 'block'; document.getElementById('conj-btn-next').style.display = 'none'; document.getElementById('conj-feedback').style.display = "none";
+    let inputField = document.getElementById('answer-input'); inputField.disabled = false; inputField.value = ""; inputField.focus(); updateProgressBar();
+}
+
+function continueConjQuiz() { 
+    const savedState = localStorage.getItem('conjSaveState'); 
+    if (savedState) loadProgress(JSON.parse(savedState)); 
+}
+
+function startConjQuiz() {
+    // ⏱️ LE CHRONOMÈTRE DÉMARRE ICI !
+    window.conjStartTime = Date.now(); 
+
+    localStorage.removeItem('conjSaveState'); 
+    selectedTenseSetting = document.getElementById('conj-tense-select').value; 
+    conjMaxQuestions = parseInt(document.getElementById('conj-qty-select').value); 
+    conjScore = 0; 
+    conjCurrentQuestion = 0; 
+    askedQuestions = []; 
+    quizMistakes = []; 
+    verbBag = [...validVerbsList].sort(() => Math.random() - 0.5); 
+    
+    document.getElementById('conj-setup').style.display = 'none'; 
+    document.getElementById('conj-results').style.display = 'none'; 
+    document.getElementById('conj-play').style.display = 'block'; 
+    
+    generateConjQuestion();
+}
+
+function generateConjQuestion() {
+    if (conjCurrentQuestion >= conjMaxQuestions) { endConjQuiz(); return; }
+    isCheckingAnswer = false; conjCurrentQuestion++; 
+    document.getElementById('conj-progress').innerText = `Pregunta ${conjCurrentQuestion} / ${conjMaxQuestions}`; 
+    updateProgressBar();
+    
+    document.getElementById('conj-btn-check').style.display = 'block'; 
+    document.getElementById('conj-btn-next').style.display = 'none'; 
+    document.getElementById('conj-feedback').style.display = "none";
+    
+    let inputField = document.getElementById('answer-input'); 
+    inputField.disabled = false; inputField.value = ""; inputField.focus();
+
+    let verb, pIdx, targetTense, combination; let attempt = 0;
+    do {
+        if (verbBag.length === 0) verbBag = [...validVerbsList].sort(() => Math.random() - 0.5);
+        verb = verbBag.pop(); pIdx = Math.floor(Math.random() * 6); targetTense = selectedTenseSetting;
+        if (targetTense === "mixed") targetTense = ["present", "past", "imparfait", "futur_proche", "passe_recent", "future"][Math.floor(Math.random() * 6)];
+        combination = `${verb.fr}-${pIdx}-${targetTense}`; attempt++;
+        if (askedQuestions.includes(combination)) { verbBag.unshift(verb); verb = null; }
+    } while (!verb && attempt < 50);
+    
+    if (!verb) { verb = validVerbsList[Math.floor(Math.random() * validVerbsList.length)]; pIdx = Math.floor(Math.random() * 6); targetTense = selectedTenseSetting === "mixed" ? "present" : selectedTenseSetting; }
+    
+    askedQuestions.push(combination); 
+    document.getElementById('conj-tense-display').innerText = `Tiempo a conjugar: ${tenseNamesES[targetTense]}`;
+    
+    let vName = verb.root || verb.fr; 
+    let proxyVerb = {...verb, fr: vName}; 
+    let baseAnswers = [];
+    
+    if (targetTense === "present") baseAnswers = [conjugatePresent(proxyVerb, pIdx)]; 
+    else if (targetTense === "future") baseAnswers = [conjugateFuture(proxyVerb, pIdx)]; 
+    else if (targetTense === "imparfait") baseAnswers = [conjugateImparfait(proxyVerb, pIdx)]; 
+    else if (targetTense === "futur_proche") baseAnswers = [conjugateFuturProche(proxyVerb, pIdx)]; 
+    else if (targetTense === "passe_recent") baseAnswers = [conjugatePasseRecent(proxyVerb, pIdx)]; 
+    else if (targetTense === "past") baseAnswers = conjugatePast(proxyVerb, pIdx);
+    
+    let answer = [];
+    if (verb.pron) {
+        if (["present", "future", "imparfait", "past"].includes(targetTense)) answer = baseAnswers.map(a => getReflexive(pIdx, a) + a);
+        else if (targetTense === "futur_proche") answer = [["vais", "vas", "va", "allons", "allez", "vont"][pIdx] + " " + getReflexive(pIdx, vName) + vName];
+        else if (targetTense === "passe_recent") answer = [["viens", "viens", "vient", "venons", "venez", "viennent"][pIdx] + " de " + getReflexive(pIdx, vName) + vName];
+    } else answer = baseAnswers;
+    
+    let displayPronoun = pronouns[pIdx];
+    let firstWord = (answer && answer.length > 0 && answer[0]) ? answer[0] : " ";
+    if (pIdx === 0) displayPronoun = "aeiouyhéèêh".includes(firstWord.charAt(0).toLowerCase()) ? "J'" : "Je "; else displayPronoun += " ";
+    
+    currentConj = { verb: verb, answer: answer, displayPronoun: displayPronoun.trim(), targetTense: targetTense };
+    
+    document.getElementById('conj-prompt').innerHTML = `${verb.icon} <strong>${displayPronoun}</strong> ___ (${verb.fr}) <span style="color:#7f8c8d; font-weight:normal;">${verb.comp}</span>.`;
+    document.getElementById('conj-es').innerText = `Traducción: ${verb.es} ${verb.comp}`;
+    saveProgress();
+}
+
+function checkConj() {
+    if (isCheckingAnswer) return; 
+    
+    // CORRECTION ICI : on cherche 'answer-input' au lieu de 'conj-input'
+    let inputField = document.getElementById('answer-input'); 
+    
+    let ans = inputField.value.trim().toLowerCase().replace(/\s+/g, ' ').replace(/['’´]/g, "'"); 
+    if (ans === "") return;
+    
+    isCheckingAnswer = true; 
+    inputField.disabled = true; 
+    document.getElementById('conj-btn-check').style.display = 'none'; 
+    let fb = document.getElementById('conj-feedback'); 
+    fb.style.display = "block";
+    
+    if (currentConj.answer.some(a => a.toLowerCase().replace(/['’´]/g, "'") === ans)) {
+        conjScore++; 
+        fb.className = "feedback correct"; 
+        fb.innerText = "✅ ¡Perfecto!"; 
+        setTimeout(generateConjQuestion, 1000);
+    } else {
+        quizMistakes.push({ pronoun: currentConj.displayPronoun, verb: currentConj.verb.fr, comp: currentConj.verb.comp, expected: currentConj.answer.join(' o '), actual: ans });
+        fb.className = "feedback wrong"; 
+        fb.innerHTML = `❌ Error. La respuesta correcta es: <br><strong style="font-size:1.2em;">${currentConj.answer.join(' o ')}</strong>`;
+        document.getElementById('conj-btn-next').style.display = 'block';
+    }
+}
+function advanceConj() { generateConjQuestion(); }
+
+function endConjQuiz() {
+    localStorage.removeItem('conjSaveState'); 
+    document.getElementById('conj-play').style.display = 'none'; 
+    document.getElementById('conj-results').style.display = 'block';
+    
+    let percentage = Math.round((conjScore / conjMaxQuestions) * 100); 
+    let scoreDisplay = document.getElementById('conj-score-display');
+    scoreDisplay.innerText = `${conjScore} / ${conjMaxQuestions} (${percentage}%)`;
+    
+    // =========================================================
+    // --- 🏆 LOGIQUE DES BADGES CORRIGÉE 🏆 ---
+    // =========================================================
+    if (percentage >= 80) {
+        let tenseSelect = document.getElementById('conj-tense-select'); 
+        let currentTense = tenseSelect ? tenseSelect.options[tenseSelect.selectedIndex].text : "Verbos";
+
+        // Calcul du temps écoulé
+        let durationMs = Date.now() - (window.conjStartTime || Date.now());
+        let mins = Math.floor(durationMs / 60000);
+        let secs = Math.floor((durationMs % 60000) / 1000);
+        let timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+
+        // APPEL UNIQUE : Fonctionne pour 10, 15, 20, 30, 50, 100, etc.
+        awardBadge(conjMaxQuestions.toString(), currentTense, timeStr);
+    }
+    // Note : J'ai supprimé les anciens "if (30)" etc. qui étaient en double ici.
+    // =========================================================
+    
+    // Affichage du message de score
+    if(percentage >= 80) { 
+        scoreDisplay.style.color = "var(--fr-blue)"; 
+        scoreDisplay.innerHTML += "<br>¡Bravo, es excelente! 🏆"; 
+    } 
+    else if (percentage >= 50) { 
+        scoreDisplay.style.color = "#f39c12"; 
+        scoreDisplay.innerHTML += "<br>¡Vas por buen camino! 👍"; 
+    } 
+    else { 
+        scoreDisplay.style.color = "var(--fr-red)"; 
+        scoreDisplay.innerHTML += "<br>¡Un poco más de práctica! 💪"; 
+    }
+    
+    let mistakesDisplay = document.getElementById('conj-mistakes-display');
+    if (quizMistakes.length > 0) {
+        let html = `<h4 style="text-align: left; color: var(--fr-red);">📝 Resumen de errores:</h4><div class="mistakes-container">`;
+        quizMistakes.forEach((m, i) => {
+            html += `<div class="mistake-item"><strong>${i+1}. ${m.pronoun} ___ (${m.verb}) <span style="color:#7f8c8d; font-weight:normal;">${m.comp}</span></strong><br><span style="color:#721c24;">❌ Escribiste: <strong>${m.actual}</strong></span><br><span style="color:#155724;">✅ Correcto: <strong>${m.expected}</strong></span></div>`;
+        });
+        mistakesDisplay.innerHTML = html + `</div>`; 
+        mistakesDisplay.style.display = 'block';
+    } else {
+        mistakesDisplay.style.display = 'none';
+    }
+}
+function resetConjQuiz() { 
+    document.getElementById('conj-setup').style.display = 'block'; 
+    document.getElementById('conj-results').style.display = 'none'; 
+    document.getElementById('btn-continue-conj').style.display = 'none'; 
+}
+
+// EVENTS & THEME
+document.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        if (document.getElementById('sec-vocab').classList.contains('active')) {
+            let playArea = document.getElementById('vocab-play');
+            if(playArea.style.display === 'block') { if (!isCheckingVocab) checkVocab(); else if (document.getElementById('vocab-btn-next').style.display === 'block') advanceVocab(); }
+        }
+        else if (document.getElementById('sec-conj').classList.contains('active')) {
+            let playArea = document.getElementById('conj-play');
+            if (playArea.style.display === 'block') { if (!isCheckingAnswer) checkConj(); else if (document.getElementById('conj-btn-next').style.display === 'block') advanceConj(); }
+        }
+    }
+});
+
+function toggleTheme() {
+    const body = document.body;
+    body.classList.toggle('dark-mode'); 
+    const isDark = body.classList.contains('dark-mode');
+    document.getElementById('theme-toggle').innerText = isDark ? '☀️' : '🌙';
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+}
+
+// INIT
+window.addEventListener('DOMContentLoaded', () => {
+    updateStreak();
+    if (localStorage.getItem('theme') === 'dark') { document.body.classList.add('dark-mode'); document.getElementById('theme-toggle').innerText = '☀️'; }
+    
+    let html = "";
+    verbs.forEach(v => { html += createCardHTML(v); });
+    document.getElementById('flashcards-grid').innerHTML = html;
+    
+    renderSwipeCard();
+    renderBadges(); // <--- ¡AÑADE ESTA LÍNEA AQUÍ!
+});
+</script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(error => console.log('Erreur SW:', error));
+    });
+  }
+// ==========================================
+// --- SYSTÈME DE BADGES (TROPHÉES) ---
+// ==========================================
+
+// ==========================================
+// --- SYSTÈME DE BADGES (TROPHÉES) ---
+// ==========================================
+
+function awardBadge(count, tense, time) {
+    let earnedBadges = JSON.parse(localStorage.getItem('badges')) || [];
+    let badgeId = `${count} ${tense}`;
+    
+    // On vérifie si l'ID existe déjà dans nos objets
+    let alreadyHasIt = earnedBadges.some(badge => (badge.id === badgeId || badge === badgeId));
+    
+    if (!alreadyHasIt) {
+        let studentName = localStorage.getItem('studentName');
+        if (!studentName) {
+            studentName = prompt("¡Felicidades! ¿Cómo te llamas?");
+            if (!studentName) studentName = "Estudiante";
+            localStorage.setItem('studentName', studentName);
+        }
+
+        let today = new Date().toLocaleDateString('es-ES');
+        
+        earnedBadges.push({ 
+            id: badgeId, 
+            date: today, 
+            name: studentName,
+            duration: time 
+        });
+        
+        localStorage.setItem('badges', JSON.stringify(earnedBadges));
+        alert(`🎉 ¡INCREÍBLE ${studentName.toUpperCase()}! Has ganado la insignia: ${badgeId}`);
+        renderBadges(); 
+    }
+}
+
+function renderBadges() {
+    let earnedBadges = JSON.parse(localStorage.getItem('badges')) || [];
+    let badgeContainer = document.getElementById('badges-grid');
+    
+    if (!badgeContainer) return;
+
+    if (earnedBadges.length === 0) {
+        badgeContainer.innerHTML = "<p style='grid-column: span 2; text-align:center;'>Aún no tienes insignias. 💪</p>";
+        return;
+    }
+
+    let html = "";
+    earnedBadges.forEach(badge => {
+        // Support pour les anciens et nouveaux badges
+        let name = badge.name || "Estudiante";
+        let title = badge.id || badge;
+        let date = badge.date || "Hoy";
+        let time = badge.duration || "--";
+        
+        html += `
+        <div class="badge-card">
+            <div style="font-size: 0.7rem; opacity: 0.7; margin-bottom: -5px;">${name}</div>
+            <span>🏅</span>
+            <div class="badge-title">${title}</div>
+            <div class="badge-date">📅 ${date}</div>
+            <div style="font-size: 0.75rem; color: #0055A4; font-weight: bold; margin-top: 2px;">⏱️ ${time}</div>
+        </div>`; 
+    });
+    badgeContainer.innerHTML = html;
+}
+
+function resetBadges() {
+    if(confirm("⚠️ ¿Estás seguro de que quieres borrar todos tus trofeos?")) {
+        localStorage.removeItem('badges');
+        localStorage.removeItem('studentName');
+        renderBadges();
+    }
+}
+</script>
+
+</body>
+</html>
