@@ -163,24 +163,25 @@ function showGrammar(topicId, btnElement) {
 }
 
 function switchTab(tabId) {
-    document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    
     document.getElementById(tabId).classList.add('active');
     document.getElementById('btn-' + tabId).classList.add('active');
-    
-    if(tabId === 'sec-vocab') {
-        document.getElementById('vocab-setup').style.display = 'block';
-        document.getElementById('vocab-play').style.display = 'none';
-        document.getElementById('vocab-results').style.display = 'none';
+
+    // ESTO ES LO QUE ACTUALIZA LA APP:
+    if (tabId === 'sec-badges') {
+        actualizarTarjetaUsuario(); // Muestra tu ID arriba
+        cargarRanking();           // Trae el Top 10 de Google Sheets
     }
-    if(tabId === 'sec-conj') {
-        document.getElementById('conj-setup').style.display = 'block';
-        document.getElementById('conj-play').style.display = 'none';
-        document.getElementById('conj-results').style.display = 'none';
-        if (localStorage.getItem('conjSaveState')) document.getElementById('btn-continue-conj').style.display = 'block';
-        else document.getElementById('btn-continue-conj').style.display = 'none';
+}
+
+function actualizarTarjetaUsuario() {
+    const user = JSON.parse(localStorage.getItem('app_user'));
+    if (user) {
+        document.getElementById('display-username').innerText = user.nombre;
+        document.getElementById('display-userid').innerText = user.id;
     }
-    window.scrollTo(0,0);
 }
 
 // STREAK
@@ -786,4 +787,38 @@ async function sumarPuntoRanking() {
             puntos: 1
         })
     });
+}
+async function cargarRanking() {
+    const lista = document.getElementById('lista-ranking');
+    if (!lista) return;
+
+    // Mensaje temporal mientras descarga
+    lista.innerHTML = "<li style='text-align:center; padding:10px; color:#95a5a6;'>Actualizando ranking global...</li>";
+
+    try {
+        // Pedimos los datos a Google
+        const response = await fetch(G_SHEETS_URL);
+        const datos = await response.json(); 
+
+        if (!datos || datos.length === 0) {
+            lista.innerHTML = "<li style='text-align:center; padding:10px;'>Aún no hay puntuaciones.</li>";
+            return;
+        }
+
+        // Limpiamos y rellenamos la lista con el Top 10
+        let html = "";
+        datos.forEach((jugador, index) => {
+            // jugador[1] es el Nombre, jugador[2] son los Puntos
+            html += `
+                <li style="display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; color: #2C3E50;">
+                    <span>${index + 1}. <strong>${jugador[1]}</strong></span>
+                    <span style="color: #0055A4; font-weight: bold;">${jugador[2]} pts</span>
+                </li>`;
+        });
+        lista.innerHTML = html;
+
+    } catch (error) {
+        console.error("Error al leer ranking:", error);
+        lista.innerHTML = "<li style='text-align:center; padding:10px; color:red;'>No se pudo cargar el ranking.</li>";
+    }
 }
