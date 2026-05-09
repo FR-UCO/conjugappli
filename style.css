@@ -4,29 +4,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
 
 :root {
-    /* Paleta Principal - Estilo "Modern App" */
-    --primary: #0066FF;       /* Azul más vibrante y moderno */
+    --primary: #0066FF;       
     --primary-dark: #0047b3;
     --primary-light: #e6f0ff;
-    --accent: #FF3B30;        /* Rojo tipo iOS */
-    --warning: #FF9500;       /* Naranja tipo iOS */
-    --success: #34C759;       /* Verde tipo iOS */
+    --accent: #FF3B30;        
+    --warning: #FF9500;       
+    --success: #34C759;       
     --gold: #FFD60A;
     
-    /* Fondos y Textos */
-    --bg-app: #F2F2F7;        /* Gris muy suave (iOS background) */
+    --bg-app: #F2F2F7;        
     --bg-card: #FFFFFF;
     --text-main: #1C1C1E;
     --text-muted: #8E8E93;
     --border-color: #E5E5EA;
     
-    /* Sombras refinadas */
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
     --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
     --shadow-lg: 0 16px 40px rgba(0, 102, 255, 0.15);
 }
 
-/* Variables Modo Oscuro - True Dark Mode */
+/* Modo Oscuro */
 body.dark-mode {
     --bg-app: #000000;
     --bg-card: #1C1C1E;
@@ -53,7 +50,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    padding-bottom: 110px; /* Mucho espacio para que la barra inferior no tape nada */
+    padding-bottom: 110px; 
     transition: background-color 0.4s ease, color 0.4s ease;
     overflow-x: hidden;
 }
@@ -76,7 +73,7 @@ header {
     border-bottom: 1px solid var(--border-color);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    background: rgba(var(--bg-card), 0.85); /* Efecto cristal si se soporta */
+    background: rgba(var(--bg-card), 0.85); 
 }
 
 .streak-container {
@@ -109,7 +106,7 @@ header {
 #theme-toggle:active { transform: scale(0.9); }
 
 /* =========================================
-   BARRA DE NAVEGACIÓN - VERSIÓN FORZADA
+   BARRA DE NAVEGACIÓN
    ========================================= */
 #bottom-nav {
     position: fixed !important;
@@ -127,14 +124,12 @@ header {
     padding-bottom: env(safe-area-inset-bottom) !important;
 }
 
-/* Modo Oscuro */
 body.dark-mode #bottom-nav {
     background: rgba(28, 28, 30, 0.85) !important;
     border-top: 1px solid rgba(255,255,255,0.08) !important;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* Botones */
 .nav-btn {
     flex: 1 !important;
     display: flex !important;
@@ -144,7 +139,6 @@ body.dark-mode #bottom-nav {
     background: none;
     border: none;
     color: var(--text-muted) !important;
-    text-decoration: none !important;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 9999px;
@@ -165,7 +159,6 @@ body.dark-mode #bottom-nav {
     opacity: 0.85;
 }
 
-/* Estado Activo - con efecto pill */
 .nav-btn.active {
     color: var(--primary) !important;
     background: rgba(0, 102, 255, 0.08);
@@ -176,152 +169,80 @@ body.dark-mode #bottom-nav {
     transform: scale(1.15);
 }
 
-.nav-btn.active .tab-text {
-    opacity: 1;
-}
-
-/* Efecto al presionar */
-.nav-btn:active {
-    transform: scale(0.88);
-    background: rgba(0, 102, 255, 0.15);
-}
-
 /* =========================================
-   CONTENEDORES Y SECCIONES
+   ESTRUCTURA DE TARJETAS (COMPARTIDA SWIPE Y GRID)
    ========================================= */
-.container {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.section {
-    display: none;
-    animation: fadeInScale 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-.section.active {
-    display: block;
-}
-
-@keyframes fadeInScale {
-    from { opacity: 0; transform: translateY(15px) scale(0.98); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-h2 {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--text-main);
-    margin-bottom: 25px;
-    text-align: center;
-}
-
-h3 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 15px;
-}
-
-p {
-    font-size: 1rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-    margin-bottom: 15px;
-}
-
-/* =========================================
-   TARJETAS (CARDS)
-   ========================================= */
-.quiz-card, .theory-box, .badge-card {
-    background: var(--bg-card);
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: var(--shadow-md);
-    border: 1px solid var(--border-color);
-    margin-bottom: 20px;
-}
-
-/* =========================================
-   TARJETAS SWIPE PRINCIPALES (ÉCLAIR) - MÁS GRANDES
-   ========================================= */
-#swipe-card-container {
-    width: 100%;
-    height: 520px !important; /* AUMENTADO PARA MÁS PRESENCIA */
-    perspective: 1500px;
-    margin: 20px auto 30px;
-}
-
 .flashcard-container {
-    width: 100%;
-    height: 100%;
+    perspective: 1500px;
+    -webkit-perspective: 1500px;
 }
 
 .flashcard {
-    width: 100% !important;
-    height: 100% !important;
     position: relative;
+    width: 100%;
+    height: 100%;
     transform-style: preserve-3d;
-    transition: transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
+    -webkit-transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
     cursor: pointer;
     border-radius: 28px;
-    box-shadow: 0 20px 55px rgba(0,0,0,0.25);
-    overflow: hidden;
 }
 
 .flashcard.flipped {
     transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
 }
 
 .flashcard-front, 
 .flashcard-back {
     position: absolute;
-    width: 100% !important;
-    height: 100% !important;
+    width: 100%;
+    height: 100%;
+    /* Backface visibility con soporte para iOS (crucial para ver español atrás) */
     backface-visibility: hidden;
-    border-radius: 28px;
+    -webkit-backface-visibility: hidden;
+    border-radius: inherit;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 35px 25px;
+    padding: 20px;
     text-align: center;
+    overflow: hidden;
 }
 
-.flashcard-front {
+.flashcard-back {
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+}
+
+/* =========================================
+   1. TARJETAS ÉCLAIR (SWIPE ARRIBA)
+   ========================================= */
+#swipe-card-container {
+    width: 100%;
+    height: 520px; /* AUMENTADO */
+    margin: 20px auto 30px;
+}
+
+#swipe-card-container .flashcard {
+    box-shadow: 0 20px 55px rgba(0,0,0,0.25);
+}
+
+#swipe-card-container .flashcard-front {
     background: linear-gradient(145deg, #0055A4, #003366);
     color: white;
 }
 
-.flashcard-back {
+#swipe-card-container .flashcard-back {
     background: var(--bg-card);
     color: var(--text-main);
-    transform: rotateY(180deg);
     border: 5px solid #0055A4;
 }
 
-/* GARANTIZAR TRADUCCIÓN: Oculta español en el frente, oculta francés atrás */
-.flashcard-front .es { display: none !important; }
-.flashcard-back .fr { display: none !important; }
-
-/* Textos e Iconos más grandes */
-.flashcard .icon {
-    font-size: 7.5rem !important; /* AUMENTADO */
-    margin-bottom: 25px;
-}
-
-.flashcard .fr {
-    font-size: 3rem !important; /* AUMENTADO */
-    font-weight: 800;
-}
-
-.flashcard .es {
-    display: block !important;
-    font-size: 2.8rem !important; /* AUMENTADO */
-    font-weight: 800;
-    color: var(--primary); /* Texto español en azul para que destaque */
-}
+#swipe-card-container .icon { font-size: 7.5rem; margin-bottom: 25px; }
+#swipe-card-container .fr { font-size: 3rem; font-weight: 800; }
+#swipe-card-container .es { font-size: 2.8rem; font-weight: 800; color: var(--primary); }
 
 /* Controles del Swipe */
 .swipe-controls {
@@ -344,14 +265,8 @@ p {
     justify-content: center;
     cursor: pointer;
     box-shadow: var(--shadow-sm);
-    transition: all 0.2s ease;
 }
 
-.swipe-btn:active {
-    transform: scale(0.9);
-}
-
-/* Botón central especial */
 .swipe-btn[onclick*="flipSwipe"] {
     background: var(--primary);
     color: white;
@@ -362,8 +277,87 @@ p {
 }
 
 /* =========================================
-   INPUTS Y BOTONES GENERALES
+   2. TARJETAS GRID (LISTA DE ABAJO)
    ========================================= */
+#flashcards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+    padding: 15px 0;
+}
+
+#flashcards-grid .flashcard-container {
+    height: 220px; /* AUMENTADO */
+}
+
+#flashcards-grid .flashcard {
+    border: 2px solid var(--border-color);
+    border-radius: 22px;
+    box-shadow: var(--shadow-sm);
+}
+
+#flashcards-grid .flashcard-front {
+    background: var(--bg-card);
+    color: var(--text-main);
+}
+
+#flashcards-grid .flashcard-back {
+    background: linear-gradient(145deg, #0055A4, #003366);
+    color: white;
+}
+
+#flashcards-grid .icon { font-size: 4rem; margin-bottom: 12px; }
+#flashcards-grid .fr { font-size: 1.5rem; font-weight: 800; line-height: 1.25; }
+#flashcards-grid .es { font-size: 1.5rem; font-weight: 800; line-height: 1.25; }
+
+.irregular-border { border-left: 6px solid var(--warning) !important; }
+
+/* =========================================
+   CONTENEDORES Y SECCIONES
+   ========================================= */
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.section {
+    display: none;
+    animation: fadeInScale 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.section.active { display: block; }
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: translateY(15px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 15px; }
+
+p { font-size: 1rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 15px; }
+
+/* =========================================
+   TARJETAS DE TEST / MENÚS
+   ========================================= */
+.quiz-card, .theory-box, .badge-card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+    margin-bottom: 20px;
+}
+
 input[type="text"], select {
     width: 100%;
     background: var(--bg-app);
@@ -394,7 +388,6 @@ input[type="text"]:focus, select:focus {
     font-weight: 800;
     font-size: 1.1rem;
     cursor: pointer;
-    transition: all 0.2s;
     box-shadow: var(--shadow-md);
     display: flex;
     justify-content: center;
@@ -402,12 +395,10 @@ input[type="text"]:focus, select:focus {
     gap: 8px;
 }
 
-.btn-action:active {
-    transform: scale(0.96);
-}
+.btn-action:active { transform: scale(0.96); }
 
 /* =========================================
-   MENÚ DE GRAMÁTICA (SCROLL HORIZONTAL)
+   MENÚ GRAMÁTICA Y TABLAS
    ========================================= */
 .gram-menu {
     display: flex;
@@ -415,9 +406,7 @@ input[type="text"]:focus, select:focus {
     gap: 12px;
     padding: 5px 5px 20px 5px;
     margin-bottom: 10px;
-    scroll-behavior: smooth;
 }
-
 .gram-menu::-webkit-scrollbar { display: none; }
 
 .gram-btn {
@@ -429,7 +418,6 @@ input[type="text"]:focus, select:focus {
     color: var(--text-muted);
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s ease;
 }
 
 .gram-btn.active {
@@ -440,12 +428,8 @@ input[type="text"]:focus, select:focus {
 }
 
 .theory-content { display: none; }
-.theory-content.active {
-    display: block;
-    animation: fadeInScale 0.3s ease forwards;
-}
+.theory-content.active { display: block; animation: fadeInScale 0.3s ease forwards; }
 
-/* Tablas de Gramática */
 .grammar-table {
     width: 100%;
     border-collapse: separate;
@@ -467,7 +451,7 @@ input[type="text"]:focus, select:focus {
 .grammar-table tr:last-child td { border-bottom: none; }
 
 /* =========================================
-   PROGRESO Y BARRAS
+   PROGRESO, TROFEOS Y RANKING
    ========================================= */
 .progress-container {
     width: 100%;
@@ -482,146 +466,25 @@ input[type="text"]:focus, select:focus {
     height: 100%;
     background: var(--primary);
     width: 0%;
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: width 0.4s;
 }
 
-/* =========================================
-   TARJETAS DE LA LISTA INFERIOR (GRID) - MÁS GRANDES
-   ========================================= */
-.flashcard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* AUMENTADO de 165 a 180px */
-    gap: 22px;
-    padding: 15px 0;
-}
+.badge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 
-.flashcard-mini-container {
-    height: 225px; /* AUMENTADO PARA VERSE MÁS ESTÉTICO */
-    perspective: 1000px;
-}
-
-.flashcard-mini {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
-    cursor: pointer;
-    border-radius: 22px;
-    box-shadow: var(--shadow-md);
-    border: 2px solid var(--border-color);
-    overflow: hidden;
-}
-
-.flashcard-mini.flipped {
-    transform: rotateY(180deg);
-}
-
-.flashcard-mini-front, 
-.flashcard-mini-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    border-radius: 22px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 15px;
-    text-align: center;
-}
-
-.flashcard-mini-front {
-    background: var(--bg-card);
-}
-
-.flashcard-mini-back {
-    background: linear-gradient(145deg, #0055A4, #003366);
-    color: white;
-    transform: rotateY(180deg);
-}
-
-/* GARANTIZAR TRADUCCIÓN GRID: Oculta español adelante, oculta francés atrás */
-.flashcard-mini-front .es { display: none !important; }
-.flashcard-mini-back .fr { display: none !important; }
-
-/* Textos e iconos del Grid más grandes */
-.flashcard-mini .icon {
-    font-size: 3.8rem; /* AUMENTADO */
-    margin-bottom: 12px;
-}
-
-.flashcard-mini .fr {
-    font-size: 1.45rem; /* AUMENTADO */
-    font-weight: 800;
-    line-height: 1.25;
-}
-
-.flashcard-mini .es {
-    display: block !important;
-    font-size: 1.45rem; /* AUMENTADO */
-    font-weight: 800;
-    line-height: 1.25;
-    color: #FFFFFF; /* Texto blanco sobre fondo azul */
-}
-
-.irregular-border {
-    border-left: 6px solid #FF9800 !important;
-}
-
-/* =========================================
-   TROFEOS Y RANKING
-   ========================================= */
-.badge-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
-
-.badge-card {
-    text-align: center;
-    opacity: 0.4;
-    filter: grayscale(1);
-    border: 2px solid transparent;
-}
-
+.badge-card { text-align: center; opacity: 0.4; filter: grayscale(1); border: 2px solid transparent; }
 .badge-card.unlocked {
-    opacity: 1;
-    filter: none;
-    border-color: var(--gold);
+    opacity: 1; filter: none; border-color: var(--gold);
     background: linear-gradient(180deg, var(--bg-card) 0%, rgba(255, 214, 10, 0.05) 100%);
     box-shadow: 0 8px 24px rgba(255, 214, 10, 0.2);
 }
 
-#user-card {
-    border-radius: 24px;
-    overflow: hidden;
-    border: none;
-}
+#user-card { border-radius: 24px; overflow: hidden; border: none; }
 
-#lista-ranking {
-    list-style: none;
-}
-
+#lista-ranking { list-style: none; }
 #lista-ranking li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px;
-    background: var(--bg-app);
-    margin-bottom: 10px;
-    border-radius: 16px;
-    font-weight: 700;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px; background: var(--bg-app); margin-bottom: 10px;
+    border-radius: 16px; font-weight: 700;
 }
 
-/* EMOJI MÁS GRANDE EN TEST DE VOCABULARIO */
-#vocab-icon {
-    font-size: 4.8rem !important;   
-    margin: 15px 0 10px 0;
-    line-height: 1;
-    min-height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+#vocab-icon { font-size: 4.8rem !important; margin: 15px 0 10px 0; display: flex; align-items: center; justify-content: center; }
