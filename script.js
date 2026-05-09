@@ -210,29 +210,31 @@ let swipeIndex = 0;
 let swipeTouchStartX = 0;
 let swipeTouchStartY = 0;
 
-function createCardHTML(v) {
+function createCardHTML(v, isLarge = false) {
     let irregClass = (v.group !== 'er' || v.irreg || v.pron) ? 'irregular-border' : '';
     let safeFr = v.fr.replace(/'/g, "\\'");
     let safeEs = v.es.replace(/'/g, "\\'");
     
+    const baseClass = isLarge ? 'flashcard' : 'flashcard-mini';
+    const frontClass = isLarge ? 'flashcard-front' : 'flashcard-mini-front';
+    const backClass = isLarge ? 'flashcard-back' : 'flashcard-mini-back';
+    
     return `
-    <div class="flashcard-mini-container">
-        <div class="flashcard-mini ${irregClass}" onclick="this.classList.toggle('flipped');">
-            <div class="flashcard-mini-front">
+    <div class="${isLarge ? 'flashcard-container' : 'flashcard-mini-container'}">
+        <div class="${baseClass} ${irregClass}" onclick="this.classList.toggle('flipped');">
+            <div class="${frontClass}">
                 <div class="icon">${v.icon}</div>
                 <div class="fr">${v.fr}</div>
             </div>
-            <div class="flashcard-mini-back">
+            <div class="${backClass}">
                 <div class="es">${v.es}</div>
             </div>
         </div>
     </div>`;
 }
-
 function renderSwipeCard() {
     document.getElementById('swipe-counter').innerText = `Carta ${swipeIndex + 1} / ${verbs.length}`;
-    document.getElementById('swipe-card-container').innerHTML = createCardHTML(verbs[swipeIndex]);
-    
+    document.getElementById('swipe-card-container').innerHTML = createCardHTML(verbs[swipeIndex], true); // true = grande
     setTimeout(() => { speak(verbs[swipeIndex].fr); }, 150); 
 }
 
@@ -703,10 +705,11 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     
     // Carga de Flashcards en el Grid
-    let html = "";
-    if (typeof verbs !== 'undefined') {
-        verbs.forEach(v => { html += createCardHTML(v); });
-        document.getElementById('flashcards-grid').innerHTML = html;
+let html = "";
+verbs.forEach(v => { 
+    html += createCardHTML(v, false); // false = mini
+});
+document.getElementById('flashcards-grid').innerHTML = html;
     }
     
     // Inicialización de componentes
