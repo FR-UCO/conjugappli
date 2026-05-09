@@ -242,20 +242,12 @@ p {
     border: 1px solid var(--border-color);
     margin-bottom: 20px;
 }
-/* =========================================
-   TARJETAS SWIPE PRINCIPALES (ÉCLAIR)
-   ========================================= */
+/* TARJETAS SWIPE */
 #swipe-card-container {
     width: 100%;
     height: 520px !important;
-    perspective: 1500px;
+    perspective: 1800px;
     margin: 20px auto 30px;
-}
-
-.flashcard-container {
-    width: 100%;
-    height: 100%;
-    position: relative;
 }
 
 .flashcard {
@@ -263,10 +255,10 @@ p {
     height: 100% !important;
     position: relative;
     transform-style: preserve-3d;
-    transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transition: transform 0.75s cubic-bezier(0.25, 0.1, 0.25, 1);
     cursor: pointer;
     border-radius: 28px;
-    box-shadow: 0 20px 55px rgba(0,0,0,0.25);
+    box-shadow: 0 20px 55px rgba(0,0,0,0.3);
     overflow: hidden;
 }
 
@@ -274,14 +266,12 @@ p {
     transform: rotateY(180deg);
 }
 
-/* FRONT y BACK */
-.flashcard-front, 
-.flashcard-back {
+.flashcard-front, .flashcard-back {
     position: absolute;
     width: 100% !important;
     height: 100% !important;
-    backface-visibility: hidden;           /* Importante */
-    -webkit-backface-visibility: hidden;   /* Para Safari */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     border-radius: 28px;
     display: flex;
     flex-direction: column;
@@ -289,7 +279,6 @@ p {
     justify-content: center;
     padding: 35px 25px;
     text-align: center;
-    overflow: hidden;
 }
 
 .flashcard-front {
@@ -300,45 +289,11 @@ p {
 .flashcard-back {
     background: var(--bg-card);
     color: var(--text-main);
-    transform: rotateY(180deg);           /* Muy importante */
-    border: 5px solid #0055A4;
+    transform: rotateY(180deg);
+    border: 6px solid #0055A4;
 }
 
-/* GARANTIZAR TRADUCCIÓN */
-.flashcard-front .es { display: none !important; }
-.flashcard-back .fr  { display: none !important; }
-
-/* Textos grandes */
-.flashcard .icon {
-    font-size: 7.5rem !important;
-    margin-bottom: 25px;
-}
-.flashcard .fr {
-    font-size: 3rem !important;
-    font-weight: 800;
-}
-.flashcard .es {
-    display: block !important;
-    font-size: 2.8rem !important;
-    font-weight: 800;
-    color: var(--primary);
-}
-
-/* =========================================
-   TARJETAS MINI (GRID)
-   ========================================= */
-.flashcard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 22px;
-    padding: 15px 0;
-}
-
-.flashcard-mini-container {
-    height: 225px;
-    perspective: 1000px;
-}
-
+/* GRID */
 .flashcard-mini {
     width: 100%;
     height: 100%;
@@ -356,8 +311,7 @@ p {
     transform: rotateY(180deg);
 }
 
-.flashcard-mini-front, 
-.flashcard-mini-back {
+.flashcard-mini-front, .flashcard-mini-back {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -372,79 +326,29 @@ p {
     text-align: center;
 }
 
-.flashcard-mini-front {
-    background: var(--bg-card);
-}
-
+.flashcard-mini-front { background: var(--bg-card); }
 .flashcard-mini-back {
     background: linear-gradient(145deg, #0055A4, #003366);
     color: white;
     transform: rotateY(180deg);
 }
 
-/* GARANTIZAR TRADUCCIÓN GRID */
+/* VISIBILIDAD DE IDIOMAS */
+.flashcard-front .es,
 .flashcard-mini-front .es { display: none !important; }
-.flashcard-mini-back .fr  { display: none !important; }
 
-/* Textos del grid */
-.flashcard-mini .icon {
-    font-size: 3.8rem;
-    margin-bottom: 12px;
-}
-.flashcard-mini .fr {
-    font-size: 1.45rem;
-    font-weight: 800;
-    line-height: 1.25;
-}
-.flashcard-mini .es {
-    display: block !important;
-    font-size: 1.45rem;
-    font-weight: 800;
-    line-height: 1.25;
-    color: #FFFFFF;
-}
+.flashcard-back .fr,
+.flashcard-mini-back .fr { display: none !important; }
 
-.irregular-border {
-    border-left: 6px solid #FF9800 !important;
-}
-/* Controles del Swipe */
-.swipe-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 25px;
-    margin-top: 10px;
-}
+/* Textos */
+.flashcard .fr  { font-size: 3rem !important; font-weight: 800; }
+.flashcard .es  { font-size: 2.8rem !important; font-weight: 800; color: var(--primary); display: block !important; }
 
-.swipe-btn {
-    background: var(--bg-card);
-    color: var(--text-main);
-    border: 1px solid var(--border-color);
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: var(--shadow-sm);
-    transition: all 0.2s ease;
-}
+.flashcard-mini .fr { font-size: 1.45rem; font-weight: 800; }
+.flashcard-mini .es { font-size: 1.45rem; font-weight: 800; color: white; display: block !important; }
 
-.swipe-btn:active {
-    transform: scale(0.9);
-}
-
-/* Botón central especial */
-.swipe-btn[onclick*="flipSwipe"] {
-    background: var(--primary);
-    color: white;
-    width: 70px;
-    height: 70px;
-    border: none;
-    box-shadow: var(--shadow-lg);
-}
-
+.flashcard .icon,
+.flashcard-mini .icon { font-size: 7rem; margin-bottom: 20px; }   /* Ajustado */
 /* =========================================
    INPUTS Y BOTONES GENERALES
    ========================================= */
