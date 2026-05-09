@@ -294,15 +294,22 @@ function checkVocab() {
     
     let correctAns = currentVocabObj.fr.toLowerCase().replace(/['’´]/g, "'");
     if (ans === correctAns) {
-        vocabScore++; fb.className = "feedback correct"; fb.innerText = "✅ ¡Correcto!";
-        speak(currentVocabObj.fr); setTimeout(generateVocabQuestion, 1000);
+        vocabScore++; 
+        fb.className = "feedback correct"; 
+        fb.innerText = "✅ ¡Correcto!";
+        
+        // === ENVIAR PUNTO AL RANKING ===
+        sumarPuntoRanking(); 
+        // ===============================
+
+        speak(currentVocabObj.fr); 
+        setTimeout(generateVocabQuestion, 1000);
     } else {
         vocabMistakes.push({ es: currentVocabObj.es, fr: currentVocabObj.fr, actual: ans });
         fb.className = "feedback wrong"; fb.innerText = `❌ No, era: ${currentVocabObj.fr}`;
         document.getElementById('vocab-btn-next').style.display = 'block';
     }
 }
-
 function advanceVocab() { generateVocabQuestion(); }
 
 function endVocabQuiz() {
@@ -575,6 +582,11 @@ function checkConj() {
         conjScore++; 
         fb.className = "feedback correct"; 
         fb.innerText = "✅ ¡Perfecto!"; 
+
+        // === ENVIAR PUNTO AL RANKING ===
+        sumarPuntoRanking(); 
+        // ===============================
+
         setTimeout(generateConjQuestion, 1000);
     } else {
         quizMistakes.push({ pronoun: currentConj.displayPronoun, verb: currentConj.verb.fr, comp: currentConj.verb.comp, expected: currentConj.answer.join(' o '), actual: ans });
@@ -763,14 +775,14 @@ function resetBadges() {
 // En tu script.js
 async function sumarPuntoRanking() {
     const user = JSON.parse(localStorage.getItem('app_user'));
-    if (!user) return;
+    if (!user) return; // Si no está registrado, no enviamos nada
 
     fetch(G_SHEETS_URL, {
         method: 'POST',
         mode: 'no-cors', 
         body: JSON.stringify({
             nombre: user.nombre,
-            id: user.id, // Esto es lo que usa el nuevo Code.gs para no repetir filas
+            id: user.id,
             puntos: 1
         })
     });
