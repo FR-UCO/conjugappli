@@ -608,14 +608,14 @@
         <p>¡Consigue un 80% de aciertos para ganar insignias!</p>
     </div>
 
-          </div> <!-- Cierre del badges-grid -->
-
-        <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
-            <button onclick="resetBadges()" style="background:none; border:none; color:#bdc3c7; font-size:0.75rem; text-decoration:underline; cursor:pointer;">Reiniciar mis trofeos</button>
+    <div id="badges-grid" class="grid-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 15px;">
         </div>
-    </div> <!-- Cierre de #sec-badges -->
 
-    <!-- ==================== BARRA DE NAVEGACIÓN ==================== -->
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="resetBadges()" style="background:none; border:none; color:#bdc3c7; font-size:0.75rem; text-decoration:underline; cursor:pointer;">Reiniciar mis trofeos</button>
+    </div>
+    </div> <!-- Cierre del container si hace falta -->
+
     <nav id="bottom-nav">
         <button onclick="switchTab('sec-flashcards')" class="nav-btn active" id="btn-sec-flashcards">
             <span class="material-symbols-outlined">style</span>
@@ -626,22 +626,22 @@
             <span class="material-symbols-outlined">edit_note</span>
             <span class="tab-text">Vocabulario</span>
         </button>
-        
+
         <button onclick="switchTab('sec-conj')" class="nav-btn" id="btn-sec-conj">
             <span class="material-symbols-outlined">edit_square</span>
             <span class="tab-text">Conjugación</span>
         </button>
-        
+
         <button onclick="switchTab('sec-theory')" class="nav-btn" id="btn-sec-theory">
             <span class="material-symbols-outlined">menu_book</span>
             <span class="tab-text">Gramática</span>
         </button>
-        
+
         <button onclick="switchTab('sec-badges'); renderBadges();" class="nav-btn" id="btn-sec-badges">
             <span class="material-symbols-outlined">emoji_events</span>
             <span class="tab-text">Badges</span>
         </button>
-    </nav>
+    </nav> 
 
     <script src="script.js"></script>
 </body>
