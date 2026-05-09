@@ -210,6 +210,9 @@ let swipeIndex = 0;
 let swipeTouchStartX = 0;
 let swipeTouchStartY = 0;
 
+// VARIABLE PARA EL AUDIO (Mejora #2)
+let isAudioEnabled = true; 
+
 function createCardHTML(v, isLarge = false) {
     let irregClass = (v.group !== 'er' || v.irreg || v.pron) ? 'irregular-border' : '';
     let safeFr = v.fr.replace(/'/g, "\\'");
@@ -219,9 +222,10 @@ function createCardHTML(v, isLarge = false) {
     const frontClass = isLarge ? 'flashcard-front' : 'flashcard-mini-front';
     const backClass = isLarge ? 'flashcard-back' : 'flashcard-mini-back';
     
+    // MEJORA #1: Añadimos la función speak() al onclick para que suene al tocar las tarjetas Grid
     return `
     <div class="${isLarge ? 'flashcard-container' : 'flashcard-mini-container'}">
-        <div class="${baseClass} ${irregClass}" onclick="this.classList.toggle('flipped');">
+        <div class="${baseClass} ${irregClass}" onclick="this.classList.toggle('flipped'); if(isAudioEnabled) speak('${safeFr}');">
             <div class="${frontClass}">
                 <div class="icon">${v.icon}</div>
                 <div class="fr">${v.fr}</div>
@@ -232,23 +236,34 @@ function createCardHTML(v, isLarge = false) {
         </div>
     </div>`;
 }
+
 function renderSwipeCard() {
     document.getElementById('swipe-counter').innerText = `Carta ${swipeIndex + 1} / ${verbs.length}`;
-    document.getElementById('swipe-card-container').innerHTML = createCardHTML(verbs[swipeIndex], true); // true = grande
-    setTimeout(() => { speak(verbs[swipeIndex].fr); }, 150); 
+    document.getElementById('swipe-card-container').innerHTML = createCardHTML(verbs[swipeIndex], true);
+    
+    // Suena al pasar de tarjeta (si el audio está activado)
+    setTimeout(() => { 
+        if (isAudioEnabled) speak(verbs[swipeIndex].fr); 
+    }, 150); 
 }
 
 function prevSwipe() { if(swipeIndex > 0) { swipeIndex--; renderSwipeCard(); } }
 function nextSwipe() { if(swipeIndex < verbs.length - 1) { swipeIndex++; renderSwipeCard(); } }
+
 function flipSwipe() { 
     const card = document.querySelector('#swipe-card-container .flashcard');
-    if(card) { card.classList.toggle('flipped'); speak(verbs[swipeIndex].fr); } 
+    if(card) { 
+        card.classList.toggle('flipped'); 
+        // Suena al girar la tarjeta grande (si el audio está activado)
+        if (isAudioEnabled) speak(verbs[swipeIndex].fr); 
+    } 
 }
 
 document.getElementById('swipe-card-container').addEventListener('touchstart', e => {
     swipeTouchStartX = e.changedTouches[0].screenX;
     swipeTouchStartY = e.changedTouches[0].screenY;
 });
+
 document.getElementById('swipe-card-container').addEventListener('touchend', e => {
     let diffX = e.changedTouches[0].screenX - swipeTouchStartX;
     let diffY = e.changedTouches[0].screenY - swipeTouchStartY;
@@ -259,6 +274,16 @@ document.getElementById('swipe-card-container').addEventListener('touchend', e =
         if (Math.abs(diffY) > 40) flipSwipe();
     }
 });
+
+// MEJORA #2: Función para el botón que apaga/enciende el audio
+function toggleAudio() {
+    isAudioEnabled = !isAudioEnabled;
+    const icon = document.getElementById('audio-icon');
+    if (icon) {
+        icon.innerText = isAudioEnabled ? 'volume_up' : 'volume_off';
+    }
+    localStorage.setItem('pref_audio', isAudioEnabled); // Guarda la preferencia del usuario
+}
 
 
 // -------------------------------------------------------------------
