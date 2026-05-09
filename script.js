@@ -760,20 +760,18 @@ function resetBadges() {
         renderBadges();
     }
 }
+// En tu script.js
 async function sumarPuntoRanking() {
     const user = JSON.parse(localStorage.getItem('app_user'));
     if (!user) return;
 
-    try {
-        fetch(G_SHEETS_URL, {
-            method: 'POST',
-            mode: 'no-cors', 
-            body: JSON.stringify({
-                nombre: `${user.nombre} (${user.id})`, // Enviamos nombre + ID único
-                puntos: 1
-            })
-        });
-    } catch (e) {
-        console.log("Error de conexión con el ranking");
-    }
+    fetch(G_SHEETS_URL, {
+        method: 'POST',
+        mode: 'no-cors', 
+        body: JSON.stringify({
+            nombre: user.nombre,
+            id: user.id, // Esto es lo que usa el nuevo Code.gs para no repetir filas
+            puntos: 1
+        })
+    });
 }
