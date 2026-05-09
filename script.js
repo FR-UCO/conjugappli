@@ -203,23 +203,15 @@ function updateStreak() {
     document.getElementById('streak-count').innerText = streak;
 }
 
-// -------------------------------------------------------------------
-// FLASHCARDS (SWIPE ET GRID)
-// -------------------------------------------------------------------
+// =========================================
+// VARIABLES GLOBALES (Asegúrate de que no estén repetidas en otro lado)
+// =========================================
 let swipeIndex = 0;
-let swipeTouchStartX = 0;
-let swipeTouchStartY = 0;
-
-// VARIABLE PARA EL AUDIO (Mejora #2)
 let isAudioEnabled = true; 
 
-// VARIABLE PARA EL AUDIO (Mejora #2)
-let isAudioEnabled = true; 
-
-// Asegúrate de que la línea 'let isAudioEnabled = true;' esté solo UNA VEZ en todo tu archivo.
-// Si ya la tienes más arriba, puedes borrarla de aquí.
-let isAudioEnabled = true; 
-
+// =========================================
+// FUNCIONES DE LAS TARJETAS
+// =========================================
 function createCardHTML(v, isLarge = false) {
     let irregClass = (v.group !== 'er' || v.irreg || v.pron) ? 'irregular-border' : '';
     let safeFr = v.fr.replace(/'/g, "\\'");
@@ -229,7 +221,7 @@ function createCardHTML(v, isLarge = false) {
     const frontClass = isLarge ? 'flashcard-front' : 'flashcard-mini-front';
     const backClass = isLarge ? 'flashcard-back' : 'flashcard-mini-back';
     
-    // Solo le agregamos el audio al onclick si NO es la tarjeta grande
+    // Solo le agregamos el audio al onclick si NO es la tarjeta grande (Swipe)
     const audioScript = !isLarge ? `if(isAudioEnabled) speak('${safeFr}');` : '';
     
     return `
@@ -244,6 +236,26 @@ function createCardHTML(v, isLarge = false) {
             </div>
         </div>
     </div>`;
+}
+
+function renderSwipeCard() {
+    document.getElementById('swipe-counter').innerText = `Carta ${swipeIndex + 1} / ${verbs.length}`;
+    document.getElementById('swipe-card-container').innerHTML = createCardHTML(verbs[swipeIndex], true);
+    
+    // Suena al pasar de tarjeta (si el audio está activado)
+    setTimeout(() => { 
+        if (isAudioEnabled) speak(verbs[swipeIndex].fr); 
+    }, 150); 
+}
+
+function prevSwipe() { if(swipeIndex > 0) { swipeIndex--; renderSwipeCard(); } }
+function nextSwipe() { if(swipeIndex < verbs.length - 1) { swipeIndex++; renderSwipeCard(); } }
+
+function flipSwipe() { 
+    const card = document.querySelector('#swipe-card-container .flashcard');
+    if(card) { 
+        card.classList.toggle('flipped'); 
+    } 
 }
 
 function renderSwipeCard() {
