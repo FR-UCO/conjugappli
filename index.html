@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es"> 
 <head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Aprender Francés - 100 Verbos</title>
@@ -21,10 +22,16 @@
     </div>
 </div>
 <header>
-    <div class="streak-container" title="Días consecutivos revisando">🔥 <span id="streak-count">0</span></div>
+    <div class="streak-container">
+        <span class="material-symbols-outlined" style="color: #FF9800; font-variation-settings: 'FILL' 1;">local_fire_department</span>
+        <span id="streak-count">0</span>
+    </div>
+    
     🇫🇷 Aprender Francés
-    <span>Vocabulario, Gramática y Conjugación (100 verbos)</span>
-    <button id="theme-toggle" onclick="toggleTheme()" style="position: absolute; right: 15px; top: 15px; background: none; border: none; font-size: 22px; cursor: pointer;">🌙</button>
+    
+    <button id="theme-toggle" onclick="toggleTheme()" style="background:none; border:none; color:white; cursor:pointer;">
+        <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
+    </button>
 </header>
 
 <div class="container">
@@ -35,18 +42,29 @@
         <p style="text-align: center;">Desliza a la izquierda o derecha para cambiar de carta. <strong>Toca la carta para ver la traducción.</strong></p>
         
         <div class="swipe-wrapper" id="flashcards-swipe">
-            <div style="font-weight: bold; color: var(--fr-blue); margin-bottom: 10px;" id="swipe-counter">Carta 1 / 100</div>
-            
-            <div id="swipe-card-container"></div>
-            
-            <div class="swipe-controls">
-                <button class="swipe-btn" onclick="prevSwipe()" title="Anterior">◀</button>
-                <button class="swipe-btn" onclick="flipSwipe()" title="Traducir y Escuchar" style="font-size: 1.2em;">🔃</button>
-                <button class="swipe-btn" onclick="nextSwipe()" title="Siguiente">▶</button>
-            </div>
-            <p class="swipe-instructions">📱 <em>El audio se reproduce automáticamente al cambiar de carta o al tocarla.</em></p>
-        </div>
+    <div style="font-weight: bold; color: var(--fr-blue); margin-bottom: 10px;" id="swipe-counter">Carta 1 / 100</div>
+    
+    <div id="swipe-card-container"></div>
+    
+    <div class="swipe-controls">
+        <button class="swipe-btn" onclick="prevSwipe()" title="Anterior">
+            <span class="material-symbols-outlined">arrow_back_ios_new</span>
+        </button>
+        
+        <button class="swipe-btn" onclick="flipSwipe()" title="Traducir y Escuchar" style="background: var(--fr-blue); color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+            <span class="material-symbols-outlined" style="font-size: 28px;">translate</span>
+        </button>
+        
+        <button class="swipe-btn" onclick="nextSwipe()" title="Siguiente">
+            <span class="material-symbols-outlined">arrow_forward_ios</span>
+        </button>
+    </div>
 
+    <p class="swipe-instructions" style="display: flex; align-items: center; justify-content: center; gap: 5px;">
+        <span class="material-symbols-outlined" style="font-size: 1.2em;">volume_up</span> 
+        <em>El audio se reproduce automáticamente al cambiar de carta o al tocarla.</em>
+    </p>
+</div>
         <h2>Lista Completa</h2>
         <p>Los verbos con un <strong>borde naranja</strong> son irregulares o pronominales.</p>
 
@@ -535,29 +553,53 @@
         </div>
 
         <div id="conj-results" class="quiz-card" style="display: none;">
-            <h3>¡Test terminado! 🎉</h3>
-            <div id="conj-score-display" class="score-display"></div>
-            <div id="conj-mistakes-display" style="margin-top: 20px;"></div>
-            <button class="btn-action" style="margin-top: 20px;" onclick="resetConjQuiz()">Hacer otro test</button>
-        </div>
-    </div>
+    <span class="material-symbols-outlined" style="font-size: 48px; color: #4CAF50; margin-bottom: 10px;">task_alt</span>
+    <h3>¡Test terminado!</h3>
+    <div id="conj-score-display" class="score-display"></div>
+    <div id="conj-mistakes-display" style="margin-top: 20px;"></div>
+    <button class="btn-action" style="margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="resetConjQuiz()">
+        <span class="material-symbols-outlined">replay</span>
+        Hacer otro test
+    </button>
 </div>
 
 <div id="sec-badges" class="section">
-    <div class="header-container">
-        <h2>Mis Trofeos 🏅</h2>
-    </div> <div id="user-card" style="background: linear-gradient(135deg, #0055A4 0%, #003366 100%); color: white; border-radius: 15px; padding: 15px; margin: 10px 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-        <div style="font-size: 0.8rem; opacity: 0.9;">Estudiante de Francés</div>
-        <div id="display-username" style="font-size: 1.2rem; font-weight: bold; margin: 5px 0;">---</div>
-        <div id="display-userid" style="font-family: monospace; background: rgba(255,255,255,0.2); padding: 2px 10px; border-radius: 5px; display: inline-block; font-size: 0.8rem;">ID-000000</div>
+    <div class="header-container" style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px;">
+        <span class="material-symbols-outlined" style="color: var(--fr-blue); font-size: 2rem;">military_tech</span>
+        <h2 style="margin: 0;">Mis Trofeos</h2>
     </div>
 
-    <div style="background: white; border-radius: 15px; padding: 15px; margin: 20px 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-        <h3 style="text-align: center; margin-top: 0; color: #2C3E50;">🏆 Top 10 Global</h3>
-        <ul id="lista-ranking" style="list-style: none; padding: 0; margin: 0; color: #2C3E50;">
-            <li style="text-align: center; color: #95a5a6; padding: 10px;">Cargando ranking...</li>
+    <div id="user-card" style="background: linear-gradient(135deg, #0055A4 0%, #002a52 100%); color: white; border-radius: 20px; padding: 20px; margin: 15px; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.15);">
+        <div style="position: absolute; right: -20px; top: -20px; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+        
+        <div style="display: flex; align-items: center; gap: 15px; position: relative; z-index: 1;">
+            <div style="background: rgba(255,255,255,0.2); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <span class="material-symbols-outlined" style="font-size: 30px;">account_circle</span>
+            </div>
+            <div style="text-align: left;">
+                <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8;">Estudiante de Francés</div>
+                <div id="display-username" style="font-size: 1.3rem; font-weight: bold;">---</div>
+                <div id="display-userid" style="font-family: 'Courier New', monospace; background: rgba(0,0,0,0.2); padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; margin-top: 4px; display: inline-block;">ID-000000</div>
+            </div>
+        </div>
+    </div>
+
+    <div style="background: white; border-radius: 20px; padding: 20px; margin: 20px 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px;">
+            <span class="material-symbols-outlined" style="color: #FFD700;">leaderboard</span>
+            <h3 style="margin: 0; color: #2C3E50;">Top 10 Global</h3>
+        </div>
+        
+        <ul id="lista-ranking" style="list-style: none; padding: 0; margin: 0;">
+            <li style="display: flex; flex-direction: column; align-items: center; gap: 10px; color: #95a5a6; padding: 20px;">
+                <span class="material-symbols-outlined" style="font-size: 30px; animation: spin 2s linear infinite;">sync</span>
+                Cargando ranking...
+            </li>
         </ul>
     </div>
+
+    <div id="badge-container" class="badge-grid" style="margin: 20px 15px;">
+        </div>
 
     <div style="padding: 15px; text-align: center; margin-bottom: 20px;">
         <p>¡Consigue un 80% de aciertos para ganar insignias!</p>
@@ -571,11 +613,31 @@
     </div>
 </div>
 <nav id="bottom-nav">
-    <button onclick="switchTab('sec-flashcards')" class="nav-btn active" id="btn-sec-flashcards"><span class="icon">🃏</span>Tarjetas</button>
-    <button onclick="switchTab('sec-vocab')" class="nav-btn" id="btn-sec-vocab"><span class="icon">📝</span>Vocabulario</button>
-    <button onclick="switchTab('sec-theory')" class="nav-btn" id="btn-sec-theory"><span class="icon">📖</span>Gramática</button>
-    <button onclick="switchTab('sec-conj')" class="nav-btn" id="btn-sec-conj"><span class="icon">✍️</span>Conjugación</button>
-    <button onclick="switchTab('sec-badges'); renderBadges();" class="nav-btn" id="btn-sec-badges"><span class="icon">🏅</span>Badges</button>
+    <button onclick="switchTab('sec-flashcards')" class="nav-btn active" id="btn-sec-flashcards">
+        <span class="material-symbols-outlined">style</span>
+        <span class="tab-text">Tarjetas</span>
+    </button>
+    
+    <button onclick="switchTab('sec-vocab')" class="nav-btn" id="btn-sec-vocab">
+        <span class="material-symbols-outlined">edit_note</span>
+        <span class="tab-text">Vocabulario</span>
+    </button>
+
+    <button onclick="switchTab('sec-conj')" class="nav-btn" id="btn-sec-conj">
+        <span class="material-symbols-outlined">edit_square</span>
+        <span class="tab-text">Conjugación</span>
+    </button>
+
+    <button onclick="switchTab('sec-theory')" class="nav-btn" id="btn-sec-theory">
+        <span class="material-symbols-outlined">menu_book</span>
+        <span class="tab-text">Gramática</span>
+    </button>
+
+    <button onclick="switchTab('sec-badges'); renderBadges();" class="nav-btn" id="btn-sec-badges">
+        <span class="material-symbols-outlined">emoji_events</span>
+        <span class="tab-text">Badges</span>
+    </button>
+</nav>
 </nav>
     
     <script src="script.js"></script>
