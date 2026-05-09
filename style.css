@@ -207,3 +207,21 @@
     #answer-input, #vocab-input {
     text-transform: lowercase;
     }
+#answer-input, #vocab-input {
+    text-transform: lowercase;
+}
+```.
+
+---
+
+### Resumen del Paso a Paso para el Estilo:
+
+1.  **Crea un archivo nuevo** llamado `style.css` en la misma carpeta que tu `index.html`.
+2.  **Corta (Ctrl+X)** todo el contenido que está *dentro* de las etiquetas `<style>` y `</style>` en tu `index.html`.
+3.  **Pégalo (Ctrl+V)** en el nuevo archivo `style.css`. No incluyas las etiquetas `<style>` en el archivo `.css`.
+4.  **Enlaza el archivo** en tu `index.html` sustituyendo el bloque que borraste por esta línea dentro del `<head>`:
+    ```html
+    <link rel="stylesheet" href="style.css">
+    ```.
+
+**¿Quieres que identifiquemos ahora los puntos de corte para el archivo de JavaScript (`script.js`)?**
