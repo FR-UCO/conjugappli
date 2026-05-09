@@ -960,3 +960,19 @@ async function cargarRanking() {
         lista.innerHTML = "<li style='text-align:center; padding:10px; color:red;'>No se pudo cargar el ranking.</li>";
     }
 }
+function reiniciarProgreso() {
+    // Aquí sí usamos confirm porque es una acción destructiva iniciada por el usuario
+    const seguro = confirm("¿Estás seguro de que deseas reiniciar tu progreso? Tus estadísticas volverán a cero.");
+    
+    if (seguro) {
+        localStorage.removeItem('app_stats'); // Borra las estadísticas
+        
+        // Reiniciamos las flashcards a la carta 1
+        swipeIndex = 0; 
+        if (typeof renderSwipeCard === 'function') {
+            renderSwipeCard();
+        }
+        
+        alert("¡Partida reiniciada! A empezar con toda la energía.");
+    }
+}
