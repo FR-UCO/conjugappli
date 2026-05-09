@@ -91,10 +91,15 @@
             </select>
             <button class="btn-action" style="margin-top: 25px;" onclick="startVocabQuiz()">🚀 Comenzar test</button>
         </div>
-       <div style="text-align: center; margin: 15px 0;">
-    <button onclick="reiniciarProgreso()" style="background: var(--fr-blue, #0055A4); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
-        <span class="material-symbols-outlined" style="font-size: 18px;">restart_alt</span>
-        Iniciar nueva partida
+      <div style="display: flex; justify-content: center; gap: 15px; margin: 25px 0; flex-wrap: wrap;">
+    <button onclick="continuarPartida()" style="background: var(--fr-blue, #0055A4); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <span class="material-symbols-outlined" style="font-size: 20px;">play_circle</span>
+        Continuar partida
+    </button>
+    
+    <button onclick="reiniciarProgreso()" style="background: transparent; color: #dc3545; border: 2px solid #dc3545; padding: 10px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 15px;">
+        <span class="material-symbols-outlined" style="font-size: 20px;">restart_alt</span>
+        Nueva partida
     </button>
 </div>
 
@@ -549,10 +554,15 @@
             <button id="btn-continue-conj" class="btn-action" style="margin-top: 25px; background-color: #f39c12; display: none;" onclick="continueConjQuiz()">🔄 Continuar la partida anterior</button>
             <button class="btn-action" style="margin-top: 15px;" onclick="startConjQuiz()">🚀 Comenzar test nuevo</button>
         </div>
-    <div style="text-align: center; margin: 15px 0;">
-    <button onclick="reiniciarProgreso()" style="background: var(--fr-blue, #0055A4); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
-        <span class="material-symbols-outlined" style="font-size: 18px;">restart_alt</span>
-        Iniciar nueva partida
+   <div style="display: flex; justify-content: center; gap: 15px; margin: 25px 0; flex-wrap: wrap;">
+    <button onclick="continuarPartida()" style="background: var(--fr-blue, #0055A4); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <span class="material-symbols-outlined" style="font-size: 20px;">play_circle</span>
+        Continuar partida
+    </button>
+    
+    <button onclick="reiniciarProgreso()" style="background: transparent; color: #dc3545; border: 2px solid #dc3545; padding: 10px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 15px;">
+        <span class="material-symbols-outlined" style="font-size: 20px;">restart_alt</span>
+        Nueva partida
     </button>
 </div>
 
