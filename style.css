@@ -265,32 +265,77 @@ p {
     margin-bottom: 20px;
 }
 
-/* TARJETAS SWIPE - VERSIÓN DE PRUEBA FUERTE */
+/* =========================================
+   TARJETAS SWIPE PRINCIPALES (ÉCLAIR) - VERSIÓN LIMPIA Y FUERTE
+   ========================================= */
 #swipe-card-container {
     width: 100%;
     height: 480px !important;
     perspective: 1500px;
-    margin: 10px auto;
-    background: #f0f0f0;
+    margin: 20px auto 30px;
+}
+
+.flashcard-container {
+    width: 100%;
+    height: 100%;
 }
 
 .flashcard {
     width: 100% !important;
     height: 100% !important;
-    border-radius: 30px !important;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.25) !important;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
+    cursor: pointer;
+    border-radius: 28px;
+    box-shadow: 0 20px 55px rgba(0,0,0,0.25);
+    overflow: hidden;
+}
+
+.flashcard.flipped {
+    transform: rotateY(180deg);
+}
+
+.flashcard-front, 
+.flashcard-back {
+    position: absolute;
+    width: 100% !important;
+    height: 100% !important;
+    backface-visibility: hidden;
+    border-radius: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 35px 25px;
+    text-align: center;
+}
+
+.flashcard-front {
+    background: linear-gradient(145deg, #0055A4, #003366);
+    color: white;
+}
+
+.flashcard-back {
+    background: var(--bg-card);
+    color: var(--text-main);
+    transform: rotateY(180deg);
+    border: 5px solid #0055A4;
 }
 
 .flashcard .icon {
     font-size: 6rem !important;
+    margin-bottom: 25px;
 }
 
 .flashcard .fr {
-    font-size: 2.5rem !important;
+    font-size: 2.45rem !important;
+    font-weight: 800;
 }
 
 .flashcard .es {
     font-size: 2.1rem !important;
+    font-weight: 700;
 }
 /* Controles del Swipe */
 .swipe-controls {
@@ -455,27 +500,77 @@ input[type="text"]:focus, select:focus {
 }
 
 /* =========================================
-   GRID DE LISTA (VERBOS)
+   TARJETAS DE LA LISTA INFERIOR (GRID)
    ========================================= */
 .flashcard-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+    gap: 22px;
+    padding: 15px 0;
+}
+
+.flashcard-mini-container {
+    height: 195px;
+    perspective: 1000px;
 }
 
 .flashcard-mini {
-    background: var(--bg-card);
-    padding: 20px 15px;
-    border-radius: 16px;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+    cursor: pointer;
+    border-radius: 22px;
+    box-shadow: var(--shadow-md);
+    border: 2px solid var(--border-color);
+    overflow: hidden;
+}
+
+.flashcard-mini.flipped {
+    transform: rotateY(180deg);
+}
+
+.flashcard-mini-front, 
+.flashcard-mini-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
     text-align: center;
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-sm);
 }
 
-.flashcard-mini.irregular {
-    border-left: 4px solid var(--warning);
+.flashcard-mini-front {
+    background: var(--bg-card);
 }
 
+.flashcard-mini-back {
+    background: linear-gradient(145deg, #0055A4, #003366);
+    color: white;
+    transform: rotateY(180deg);
+}
+
+.flashcard-mini .icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+}
+
+.flashcard-mini .fr,
+.flashcard-mini .es {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.irregular-border {
+    border-left: 6px solid #FF9800 !important;
+}
 /* =========================================
    TROFEOS Y RANKING
    ========================================= */
