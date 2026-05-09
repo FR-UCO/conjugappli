@@ -47,21 +47,22 @@
     <div id="swipe-card-container"></div>
     
     <div class="swipe-controls">
-        <button class="swipe-btn" onclick="prevSwipe()" title="Anterior">
-            <span class="material-symbols-outlined">arrow_back_ios_new</span>
-        </button>
-        
-        <button class="swipe-btn" onclick="flipSwipe()" title="Traducir y Escuchar" style="background: var(--fr-blue); color: white; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
-            <span class="material-symbols-outlined" style="font-size: 28px;">translate</span>
-        </button>
-        
-        <button class="swipe-btn" onclick="nextSwipe()" title="Siguiente">
-            <span class="material-symbols-outlined">arrow_forward_ios</span>
-        </button>
-        <button onclick="toggleAudio()" style="background: none; border: none; cursor: pointer;">
-    <span class="material-symbols-outlined" id="audio-icon">volume_up</span>
-        </button>
-    </div>
+    <button class="audio-btn" onclick="toggleAudio()" title="Activar/Desactivar Audio">
+        <span class="material-symbols-outlined" id="audio-icon">volume_up</span>
+    </button>
+
+    <button class="swipe-btn" onclick="prevSwipe()" title="Anterior">
+        <span class="material-symbols-outlined">arrow_back_ios_new</span>
+    </button>
+    
+    <button class="swipe-btn" onclick="flipSwipe()" title="Traducir y Escuchar">
+        <span class="material-symbols-outlined" style="font-size: 32px;">translate</span>
+    </button>
+    
+    <button class="swipe-btn" onclick="nextSwipe()" title="Siguiente">
+        <span class="material-symbols-outlined">arrow_forward_ios</span>
+    </button>
+</div>
 
     <p class="swipe-instructions" style="display: flex; align-items: center; justify-content: center; gap: 5px;">
         <span class="material-symbols-outlined" style="font-size: 1.2em;">volume_up</span> 
