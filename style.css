@@ -242,6 +242,7 @@ p {
     border: 1px solid var(--border-color);
     margin-bottom: 20px;
 }
+
 /* =========================================
    TARJETAS SWIPE PRINCIPALES (ÉCLAIR)
    ========================================= */
@@ -267,7 +268,7 @@ p {
     cursor: pointer;
     border-radius: 28px;
     box-shadow: 0 20px 55px rgba(0,0,0,0.25);
-    overflow: hidden;
+    /* ¡ELIMINADO el overflow: hidden de aquí! */
 }
 
 .flashcard.flipped {
@@ -278,10 +279,12 @@ p {
 .flashcard-front, 
 .flashcard-back {
     position: absolute;
+    top: 0;   /* ¡AÑADIDO PARA EVITAR BUGS! */
+    left: 0;  /* ¡AÑADIDO PARA EVITAR BUGS! */
     width: 100% !important;
     height: 100% !important;
-    backface-visibility: hidden;           /* Importante */
-    -webkit-backface-visibility: hidden;   /* Para Safari */
+    backface-visibility: hidden;           
+    -webkit-backface-visibility: hidden;   
     border-radius: 28px;
     display: flex;
     flex-direction: column;
@@ -289,19 +292,20 @@ p {
     justify-content: center;
     padding: 35px 25px;
     text-align: center;
-    overflow: hidden;
 }
 
 .flashcard-front {
     background: linear-gradient(145deg, #0055A4, #003366);
     color: white;
+    z-index: 2; /* AÑADIDO PARA ANDROID */
 }
 
 .flashcard-back {
     background: var(--bg-card);
     color: var(--text-main);
-    transform: rotateY(180deg);           /* Muy importante */
+    transform: rotateY(180deg);           
     border: 5px solid #0055A4;
+    z-index: 1; /* AÑADIDO PARA ANDROID */
 }
 
 /* GARANTIZAR TRADUCCIÓN */
@@ -322,6 +326,66 @@ p {
     font-size: 2.8rem !important;
     font-weight: 800;
     color: var(--primary);
+}
+
+/* =========================================
+   CONTROLES SWIPE Y AUDIO (¡NUEVO/CORREGIDO!)
+   ========================================= */
+.swipe-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Alineación perfecta y espaciado igual */
+    margin-top: 15px;
+    width: 100%;
+}
+
+.swipe-btn {
+    background: var(--bg-card);
+    color: var(--text-main); /* ASEGURA QUE SE VEA EN MODO OSCURO */
+    border: 1px solid var(--border-color);
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.swipe-btn:active {
+    transform: scale(0.9);
+}
+
+/* Botón central especial (Girar) */
+.swipe-btn[onclick*="flipSwipe"] {
+    background: var(--primary);
+    color: white;
+    width: 70px;
+    height: 70px;
+    border: none;
+    box-shadow: var(--shadow-lg);
+}
+
+/* Botón de Audio Especial (Transparente pero visible en modo oscuro) */
+.audio-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-main); /* LA MAGIA PARA EL MODO OSCURO */
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.audio-btn:active {
+    transform: scale(0.9);
 }
 
 /* =========================================
@@ -349,7 +413,7 @@ p {
     border-radius: 22px;
     box-shadow: var(--shadow-md);
     border: 2px solid var(--border-color);
-    overflow: hidden;
+    /* ¡ELIMINADO el overflow: hidden de aquí! */
 }
 
 .flashcard-mini.flipped {
@@ -359,6 +423,8 @@ p {
 .flashcard-mini-front, 
 .flashcard-mini-back {
     position: absolute;
+    top: 0;   /* ¡AÑADIDO PARA EVITAR BUGS! */
+    left: 0;  /* ¡AÑADIDO PARA EVITAR BUGS! */
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
@@ -374,12 +440,14 @@ p {
 
 .flashcard-mini-front {
     background: var(--bg-card);
+    z-index: 2;
 }
 
 .flashcard-mini-back {
     background: linear-gradient(145deg, #0055A4, #003366);
     color: white;
     transform: rotateY(180deg);
+    z-index: 1;
 }
 
 /* GARANTIZAR TRADUCCIÓN GRID */
