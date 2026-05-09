@@ -729,11 +729,6 @@ window.addEventListener('DOMContentLoaded', () => {
     if (typeof renderBadges === 'function') renderBadges();
 });
 
-    // Inicialización de componentes
-    renderSwipeCard();
-    renderBadges();
-});
-
 // ====================== BADGES ======================
 function awardBadge(count, tense, time) {
     let earnedBadges = JSON.parse(localStorage.getItem('badges')) || [];
