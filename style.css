@@ -625,16 +625,6 @@ input[type="text"]:focus, select:focus {
     align-items: center;
     justify-content: center;
 }
-/* FORZAR VISIBILIDAD DE TRADUCCIONES */
-.flashcard-front .fr,
-.flashcard-mini-front .fr {
-    display: block !important;
-}
-
-.flashcard-back .es,
-.flashcard-mini-back .es {
-    display: block !important;
-}
 
 /* Asegurar que no se oculten por error */
 .flashcard .es,
