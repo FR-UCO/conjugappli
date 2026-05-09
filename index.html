@@ -12,7 +12,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+<div id="welcome-screen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:var(--fr-blue); z-index:9999; color:white; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px;">
+    <div style="background:white; color:var(--text); padding:30px; border-radius:20px; box-shadow:0 10px 25px rgba(0,0,0,0.2); width:90%; max-width:400px;">
+        <h2 style="margin-top:0;">¡Bienvenido! 🇫🇷</h2>
+        <p>Introduce tu nombre para el ranking global:</p>
+        <input type="text" id="reg-username" placeholder="Tu nombre o apodo" style="width:100%; padding:12px; margin:15px 0; border:2px solid #ddd; border-radius:10px; font-size:16px;">
+        <button onclick="registerUser()" style="background:var(--fr-red); color:white; border:none; padding:12px 25px; border-radius:10px; font-weight:bold; cursor:pointer; width:100%;">Empezar a aprender</button>
+    </div>
+</div>
 <header>
     <div class="streak-container" title="Días consecutivos revisando">🔥 <span id="streak-count">0</span></div>
     🇫🇷 Aprender Francés
