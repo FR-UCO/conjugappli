@@ -968,23 +968,52 @@ function continuarPartida() {
         switchTab('sec-flashcards'); 
     }
 }
+//TESTS EN PROGRESO//
+let testActual = {
+    indice: 0,
+    preguntas: [],
+    puntos: 0,
+    activo: false
+};
+//GUARDAR PROGRESO DEL TEST//
+function guardarProgresoTest() {
+    localStorage.setItem('progreso_test_vocabulario', JSON.stringify(testActual));
+}
+// BOTÓN: Continuar Partida
+function continuarPartida() {
+    const guardado = localStorage.getItem('progreso_test_vocabulario');
+    
+    if (guardado) {
+        testActual = JSON.parse(guardado);
+        testActual.activo = true;
+        
+        // Aquí debes llamar a la función que "dibuja" el test en tu pantalla
+        // Por ejemplo: mostrarPantallaTest(); o renderizarPregunta();
+        renderizarTest(); 
+        
+        // Ocultamos el menú de configuración y mostramos el juego
+        document.getElementById('setup-test-container').style.display = 'none';
+        document.getElementById('game-test-container').style.display = 'block';
+    } else {
+        alert("No tienes ninguna partida guardada. ¡Inicia una nueva!");
+    }
+}
 
-// Función para el Botón 2
+// BOTÓN: Nueva Partida
 function reiniciarProgreso() {
-    const seguro = confirm("¿Estás seguro de que deseas empezar desde cero? Se reiniciará tu progreso de estudio.");
+    const seguro = confirm("¿Estás seguro? Se borrará tu avance en el test actual.");
     
     if (seguro) {
-        localStorage.removeItem('app_stats'); // Borra las estadísticas
+        // Limpiamos el almacenamiento
+        localStorage.removeItem('progreso_test_vocabulario');
         
-        // Volvemos la tarjeta a la número 1
-        swipeIndex = 0; 
-        if (typeof renderSwipeCard === 'function') {
-            renderSwipeCard();
-        }
+        // Reiniciamos la variable
+        testActual = { indice: 0, preguntas: [], puntos: 0, activo: false };
         
-        // Lo enviamos a las tarjetas para que empiece de inmediato
-        if (typeof switchTab === 'function') {
-            switchTab('sec-flashcards'); 
-        }
+        // Mostramos la pantalla de configuración inicial para elegir número de verbos
+        document.getElementById('setup-test-container').style.display = 'block';
+        document.getElementById('game-test-container').style.display = 'none';
+        
+        alert("Partida borrada. Configura tu nuevo test.");
     }
 }
