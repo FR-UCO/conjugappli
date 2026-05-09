@@ -1,55 +1,60 @@
 /* =========================================
-   ESTILOS GENERALES Y VARIABLES
+   ESTILOS GENERALES Y VARIABLES (AESTHETIC & MODERN UI)
    ========================================= */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
 
 :root {
-    /* Paleta Francia Moderna */
-    --fr-blue: #0055A4;
-    --fr-red: #EF4135;
-    --fr-light-blue: #e6f0ff;
-    --accent: #FFD700;
+    /* Paleta Principal - Estilo "Modern App" */
+    --primary: #0066FF;       /* Azul más vibrante y moderno */
+    --primary-dark: #0047b3;
+    --primary-light: #e6f0ff;
+    --accent: #FF3B30;        /* Rojo tipo iOS */
+    --warning: #FF9500;       /* Naranja tipo iOS */
+    --success: #34C759;       /* Verde tipo iOS */
+    --gold: #FFD60A;
     
-    /* Colores Sistema */
-    --bg: #F0F2F5;
-    --card-bg: #FFFFFF;
-    --text-main: #2C3E50;
-    --text-muted: #7F8C8D;
-    --border: #E1E8ED;
-    --shadow: 0 8px 24px rgba(149, 157, 165, 0.15);
+    /* Fondos y Textos */
+    --bg-app: #F2F2F7;        /* Gris muy suave (iOS background) */
+    --bg-card: #FFFFFF;
+    --text-main: #1C1C1E;
+    --text-muted: #8E8E93;
+    --border-color: #E5E5EA;
     
-    /* Estados */
-    --success: #27ae60;
-    --error: #e74c3c;
+    /* Sombras refinadas */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 16px 40px rgba(0, 102, 255, 0.15);
 }
 
-/* Modo Oscuro - Variables */
+/* Variables Modo Oscuro - True Dark Mode */
 body.dark-mode {
-    --bg: #121212;
-    --card-bg: #1E1E1E;
-    --text-main: #F5F6F7;
-    --text-muted: #A0A0A0;
-    --border: #333333;
-    --shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-    --fr-light-blue: #1a2a3a;
+    --bg-app: #000000;
+    --bg-card: #1C1C1E;
+    --text-main: #F2F2F7;
+    --text-muted: #98989D;
+    --border-color: #38383A;
+    --primary-light: #0A244A;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 16px 40px rgba(0, 102, 255, 0.2);
 }
 
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    font-family: 'Nunito', sans-serif;
-    background-color: var(--bg);
+    font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-app);
     color: var(--text-main);
-    margin: 0;
-    padding: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    padding-bottom: 90px; /* Espacio para el nav */
-    transition: background 0.3s ease;
+    padding-bottom: 110px; /* Mucho espacio para que la barra inferior no tape nada */
+    transition: background-color 0.4s ease, color 0.4s ease;
     overflow-x: hidden;
 }
 
@@ -57,19 +62,21 @@ body {
    HEADER
    ========================================= */
 header {
-    background: var(--card-bg);
-    height: 60px;
+    background: var(--bg-card);
+    height: 65px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: sticky;
     top: 0;
-    z-index: 1100;
-    box-shadow: var(--shadow);
-    padding: 0 15px;
+    z-index: 1000;
     font-weight: 800;
-    color: var(--fr-blue);
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(var(--bg-card), 0.85); /* Efecto cristal si se soporta */
 }
 
 .streak-container {
@@ -78,43 +85,48 @@ header {
     display: flex;
     align-items: center;
     gap: 4px;
-    background: var(--fr-light-blue);
-    padding: 4px 10px;
+    background: var(--primary-light);
+    padding: 6px 12px;
     border-radius: 20px;
-    font-size: 0.85rem;
-    color: #d35400;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--warning);
 }
 
 #theme-toggle {
     position: absolute;
-    right: 10px;
+    right: 15px;
     background: none;
     border: none;
     cursor: pointer;
-    color: var(--text-main);
-    padding: 8px;
+    color: var(--text-muted);
     display: flex;
     align-items: center;
+    justify-content: center;
+    transition: color 0.3s;
 }
 
+#theme-toggle:active { transform: scale(0.9); }
+
 /* =========================================
-   BARRA DE NAVEGACIÓN INFERIOR (CORREGIDA)
+   BARRA DE NAVEGACIÓN INFERIOR (PERFECTA)
    ========================================= */
 #bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 75px;
-    background: var(--card-bg);
+    height: 85px; /* Altura generosa */
+    background: var(--bg-card);
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-    border-radius: 20px 20px 0 0;
+    justify-content: space-evenly;
+    align-items: flex-start; /* Alineado arriba para dar espacio al safe-area */
+    padding-top: 10px;
+    box-shadow: 0 -4px 30px rgba(0,0,0,0.06);
+    border-radius: 24px 24px 0 0;
     z-index: 2000;
     padding-bottom: env(safe-area-inset-bottom);
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--border-color);
 }
 
 .nav-btn {
@@ -127,34 +139,39 @@ header {
     justify-content: center;
     color: var(--text-muted);
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 8px 2px;
-    min-width: 0; /* Evita que crezca fuera de su caja */
-}
-
-.nav-btn.active {
-    color: var(--fr-blue);
-    transform: translateY(-2px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 0;
 }
 
 .nav-btn .material-symbols-outlined {
     font-size: 26px;
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'grad' 0, 'opsz' 24;
-    margin-bottom: 2px;
+    font-variation-settings: 'FILL' 0, 'wght' 400; /* Grosor ideal */
+    margin-bottom: 4px;
+    transition: all 0.3s ease;
 }
 
-.nav-btn.active .material-symbols-outlined {
-    font-variation-settings: 'FILL' 1, 'wght' 450;
-}
-
-.tab-text {
-    font-size: 10.5px;
-    font-weight: 700;
+.nav-btn .tab-text {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 100%;
-    text-align: center;
+    max-width: 100%;
+}
+
+/* Estado Activo con animación de burbuja */
+.nav-btn.active {
+    color: var(--primary);
+}
+
+.nav-btn.active .material-symbols-outlined {
+    font-variation-settings: 'FILL' 1, 'wght' 500;
+    transform: translateY(-3px) scale(1.1);
+}
+
+.nav-btn.active .tab-text {
+    transform: translateY(-2px);
 }
 
 /* =========================================
@@ -162,65 +179,82 @@ header {
    ========================================= */
 .container {
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     margin: 0 auto;
-    padding: 20px 15px;
+    padding: 20px;
 }
 
 .section {
     display: none;
-    animation: slideIn 0.3s ease-out;
+    animation: fadeInScale 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
 .section.active {
     display: block;
 }
 
-@keyframes slideIn {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes fadeInScale {
+    from { opacity: 0; transform: translateY(15px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 h2 {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: 800;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    color: var(--text-main);
+    margin-bottom: 25px;
+    text-align: center;
 }
 
-h2::before {
-    content: '';
-    width: 5px;
-    height: 24px;
-    background: var(--fr-red);
-    border-radius: 10px;
+h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+p {
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+/* =========================================
+   TARJETAS (CARDS)
+   ========================================= */
+.quiz-card, .theory-box, .badge-card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+    margin-bottom: 20px;
 }
 
 /* =========================================
    FLASHCARDS (SWIPE)
    ========================================= */
 .swipe-wrapper {
-    margin-top: 10px;
-    text-align: center;
+    margin-bottom: 30px;
 }
 
 #swipe-counter {
-    background: var(--fr-blue);
-    color: white;
-    padding: 4px 15px;
-    border-radius: 15px;
     display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 6px 16px;
+    border-radius: 20px;
     font-size: 0.85rem;
-    margin-bottom: 15px;
+    font-weight: 800;
+    margin-bottom: 20px;
 }
 
 .swipe-card {
     width: 100%;
-    height: 320px;
+    height: 340px;
     perspective: 1000px;
     margin-bottom: 25px;
+    cursor: pointer;
 }
 
 .swipe-card-inner {
@@ -240,105 +274,209 @@ h2::before {
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
-    border-radius: 25px;
+    border-radius: 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 30px;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-md);
 }
 
 .swipe-front {
-    background: linear-gradient(135deg, var(--fr-blue), #003a70);
+    background: linear-gradient(145deg, var(--primary), var(--primary-dark));
     color: white;
 }
 
 .swipe-back {
-    background: var(--card-bg);
+    background: var(--bg-card);
     color: var(--text-main);
     transform: rotateY(180deg);
-    border: 3px solid var(--fr-blue);
+    border: 3px solid var(--primary);
 }
 
+/* Controles del Swipe */
 .swipe-controls {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 25px;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 .swipe-btn {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    width: 50px;
-    height: 50px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    color: var(--text-main);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
 }
 
+.swipe-btn:active {
+    transform: scale(0.9);
+}
+
+/* Botón central especial */
 .swipe-btn[onclick*="flipSwipe"] {
-    background: var(--fr-blue);
+    background: var(--primary);
     color: white;
-    width: 65px;
-    height: 65px;
+    width: 70px;
+    height: 70px;
     border: none;
-    box-shadow: 0 6px 15px rgba(0, 85, 164, 0.3);
-}
-
-.swipe-instructions {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-top: 20px;
+    box-shadow: var(--shadow-lg);
 }
 
 /* =========================================
-   QUIZ CARDS & INPUTS
+   INPUTS Y BOTONES GENERALES
    ========================================= */
-.quiz-card {
-    background: var(--card-bg);
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: var(--shadow);
-    text-align: center;
-    border: 1px solid var(--border);
-}
-
-input[type="text"] {
+input[type="text"], select {
     width: 100%;
-    background: var(--bg);
-    border: 2px solid var(--border);
-    padding: 15px;
-    border-radius: 15px;
+    background: var(--bg-app);
+    border: 2px solid var(--border-color);
+    padding: 16px;
+    border-radius: 16px;
     font-size: 1.1rem;
     font-family: inherit;
     color: var(--text-main);
     margin: 15px 0;
     outline: none;
-    transition: border-color 0.3s;
+    transition: all 0.3s ease;
 }
 
-input[type="text"]:focus {
-    border-color: var(--fr-blue);
+input[type="text"]:focus, select:focus {
+    border-color: var(--primary);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 4px var(--primary-light);
 }
 
 .btn-action {
-    background: var(--fr-blue);
+    background: var(--primary);
     color: white;
     border: none;
     padding: 16px;
-    border-radius: 15px;
+    border-radius: 16px;
     width: 100%;
     font-weight: 800;
-    font-size: 1rem;
+    font-size: 1.1rem;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 85, 164, 0.2);
+    transition: all 0.2s;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-action:active {
+    transform: scale(0.96);
+}
+
+/* =========================================
+   MENÚ DE GRAMÁTICA (SCROLL HORIZONTAL)
+   ========================================= */
+.gram-menu {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    padding: 5px 5px 20px 5px;
+    margin-bottom: 10px;
+    scroll-behavior: smooth;
+}
+
+.gram-menu::-webkit-scrollbar { display: none; }
+
+.gram-btn {
+    white-space: nowrap;
+    padding: 12px 20px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    color: var(--text-muted);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.gram-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+}
+
+.theory-content { display: none; }
+.theory-content.active {
+    display: block;
+    animation: fadeInScale 0.3s ease forwards;
+}
+
+/* Tablas de Gramática */
+.grammar-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 15px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.grammar-table th, .grammar-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.95rem;
+}
+
+.grammar-table th { background: var(--bg-app); font-weight: 800; }
+.grammar-table tr:last-child td { border-bottom: none; }
+
+/* =========================================
+   PROGRESO Y BARRAS
+   ========================================= */
+.progress-container {
+    width: 100%;
+    height: 12px;
+    background: var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--primary);
+    width: 0%;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =========================================
+   GRID DE LISTA (VERBOS)
+   ========================================= */
+.flashcard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+}
+
+.flashcard-mini {
+    background: var(--bg-card);
+    padding: 20px 15px;
+    border-radius: 16px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.flashcard-mini.irregular {
+    border-left: 4px solid var(--warning);
 }
 
 /* =========================================
@@ -348,45 +486,40 @@ input[type="text"]:focus {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
-    margin-top: 20px;
 }
 
 .badge-card {
-    background: var(--card-bg);
-    padding: 20px;
-    border-radius: 20px;
     text-align: center;
-    border: 1px solid var(--border);
-    transition: all 0.3s;
-    opacity: 0.5;
+    opacity: 0.4;
     filter: grayscale(1);
+    border: 2px solid transparent;
 }
 
 .badge-card.unlocked {
     opacity: 1;
-    filter: grayscale(0);
-    border-color: var(--accent);
-    background: linear-gradient(to bottom, var(--card-bg), var(--fr-light-blue));
+    filter: none;
+    border-color: var(--gold);
+    background: linear-gradient(180deg, var(--bg-card) 0%, rgba(255, 214, 10, 0.05) 100%);
+    box-shadow: 0 8px 24px rgba(255, 214, 10, 0.2);
+}
+
+#user-card {
+    border-radius: 24px;
+    overflow: hidden;
+    border: none;
+}
+
+#lista-ranking {
+    list-style: none;
 }
 
 #lista-ranking li {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 12px 15px;
-    border-bottom: 1px solid var(--border);
-}
-
-#lista-ranking li:last-child { border-bottom: none; }
-
-/* =========================================
-   ANIMACIONES
-   ========================================= */
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-.loading-spinner {
-    animation: spin 1s linear infinite;
+    align-items: center;
+    padding: 16px;
+    background: var(--bg-app);
+    margin-bottom: 10px;
+    border-radius: 16px;
+    font-weight: 700;
 }
