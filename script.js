@@ -739,21 +739,53 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
    
-    // Carga de Flashcards en el Grid
+   // Asegúrate de que esto esté dentro de tu window.onload o DOMContentLoaded
+    
+    // =================================================================
+    // MEJORAS #2 y #5: CARGAR PREFERENCIAS Y PARTIDA GUARDADA
+    // =================================================================
+    const user = JSON.parse(localStorage.getItem('app_user'));
+    
+    // Recuperar si el audio estaba activado o desactivado
+    const savedAudio = localStorage.getItem('pref_audio');
+    if (savedAudio !== null) {
+        isAudioEnabled = savedAudio === 'true'; // Convierte el string guardado a booleano
+        const icon = document.getElementById('audio-icon');
+        if (icon) icon.innerText = isAudioEnabled ? 'volume_up' : 'volume_off';
+    }
+
+    if (!user) {
+        // Usuario nuevo: Mostrar pantalla de registro/bienvenida
+        const welcomeScreen = document.getElementById('welcome-screen');
+        if (welcomeScreen) welcomeScreen.style.display = 'flex';
+    } else {
+        // Usuario recurrente: Preguntar si quiere continuar
+        const continuar = confirm(`¡Bienvenido de nuevo, ${user.nombre}! 🇫🇷\n\n¿Deseas continuar con tu progreso anterior?\n(Si cancelas, se reiniciarán tus estadísticas locales).`);
+        
+        if (!continuar) {
+            localStorage.removeItem('app_stats'); // Borra las estadísticas (rachas, tests, etc.)
+            alert("Partida reiniciada. ¡Mucho éxito en esta nueva ronda!");
+        }
+    }
+    // =================================================================
+
+    // Carga de Flashcards en el Grid (TU CÓDIGO)
     let html = "";
     if (typeof verbs !== 'undefined' && verbs.length > 0) {
         verbs.forEach(v => {
-            html += createCardHTML(v, false); // false = mini
+            html += createCardHTML(v, false); // false = mini (¡Ya incluye el giro y el audio!)
         });
         const grid = document.getElementById('flashcards-grid');
         if (grid) grid.innerHTML = html;
     }
 
-    // Inicialización de componentes
+    // Inicialización de componentes (TU CÓDIGO)
     if (typeof renderSwipeCard === 'function') renderSwipeCard();
     if (typeof renderBadges === 'function') renderBadges();
+    
+    // MEJORA #4: Añadimos la carga del ranking al iniciar la app
+    if (typeof cargarRanking === 'function') cargarRanking(); 
 });
-
 // ====================== BADGES ======================
 function awardBadge(count, tense, time) {
     let earnedBadges = JSON.parse(localStorage.getItem('badges')) || [];
