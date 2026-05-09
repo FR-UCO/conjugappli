@@ -254,8 +254,6 @@ function flipSwipe() {
     const card = document.querySelector('#swipe-card-container .flashcard');
     if(card) { 
         card.classList.toggle('flipped'); 
-        // Suena al girar la tarjeta grande (si el audio está activado)
-        if (isAudioEnabled) speak(verbs[swipeIndex].fr); 
     } 
 }
 
@@ -264,6 +262,16 @@ document.getElementById('swipe-card-container').addEventListener('touchstart', e
     swipeTouchStartY = e.changedTouches[0].screenY;
 });
 
+document.getElementById('swipe-card-container').addEventListener('touchend', e => {
+    let diffX = e.changedTouches[0].screenX - swipeTouchStartX;
+    let diffY = e.changedTouches[0].screenY - swipeTouchStartY;
+    
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+        if (Math.abs(diffX) > 40) { if (diffX > 0) prevSwipe(); else nextSwipe(); }
+    } else {
+        if (Math.abs(diffY) > 40) flipSwipe();
+    }
+});
 document.getElementById('swipe-card-container').addEventListener('touchend', e => {
     let diffX = e.changedTouches[0].screenX - swipeTouchStartX;
     let diffY = e.changedTouches[0].screenY - swipeTouchStartY;
