@@ -710,8 +710,7 @@ verbs.forEach(v => {
     html += createCardHTML(v, false); // false = mini
 });
 document.getElementById('flashcards-grid').innerHTML = html;
-    }
-    
+     
     // Inicialización de componentes
     renderSwipeCard();
     renderBadges(); 
