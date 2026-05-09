@@ -602,6 +602,9 @@ function checkConj() {
 }
 function advanceConj() { generateConjQuestion(); }
 
+// =========================================================
+// --- FIN DEL TEST DE CONJUGACIÓN ---
+// =========================================================
 function endConjQuiz() {
     localStorage.removeItem('conjSaveState'); 
     document.getElementById('conj-play').style.display = 'none'; 
@@ -611,26 +614,20 @@ function endConjQuiz() {
     let scoreDisplay = document.getElementById('conj-score-display');
     scoreDisplay.innerText = `${conjScore} / ${conjMaxQuestions} (${percentage}%)`;
     
-    // =========================================================
-    // --- 🏆 LOGIQUE DES BADGES CORRIGÉE 🏆 ---
-    // =========================================================
+    // --- 🏆 SISTEMA DE BADGES ---
     if (percentage >= 80) {
-        let tenseSelect = document.getElementById('conj-tense-select'); 
+        let tenseSelect = document.getElementById('conj-tense-select');
         let currentTense = tenseSelect ? tenseSelect.options[tenseSelect.selectedIndex].text : "Verbos";
-
-        // Calcul du temps écoulé
+        
         let durationMs = Date.now() - (window.conjStartTime || Date.now());
         let mins = Math.floor(durationMs / 60000);
         let secs = Math.floor((durationMs % 60000) / 1000);
         let timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
 
-        // APPEL UNIQUE : Fonctionne pour 10, 15, 20, 30, 50, 100, etc.
         awardBadge(conjMaxQuestions.toString(), currentTense, timeStr);
     }
-    // Note : J'ai supprimé les anciens "if (30)" etc. qui étaient en double ici.
-    // =========================================================
     
-    // Affichage du message de score
+    // Mensaje según puntuación
     if(percentage >= 80) { 
         scoreDisplay.style.color = "var(--fr-blue)"; 
         scoreDisplay.innerHTML += "<br>¡Bravo, es excelente! 🏆"; 
@@ -644,11 +641,17 @@ function endConjQuiz() {
         scoreDisplay.innerHTML += "<br>¡Un poco más de práctica! 💪"; 
     }
     
+    // Mostrar errores
     let mistakesDisplay = document.getElementById('conj-mistakes-display');
     if (quizMistakes.length > 0) {
         let html = `<h4 style="text-align: left; color: var(--fr-red);">📝 Resumen de errores:</h4><div class="mistakes-container">`;
         quizMistakes.forEach((m, i) => {
-            html += `<div class="mistake-item"><strong>${i+1}. ${m.pronoun} ___ (${m.verb}) <span style="color:#7f8c8d; font-weight:normal;">${m.comp}</span></strong><br><span style="color:#721c24;">❌ Escribiste: <strong>${m.actual}</strong></span><br><span style="color:#155724;">✅ Correcto: <strong>${m.expected}</strong></span></div>`;
+            html += `<div class="mistake-item">
+                <strong>${i+1}. ${m.pronoun} ___ (${m.verb}) 
+                <span style="color:#7f8c8d; font-weight:normal;">${m.comp}</span></strong><br>
+                <span style="color:#721c24;">❌ Escribiste: <strong>${m.actual}</strong></span><br>
+                <span style="color:#155724;">✅ Correcto: <strong>${m.expected}</strong></span>
+            </div>`;
         });
         mistakesDisplay.innerHTML = html + `</div>`; 
         mistakesDisplay.style.display = 'block';
@@ -656,22 +659,29 @@ function endConjQuiz() {
         mistakesDisplay.style.display = 'none';
     }
 }
+
 function resetConjQuiz() { 
     document.getElementById('conj-setup').style.display = 'block'; 
     document.getElementById('conj-results').style.display = 'none'; 
     document.getElementById('btn-continue-conj').style.display = 'none'; 
 }
 
-// EVENTS & THEME
+// ====================== EVENTS & THEME ======================
 document.addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
         if (document.getElementById('sec-vocab').classList.contains('active')) {
             let playArea = document.getElementById('vocab-play');
-            if(playArea.style.display === 'block') { if (!isCheckingVocab) checkVocab(); else if (document.getElementById('vocab-btn-next').style.display === 'block') advanceVocab(); }
+            if(playArea.style.display === 'block') { 
+                if (!isCheckingVocab) checkVocab(); 
+                else if (document.getElementById('vocab-btn-next').style.display === 'block') advanceVocab(); 
+            }
         }
         else if (document.getElementById('sec-conj').classList.contains('active')) {
             let playArea = document.getElementById('conj-play');
-            if (playArea.style.display === 'block') { if (!isCheckingAnswer) checkConj(); else if (document.getElementById('conj-btn-next').style.display === 'block') advanceConj(); }
+            if (playArea.style.display === 'block') { 
+                if (!isCheckingAnswer) checkConj(); 
+                else if (document.getElementById('conj-btn-next').style.display === 'block') advanceConj(); 
+            }
         }
     }
 });
@@ -689,54 +699,37 @@ function toggleTheme() {
     
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
 }
-// INIT
+
+// ====================== INIT ======================
 window.addEventListener('DOMContentLoaded', () => {
     updateStreak();
 
-    // Lógica de Tema (Modo Oscuro) con Material Symbols
-    if (localStorage.getItem('theme') === 'dark') { 
-        document.body.classList.add('dark-mode'); 
-        
-        // Buscamos el icono específico dentro del botón
+    // Tema oscuro
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
         const themeIcon = document.getElementById('theme-icon');
-        if (themeIcon) {
-            themeIcon.innerText = 'light_mode'; // Nombre del icono del sol
-        }
+        if (themeIcon) themeIcon.innerText = 'light_mode';
     }
-    
+   
     // Carga de Flashcards en el Grid
-let html = "";
-verbs.forEach(v => { 
-    html += createCardHTML(v, false); // false = mini
-});
-document.getElementById('flashcards-grid').innerHTML = html;
-     
+    let html = "";
+    if (typeof verbs !== 'undefined') {
+        verbs.forEach(v => {
+            html += createCardHTML(v, false); // false = mini
+        });
+        document.getElementById('flashcards-grid').innerHTML = html;
+    }
+
     // Inicialización de componentes
     renderSwipeCard();
-    renderBadges(); 
+    renderBadges();
 });
 
-// Registro del Service Worker (PWA)
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-            .then(reg => console.log('SW registrado con éxito'))
-            .catch(error => console.log('Error al registrar SW:', error));
-    });
-}
-// ==========================================
-// --- SYSTÈME DE BADGES (TROPHÉES) ---
-// ==========================================
-
-// ==========================================
-// --- SYSTÈME DE BADGES (TROPHÉES) ---
-// ==========================================
-
+// ====================== BADGES ======================
 function awardBadge(count, tense, time) {
     let earnedBadges = JSON.parse(localStorage.getItem('badges')) || [];
     let badgeId = `${count} ${tense}`;
     
-    // On vérifie si l'ID existe déjà dans nos objets
     let alreadyHasIt = earnedBadges.some(badge => (badge.id === badgeId || badge === badgeId));
     
     if (!alreadyHasIt) {
@@ -775,7 +768,6 @@ function renderBadges() {
 
     let html = "";
     earnedBadges.forEach(badge => {
-        // Support pour les anciens et nouveaux badges
         let name = badge.name || "Estudiante";
         let title = badge.id || badge;
         let date = badge.date || "Hoy";
@@ -800,10 +792,11 @@ function resetBadges() {
         renderBadges();
     }
 }
-// En tu script.js
+
+// ====================== RANKING ======================
 async function sumarPuntoRanking() {
     const user = JSON.parse(localStorage.getItem('app_user'));
-    if (!user) return; // Si no está registrado, no enviamos nada
+    if (!user) return;
 
     fetch(G_SHEETS_URL, {
         method: 'POST',
@@ -815,15 +808,14 @@ async function sumarPuntoRanking() {
         })
     });
 }
+
 async function cargarRanking() {
     const lista = document.getElementById('lista-ranking');
     if (!lista) return;
 
-    // Mensaje temporal mientras descarga
     lista.innerHTML = "<li style='text-align:center; padding:10px; color:#95a5a6;'>Actualizando ranking global...</li>";
 
     try {
-        // Pedimos los datos a Google
         const response = await fetch(G_SHEETS_URL);
         const datos = await response.json(); 
 
@@ -832,26 +824,23 @@ async function cargarRanking() {
             return;
         }
 
-        // Limpiamos y rellenamos la lista con el Top 10
         let html = "";
         datos.forEach((jugador, index) => {
-            // jugador[1] es el Nombre, jugador[2] son los Puntos
+            let icono = "";
+            if (index === 0) icono = "🥇";
+            else if (index === 1) icono = "🥈";
+            else if (index === 2) icono = "🥉";
+            else icono = `<span style="color:#95a5a6;">${index + 1}</span>`;
+
             html += `
-                <li style="display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; color: #2C3E50;">
-                    <span>${index + 1}. <strong>${jugador[1]}</strong></span>
+                <li style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bg-app); border-radius: 12px; margin-bottom: 8px;">
+                    <span>${icono} <strong>${jugador[1]}</strong></span>
                     <span style="color: #0055A4; font-weight: bold;">${jugador[2]} pts</span>
                 </li>`;
         });
         lista.innerHTML = html;
-
     } catch (error) {
         console.error("Error al leer ranking:", error);
         lista.innerHTML = "<li style='text-align:center; padding:10px; color:red;'>No se pudo cargar el ranking.</li>";
     }
 }
-// Dentro de cargarRanking, cuando hagas el html += ...
-let icono = "";
-if (index === 0) icono = "🥇"; // Oro
-else if (index === 1) icono = "🥈"; // Plata
-else if (index === 2) icono = "🥉"; // Bronce
-else icono = `<span style="color:#95a5a6; width:20px; display:inline-block">${index + 1}</span>`;
