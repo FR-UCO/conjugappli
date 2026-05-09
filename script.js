@@ -217,7 +217,7 @@ function createCardHTML(v) {
     
     return `
     <div class="flashcard-mini-container">
-        <div class="flashcard-mini ${irregClass}" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-mini ${irregClass}" onclick="this.classList.toggle('flipped');">
             <div class="flashcard-mini-front">
                 <div class="icon">${v.icon}</div>
                 <div class="fr">${v.fr}</div>
