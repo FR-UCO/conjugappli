@@ -89,20 +89,22 @@
                 <option value="50">50 verbos</option>
                 <option value="100">Todos (100 verbos)</option>
             </select>
-            <button class="btn-action" style="margin-top: 25px;" onclick="startVocabQuiz()">🚀 Comenzar test</button>
-        </div>
-      <div style="display: flex; justify-content: center; gap: 15px; margin: 25px 0; flex-wrap: wrap;">
-    <button onclick="continuarPartida()" style="background: var(--fr-blue, #0055A4); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-        <span class="material-symbols-outlined" style="font-size: 20px;">play_circle</span>
-        Continuar partida
+            <button id="vocab-btn-comenzar-root" class="btn-azul" onclick="startVocabQuiz()">
+        🚀 Comenzar test
     </button>
-    
-    <button onclick="reiniciarProgreso()" style="background: transparent; color: #dc3545; border: 2px solid #dc3545; padding: 10px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 15px;">
-        <span class="material-symbols-outlined" style="font-size: 20px;">restart_alt</span>
-        Nueva partida
-    </button>
-</div>
 
+    <div id="vocab-partida-options" style="display:none; flex-direction:column; gap:10px; margin-top:15px;">
+        <p style="font-size: 0.9em; color: #888;">Tienes una partida pendiente</p>
+        <div style="display:flex; gap:10px; justify-content:center;">
+            <button onclick="continuarVocab()" class="btn-continuar">
+                <span class="material-symbols-outlined">play_circle</span> Continuar
+            </button>
+            <button onclick="nuevaPartidaVocab()" class="btn-nueva">
+                <span class="material-symbols-outlined">restart_alt</span> Nueva
+            </button>
+        </div>
+    </div>
+</div>
         <div id="vocab-play" class="quiz-card" style="display: none;">
             <div id="vocab-progress" style="font-weight: bold; color: var(--fr-blue); margin-bottom: 5px;">Palabra 1 / 10</div>
             <div class="progress-container"><div id="vocab-progress-bar" class="progress-bar"></div></div>
