@@ -265,17 +265,14 @@ p {
     margin-bottom: 20px;
 }
 
-/* FLASHCARDS SWIPE - MÁS GRANDES Y VISIBLES */
-.swipe-wrapper {
-    margin: 20px 0 30px 0;
-}
-
+/* =========================================
+   TARJETAS SWIPE PRINCIPALES (ÉCLAIR) - GRANDES
+   ========================================= */
 #swipe-card-container {
     width: 100%;
-    max-width: 100%;
-    height: 420px;           /* Más alta */
-    perspective: 1200px;
-    margin: 0 auto;
+    height: 460px;           /* Más grande nuevamente */
+    perspective: 1500px;
+    margin: 15px auto;
 }
 
 .flashcard-container {
@@ -288,31 +285,33 @@ p {
     height: 100%;
     position: relative;
     transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transition: transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
     cursor: pointer;
-    border-radius: 24px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.18);
+    border-radius: 28px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
 }
 
 .flashcard.flipped {
     transform: rotateY(180deg);
 }
 
+/* Frente y Reverso */
 .flashcard-front, .flashcard-back {
     position: absolute;
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
-    border-radius: 24px;
+    border-radius: 28px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 30px 20px;
+    text-align: center;
 }
 
 .flashcard-front {
-    background: linear-gradient(145deg, #0055A4, #003d7a);
+    background: linear-gradient(145deg, #0055A4, #003366);
     color: white;
 }
 
@@ -320,25 +319,24 @@ p {
     background: var(--bg-card);
     color: var(--text-main);
     transform: rotateY(180deg);
-    border: 3px solid #0055A4;
+    border: 4px solid #0055A4;
 }
 
 .flashcard .icon {
-    font-size: 4.5rem;        /* Icono más grande */
-    margin-bottom: 20px;
+    font-size: 5.5rem;
+    margin-bottom: 25px;
 }
 
 .flashcard .fr {
-    font-size: 2.1rem;        /* Texto francés más grande */
+    font-size: 2.3rem;
     font-weight: 800;
-    text-align: center;
+    line-height: 1.1;
 }
 
 .flashcard .es {
-    font-size: 1.85rem;
+    font-size: 2rem;
     font-weight: 700;
-    text-align: center;
-    line-height: 1.3;
+    line-height: 1.2;
 }
 /* Controles del Swipe */
 .swipe-controls {
@@ -567,4 +565,14 @@ input[type="text"]:focus, select:focus {
     margin-bottom: 10px;
     border-radius: 16px;
     font-weight: 700;
+}
+/* EMOJI MÁS GRANDE EN TEST DE VOCABULARIO */
+#vocab-icon {
+    font-size: 4.8rem !important;   /* Más grande y visible */
+    margin: 15px 0 10px 0;
+    line-height: 1;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
