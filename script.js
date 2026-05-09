@@ -704,21 +704,30 @@ function toggleTheme() {
 window.addEventListener('DOMContentLoaded', () => {
     updateStreak();
 
-    // Tema oscuro
+    // Lógica de Tema (Modo Oscuro)
     if (localStorage.getItem('theme') === 'dark') {
         document.body.classList.add('dark-mode');
+        
         const themeIcon = document.getElementById('theme-icon');
-        if (themeIcon) themeIcon.innerText = 'light_mode';
+        if (themeIcon) {
+            themeIcon.innerText = 'light_mode';
+        }
     }
    
     // Carga de Flashcards en el Grid
     let html = "";
-    if (typeof verbs !== 'undefined') {
+    if (typeof verbs !== 'undefined' && verbs.length > 0) {
         verbs.forEach(v => {
             html += createCardHTML(v, false); // false = mini
         });
-        document.getElementById('flashcards-grid').innerHTML = html;
+        const grid = document.getElementById('flashcards-grid');
+        if (grid) grid.innerHTML = html;
     }
+
+    // Inicialización de componentes
+    if (typeof renderSwipeCard === 'function') renderSwipeCard();
+    if (typeof renderBadges === 'function') renderBadges();
+});
 
     // Inicialización de componentes
     renderSwipeCard();
