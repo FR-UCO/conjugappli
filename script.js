@@ -960,19 +960,31 @@ async function cargarRanking() {
         lista.innerHTML = "<li style='text-align:center; padding:10px; color:red;'>No se pudo cargar el ranking.</li>";
     }
 }
+// Función para el Botón 1
+function continuarPartida() {
+    // Como el progreso ya se cargó automáticamente, solo enviamos al usuario a estudiar.
+    // 'sec-flashcards' es el ID de tu pestaña de tarjetas. Si quieres que vaya a otra, cámbialo aquí.
+    if (typeof switchTab === 'function') {
+        switchTab('sec-flashcards'); 
+    }
+}
+
+// Función para el Botón 2
 function reiniciarProgreso() {
-    // Aquí sí usamos confirm porque es una acción destructiva iniciada por el usuario
-    const seguro = confirm("¿Estás seguro de que deseas reiniciar tu progreso? Tus estadísticas volverán a cero.");
+    const seguro = confirm("¿Estás seguro de que deseas empezar desde cero? Se reiniciará tu progreso de estudio.");
     
     if (seguro) {
         localStorage.removeItem('app_stats'); // Borra las estadísticas
         
-        // Reiniciamos las flashcards a la carta 1
+        // Volvemos la tarjeta a la número 1
         swipeIndex = 0; 
         if (typeof renderSwipeCard === 'function') {
             renderSwipeCard();
         }
         
-        alert("¡Partida reiniciada! A empezar con toda la energía.");
+        // Lo enviamos a las tarjetas para que empiece de inmediato
+        if (typeof switchTab === 'function') {
+            switchTab('sec-flashcards'); 
+        }
     }
 }
