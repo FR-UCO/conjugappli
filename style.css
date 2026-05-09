@@ -109,29 +109,48 @@ header {
 #theme-toggle:active { transform: scale(0.9); }
 
 /* =========================================
-   BARRA DE NAVEGACIÓN INFERIOR - ESTILO PILL + TRANSPARENCIA
+   BARRA DE NAVEGACIÓN - VERSIÓN FORZADA
    ========================================= */
 #bottom-nav {
-    position: fixed;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 92%;
-    max-width: 420px;
-    height: 78px;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 9999px;           /* Estilo Pill perfecto */
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    z-index: 2000;
-    padding: 8px 10px;
-    border: 1px solid rgba(255,255,255,0.6);
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 85px !important;
+    background: var(--bg-card) !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    box-shadow: 0 -4px 25px rgba(0,0,0,0.15) !important;
+    z-index: 99999 !important;
+    border-top: 1px solid var(--border-color) !important;
+    padding-bottom: env(safe-area-inset-bottom) !important;
 }
 
+.nav-btn {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: var(--text-muted) !important;
+    text-decoration: none !important;
+    font-size: 0.95rem !important;
+    padding: 8px 0 !important;
+}
+
+.nav-btn .material-symbols-outlined {
+    font-size: 28px !important;
+    margin-bottom: 4px !important;
+}
+
+.nav-btn.active {
+    color: var(--primary) !important;
+}
+
+.nav-btn.active .material-symbols-outlined {
+    font-variation-settings: 'FILL' 1 !important;
+}
 /* Modo Oscuro */
 body.dark-mode #bottom-nav {
     background: rgba(28, 28, 30, 0.85);
