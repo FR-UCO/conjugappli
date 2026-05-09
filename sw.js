@@ -2,14 +2,15 @@
 const CACHE_NAME = 'fr-app-cache-v18'; 
 
 const urlsToCache = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icon-192x192.png',
-  './icon-512x512.png',
+  '/',
+  'index.html',
+  'style.css',
+  'script.js',
+  'manifest.json',
+  'icon-192x192.png',
+  'icon-512x512.png',
   'https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap'
 ];
-
 self.addEventListener('install', event => {
   // 2. FORCE L'INSTALLATION IMMÉDIATE
   self.skipWaiting(); 
