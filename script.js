@@ -213,14 +213,16 @@ let swipeTouchStartY = 0;
 function createCardHTML(v) {
     let irregClass = (v.group !== 'er' || v.irreg || v.pron) ? 'irregular-border' : '';
     let safeFr = v.fr.replace(/'/g, "\\'");
+    let safeEs = v.es.replace(/'/g, "\\'");
+    
     return `
-    <div class="flashcard-container">
-        <div class="flashcard" onclick="this.classList.toggle('flipped'); speak('${safeFr}');">
-            <div class="flashcard-front ${irregClass}">
+    <div class="flashcard-mini-container">
+        <div class="flashcard-mini ${irregClass}" onclick="this.classList.toggle('flipped')">
+            <div class="flashcard-mini-front">
                 <div class="icon">${v.icon}</div>
                 <div class="fr">${v.fr}</div>
             </div>
-            <div class="flashcard-back">
+            <div class="flashcard-mini-back">
                 <div class="es">${v.es}</div>
             </div>
         </div>
