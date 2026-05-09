@@ -789,33 +789,40 @@ window.addEventListener('DOMContentLoaded', () => {
    
    // Asegúrate de que esto esté dentro de tu window.onload o DOMContentLoaded
     
-    // =================================================================
-    // MEJORAS #2 y #5: CARGAR PREFERENCIAS Y PARTIDA GUARDADA
+   // =================================================================
+    // CARGAR PREFERENCIAS (AUDIO, TEMA) Y PARTIDA GUARDADA
     // =================================================================
     const user = JSON.parse(localStorage.getItem('app_user'));
     
-    // Recuperar si el audio estaba activado o desactivado
+    // 1. Recuperar preferencia de Audio
     const savedAudio = localStorage.getItem('pref_audio');
     if (savedAudio !== null) {
-        isAudioEnabled = savedAudio === 'true'; // Convierte el string guardado a booleano
+        isAudioEnabled = savedAudio === 'true';
         const icon = document.getElementById('audio-icon');
         if (icon) icon.innerText = isAudioEnabled ? 'volume_up' : 'volume_off';
     }
 
+    // 2. Recuperar preferencia de Modo Oscuro
+    const savedTheme = localStorage.getItem('pref_theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        // Opcional: si tienes un ícono para el botón del sol/luna, actualízalo aquí
+        // document.getElementById('theme-icon').innerText = 'light_mode'; 
+    }
+
+    // 3. Manejo de Usuario (Silencioso)
     if (!user) {
         // Usuario nuevo: Mostrar pantalla de registro/bienvenida
         const welcomeScreen = document.getElementById('welcome-screen');
         if (welcomeScreen) welcomeScreen.style.display = 'flex';
     } else {
-        // Usuario recurrente: Preguntar si quiere continuar
-        const continuar = confirm(`¡Bienvenido de nuevo, ${user.nombre}! 🇫🇷\n\n¿Deseas continuar con tu progreso anterior?\n(Si cancelas, se reiniciarán tus estadísticas locales).`);
-        
-        if (!continuar) {
-            localStorage.removeItem('app_stats'); // Borra las estadísticas (rachas, tests, etc.)
-            alert("Partida reiniciada. ¡Mucho éxito en esta nueva ronda!");
-        }
+        // Usuario recurrente: Retomamos la partida silenciosamente.
+        console.log(`¡Bienvenido de nuevo, ${user.nombre}! Progreso cargado.`);
     }
-    // =================================================================
+
+    // 4. (Opcional) Cargar la última pestaña si implementaste el paso de mi mensaje anterior
+    const pestanaGuardada = localStorage.getItem('ultimaPestana') || 'sec-flashcards';
+    if (typeof switchTab === 'function') switchTab(pestanaGuardada);
 
     // Carga de Flashcards en el Grid (TU CÓDIGO)
     let html = "";
