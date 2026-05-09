@@ -213,6 +213,9 @@ let swipeTouchStartY = 0;
 // VARIABLE PARA EL AUDIO (Mejora #2)
 let isAudioEnabled = true; 
 
+// VARIABLE PARA EL AUDIO (Mejora #2)
+let isAudioEnabled = true; 
+
 function createCardHTML(v, isLarge = false) {
     let irregClass = (v.group !== 'er' || v.irreg || v.pron) ? 'irregular-border' : '';
     let safeFr = v.fr.replace(/'/g, "\\'");
@@ -222,10 +225,12 @@ function createCardHTML(v, isLarge = false) {
     const frontClass = isLarge ? 'flashcard-front' : 'flashcard-mini-front';
     const backClass = isLarge ? 'flashcard-back' : 'flashcard-mini-back';
     
-    // MEJORA #1: Añadimos la función speak() al onclick para que suene al tocar las tarjetas Grid
+    // LA SOLUCIÓN: Solo le agregamos el audio al onclick si NO es la tarjeta grande
+    const audioScript = !isLarge ? `if(isAudioEnabled) speak('${safeFr}');` : '';
+    
     return `
     <div class="${isLarge ? 'flashcard-container' : 'flashcard-mini-container'}">
-        <div class="${baseClass} ${irregClass}" onclick="this.classList.toggle('flipped'); if(isAudioEnabled) speak('${safeFr}');">
+        <div class="${baseClass} ${irregClass}" onclick="this.classList.toggle('flipped'); ${audioScript}">
             <div class="${frontClass}">
                 <div class="icon">${v.icon}</div>
                 <div class="fr">${v.fr}</div>
