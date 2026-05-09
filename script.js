@@ -674,29 +674,52 @@ document.addEventListener("keypress", function(event) {
 
 function toggleTheme() {
     const body = document.body;
-    body.classList.toggle('dark-mode'); 
+    const icon = document.getElementById('theme-icon');
+    
+    body.classList.toggle('dark-mode');
     const isDark = body.classList.contains('dark-mode');
-    document.getElementById('theme-toggle').innerText = isDark ? '☀️' : '🌙';
+    
+    if (icon) {
+        icon.innerText = isDark ? 'light_mode' : 'dark_mode';
+    }
+    
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
 }
-
 // INIT
 window.addEventListener('DOMContentLoaded', () => {
     updateStreak();
-    if (localStorage.getItem('theme') === 'dark') { document.body.classList.add('dark-mode'); document.getElementById('theme-toggle').innerText = '☀️'; }
+
+    // Lógica de Tema (Modo Oscuro) con Material Symbols
+    if (localStorage.getItem('theme') === 'dark') { 
+        document.body.classList.add('dark-mode'); 
+        
+        // Buscamos el icono específico dentro del botón
+        const themeIcon = document.getElementById('theme-icon');
+        if (themeIcon) {
+            themeIcon.innerText = 'light_mode'; // Nombre del icono del sol
+        }
+    }
     
+    // Carga de Flashcards en el Grid
     let html = "";
-    verbs.forEach(v => { html += createCardHTML(v); });
-    document.getElementById('flashcards-grid').innerHTML = html;
+    if (typeof verbs !== 'undefined') {
+        verbs.forEach(v => { html += createCardHTML(v); });
+        document.getElementById('flashcards-grid').innerHTML = html;
+    }
     
+    // Inicialización de componentes
     renderSwipeCard();
-    renderBadges(); // <--- ¡AÑADE ESTA LÍNEA AQUÍ!
+    renderBadges(); 
 });
-  if ('serviceWorker' in navigator) {
+
+// Registro del Service Worker (PWA)
+if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js').catch(error => console.log('Erreur SW:', error));
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('SW registrado con éxito'))
+            .catch(error => console.log('Error al registrar SW:', error));
     });
-  }
+}
 // ==========================================
 // --- SYSTÈME DE BADGES (TROPHÉES) ---
 // ==========================================
@@ -757,7 +780,7 @@ function renderBadges() {
         html += `
         <div class="badge-card">
             <div style="font-size: 0.7rem; opacity: 0.7; margin-bottom: -5px;">${name}</div>
-            <span>🏅</span>
+            <span class="material-symbols-outlined" style="font-size: 40px; color: #FFD700; font-variation-settings: 'FILL' 1;">award_star</span>
             <div class="badge-title">${title}</div>
             <div class="badge-date">📅 ${date}</div>
             <div style="font-size: 0.75rem; color: #0055A4; font-weight: bold; margin-top: 2px;">⏱️ ${time}</div>
@@ -822,3 +845,9 @@ async function cargarRanking() {
         lista.innerHTML = "<li style='text-align:center; padding:10px; color:red;'>No se pudo cargar el ranking.</li>";
     }
 }
+// Dentro de cargarRanking, cuando hagas el html += ...
+let icono = "";
+if (index === 0) icono = "🥇"; // Oro
+else if (index === 1) icono = "🥈"; // Plata
+else if (index === 2) icono = "🥉"; // Bronce
+else icono = `<span style="color:#95a5a6; width:20px; display:inline-block">${index + 1}</span>`;
