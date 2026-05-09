@@ -1,3 +1,35 @@
+// Al inicio del archivo
+const G_SHEETS_URL = "https://script.google.com/macros/s/AKfycbz4akXg7EPytPwD7EsQJVOwJakbSk9k8sxpdhpwMHmcGZnFsZIZyP6o8qxzf7iPOLyG/exec";
+
+// Comprobar registro al cargar la página
+window.onload = function() {
+    const user = JSON.parse(localStorage.getItem('app_user'));
+    if (!user) {
+        document.getElementById('welcome-screen').style.display = 'flex';
+    } else {
+        console.log("Usuario activo:", user.nombre, user.id);
+    }
+};
+
+function registerUser() {
+    const nameInput = document.getElementById('reg-username').value.trim();
+    if (nameInput.length < 2) {
+        alert("Por favor, introduce un nombre válido");
+        return;
+    }
+
+    // Generar código único (ej: ID-123456)
+    const uniqueId = "ID-" + Math.floor(Math.random() * 1000000);
+    
+    const userData = {
+        nombre: nameInput,
+        id: uniqueId,
+        fechaRegistro: new Date().toLocaleDateString()
+    };
+
+    localStorage.setItem('app_user', JSON.stringify(userData));
+    document.getElementById('welcome-screen').style.display = 'none';
+}
 // --- BASE DE DONNÉES ÉTENDUE : 100 VERBES ---
 const verbs = [
     { fr: "parler", es: "hablar", icon: "🗣️", group: "er", aux: "avoir", pp: "parlé", comp: "français" },
