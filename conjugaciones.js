@@ -406,12 +406,47 @@ function advanceConj() {
 // =========================================================
 function endConjQuiz() {
     localStorage.removeItem('conjSaveState');
-    document.getElementById('conj-play').style.display = 'none';
-    document.getElementById('conj-results').style.display = 'block';
+    
+    const play = document.getElementById('conj-play');
+    const results = document.getElementById('conj-results');
+    
+    if (play) play.style.display = 'none';
+    if (results) results.style.display = 'block';
 
     const percentage = Math.round((conjScore / conjMaxQuestions) * 100);
     const scoreDisplay = document.getElementById('conj-score-display');
-    scoreDisplay.innerText = `${conjScore} / ${conjMaxQuestions} (${percentage}%)`;
+    
+    if (scoreDisplay) {
+        scoreDisplay.innerText = `${conjScore} / ${conjMaxQuestions} (${percentage}%)`;
+
+        if (percentage >= 80) {
+            scoreDisplay.style.color = "var(--fr-blue)";
+            scoreDisplay.innerHTML += "<br>¡Bravo, es excelente! 🏆";
+        } else if (percentage >= 50) {
+            scoreDisplay.style.color = "#f39c12";
+            scoreDisplay.innerHTML += "<br>¡Vas por buen camino! 👍";
+        } else {
+            scoreDisplay.style.color = "var(--fr-red)";
+            scoreDisplay.innerHTML += "<br>¡Un poco más de práctica! 💪";
+        }
+    }
+
+    // Mostrar errores
+    const mistakesDisplay = document.getElementById('conj-mistakes-display');
+    if (mistakesDisplay && quizMistakes.length > 0) {
+        let html = `<h4 style="text-align: left; color: var(--fr-red);">📝 Resumen de errores:</h4><div class="mistakes-container">`;
+        quizMistakes.forEach((m, i) => {
+            html += `<div class="mistake-item">
+                <strong>${i+1}. ${m.pronoun} ___ (${m.verb})</strong><br>
+                <span style="color:#721c24;">❌ Escribiste: <strong>${m.actual}</strong></span><br>
+                <span style="color:#155724;">✅ Correcto: <strong>${m.expected}</strong></span>
+            </div>`;
+        });
+        mistakesDisplay.innerHTML = html + `</div>`;
+    }
+
+    actualizarBotonesVocab(); // Si existe
+}
 
     // Sistema de badges
     if (percentage >= 80) {
