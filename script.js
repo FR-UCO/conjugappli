@@ -36,7 +36,6 @@ function registerUser() {
 
     localStorage.setItem('app_user', JSON.stringify(userData));
     document.getElementById('welcome-screen').style.display = 'none';
-   
     console.log("Usuario registrado:", userData);
 }
 
@@ -54,7 +53,9 @@ function switchTab(tabId) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
    
-    document.getElementById(tabId).classList.add('active');
+    const section = document.getElementById(tabId);
+    if (section) section.classList.add('active');
+
     const btn = document.getElementById('btn-' + tabId);
     if (btn) btn.classList.add('active');
 
@@ -66,10 +67,13 @@ function switchTab(tabId) {
 
 function actualizarTarjetaUsuario() {
     const user = JSON.parse(localStorage.getItem('app_user'));
-    if (user) {
-        document.getElementById('display-username').innerText = user.nombre || '---';
-        document.getElementById('display-userid').innerText = user.id || 'ID-000000';
-    }
+    if (!user) return;
+
+    const nameEl = document.getElementById('display-username');
+    const idEl = document.getElementById('display-userid');
+
+    if (nameEl) nameEl.innerText = user.nombre || '---';
+    if (idEl) idEl.innerText = user.id || 'ID-000000';
 }
 
 // ====================== STREAK ======================
@@ -102,6 +106,7 @@ let swipeTouchStartX = 0;
 let swipeTouchStartY = 0;
 
 function createCardHTML(v, isLarge = false) {
+    if (!v) return '';
     const irregClass = (v.group !== 'er' || v.irreg || v.pron) ? 'irregular-border' : '';
     const safeFr = v.fr.replace(/'/g, "\\'");
     
@@ -135,26 +140,12 @@ function renderSwipeCard() {
     }
 
     setTimeout(() => {
-        if (isAudioEnabled && verbs && verbs[swipeIndex]) {
-            speak(verbs[swipeIndex].fr);
-        }
+        if (isAudioEnabled && verbs && verbs[swipeIndex]) speak(verbs[swipeIndex].fr);
     }, 150);
 }
 
-function prevSwipe() {
-    if (swipeIndex > 0) {
-        swipeIndex--;
-        renderSwipeCard();
-    }
-}
-
-function nextSwipe() {
-    if (verbs && swipeIndex < verbs.length - 1) {
-        swipeIndex++;
-        renderSwipeCard();
-    }
-}
-
+function prevSwipe() { if (swipeIndex > 0) { swipeIndex--; renderSwipeCard(); } }
+function nextSwipe() { if (verbs && swipeIndex < verbs.length - 1) { swipeIndex++; renderSwipeCard(); } }
 function flipSwipe() {
     const card = document.querySelector('#swipe-card-container .flashcard');
     if (card) card.classList.toggle('flipped');
@@ -164,9 +155,7 @@ function flipSwipe() {
 function toggleAudio() {
     isAudioEnabled = !isAudioEnabled;
     const icon = document.getElementById('audio-icon');
-    if (icon) {
-        icon.innerText = isAudioEnabled ? 'volume_up' : 'volume_off';
-    }
+    if (icon) icon.innerText = isAudioEnabled ? 'volume_up' : 'volume_off';
     localStorage.setItem('pref_audio', isAudioEnabled);
 }
 
@@ -174,10 +163,8 @@ function toggleAudio() {
 function toggleTheme() {
     const body = document.body;
     const icon = document.getElementById('theme-icon');
-   
     body.classList.toggle('dark-mode');
     const isDark = body.classList.contains('dark-mode');
-   
     if (icon) icon.innerText = isDark ? 'light_mode' : 'dark_mode';
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
 }
@@ -198,18 +185,13 @@ function awardBadge(count, tense, time) {
 
     const today = new Date().toLocaleDateString('es-ES');
 
-    earnedBadges.push({
-        id: badgeId,
-        date: today,
-        name: studentName,
-        duration: time || "--"
-    });
+    earnedBadges.push({ id: badgeId, date: today, name: studentName, duration: time || "--" });
 
     localStorage.setItem('badges', JSON.stringify(earnedBadges));
     alert(`🎉 ¡INCREÍBLE ${studentName.toUpperCase()}! Has ganado:\n${badgeId}`);
    
     if (typeof renderBadges === 'function') renderBadges();
-    sumarPuntoRanking(3); // +3 puntos por insignia
+    sumarPuntoRanking(3);
 }
 
 function renderBadges() {
@@ -254,17 +236,11 @@ async function sumarPuntoRanking(cantidad = 1) {
             method: 'POST',
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                id: user.id,
-                nombre: user.nombre,
-                puntos: cantidad
-            })
+            body: JSON.stringify({ id: user.id, nombre: user.nombre, puntos: cantidad })
         });
-        console.log(`✅ ${cantidad} punto(s) enviado(s) para ${user.nombre}`);
-        return true;
-    } catch (error) {
-        console.warn("No se pudo enviar punto al ranking:", error);
-        return false;
+        console.log(`✅ ${cantidad} punto(s) enviados`);
+    } catch (e) {
+        console.warn("Error enviando puntos:", e);
     }
 }
 
@@ -278,39 +254,86 @@ async function cargarRanking() {
         const res = await fetch(G_SHEETS_URL);
         const datos = await res.json();
 
-        if (!datos?.length) {
+        if (!datos || datos.length === 0) {
             lista.innerHTML = "<li style='text-align:center;padding:10px;'>Aún no hay puntuaciones.</li>";
             return;
         }
 
         let html = "";
         datos.forEach((jugador, i) => {
+            const nombre = jugador.nombre || jugador[1] || 'Usuario';
+            const puntos = jugador.puntos || jugador[2] || 0;
             const icono = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `<span style="color:#95a5a6;">${i+1}</span>`;
+
             html += `
             <li style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--bg-app);border-radius:12px;margin-bottom:8px;">
-                <span>${icono} <strong>${jugador.nombre || jugador[1]}</strong></span>
-                <span style="color:#0055A4;font-weight:bold;">${jugador.puntos || jugador[2]} pts</span>
+                <span>${icono} <strong>${nombre}</strong></span>
+                <span style="color:#0055A4;font-weight:bold;">${puntos} pts</span>
             </li>`;
         });
         lista.innerHTML = html;
     } catch (e) {
-        console.error(e);
         lista.innerHTML = "<li style='text-align:center;color:red;padding:10px;'>Error al cargar ranking</li>";
     }
+}
+
+// ====================== TEST - CONTINUAR / REINICIAR ======================
+let testActual = {
+    indice: 0,
+    preguntas: [],
+    puntos: 0,
+    activo: false
+};
+
+function continuarPartida() {
+    const guardado = localStorage.getItem('progreso_test_vocabulario');
+    if (!guardado) {
+        alert("No tienes ninguna partida guardada. ¡Inicia una nueva!");
+        return;
+    }
+
+    testActual = JSON.parse(guardado);
+    testActual.activo = true;
+
+    if (typeof renderizarTest === 'function') renderizarTest();
+
+    // Cambiar vistas (ajusta los IDs según tu HTML)
+    const setup = document.getElementById('setup-test-container') || document.getElementById('conj-setup');
+    const game = document.getElementById('game-test-container') || document.getElementById('conj-play');
+
+    if (setup) setup.style.display = 'none';
+    if (game) game.style.display = 'block';
+}
+
+function reiniciarProgreso() {
+    if (!confirm("¿Estás seguro? Se borrará tu avance actual.")) return;
+
+    localStorage.removeItem('progreso_test_vocabulario');
+    testActual = { indice: 0, preguntas: [], puntos: 0, activo: false };
+
+    const setup = document.getElementById('setup-test-container') || document.getElementById('conj-setup');
+    const game = document.getElementById('game-test-container') || document.getElementById('conj-play');
+
+    if (setup) setup.style.display = 'block';
+    if (game) game.style.display = 'none';
+
+    alert("Partida reiniciada.");
+}
+
+function guardarProgresoTest() {
+    localStorage.setItem('progreso_test_vocabulario', JSON.stringify(testActual));
 }
 
 // ====================== INICIALIZACIÓN ======================
 window.addEventListener('DOMContentLoaded', () => {
     updateStreak();
 
-    // Tema
     if (localStorage.getItem('theme') === 'dark') {
         document.body.classList.add('dark-mode');
         const icon = document.getElementById('theme-icon');
         if (icon) icon.innerText = 'light_mode';
     }
 
-    // Audio
     const savedAudio = localStorage.getItem('pref_audio');
     if (savedAudio !== null) {
         isAudioEnabled = savedAudio === 'true';
@@ -318,10 +341,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (icon) icon.innerText = isAudioEnabled ? 'volume_up' : 'volume_off';
     }
 
-    // Cargar teoría
     if (typeof cargarTeoria === 'function') cargarTeoria();
-
-    // Inicializaciones principales
     if (typeof renderSwipeCard === 'function') renderSwipeCard();
     if (typeof renderBadges === 'function') renderBadges();
     if (typeof cargarRanking === 'function') cargarRanking();
@@ -347,11 +367,12 @@ window.addEventListener('DOMContentLoaded', () => {
             const diffY = e.changedTouches[0].screenY - swipeTouchStartY;
 
             if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
-                if (diffX > 0) prevSwipe();
-                else nextSwipe();
+                diffX > 0 ? prevSwipe() : nextSwipe();
             } else if (Math.abs(diffY) > 40) {
                 flipSwipe();
             }
         });
     }
+
+    actualizarTarjetaUsuario();
 });
