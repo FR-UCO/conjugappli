@@ -1,1 +1,404 @@
+ <div id="sec-theory" class="section">
+        <h2>Lecciones de Gramática</h2>
+        
+        <div class="gram-menu">
+            <button class="gram-btn active" onclick="showGrammar('gram-present', this)">Présent</button>
+            <button class="gram-btn gram-btn-orange" onclick="showGrammar('gram-pronominal', this)">Pronominaux (se...)</button>
+            <button class="gram-btn" onclick="showGrammar('gram-pc', this)">Passé Composé</button>
+            <button class="gram-btn gram-btn-special" onclick="showGrammar('gram-pp', this)">Participes passés</button>
+            <button class="gram-btn" onclick="showGrammar('gram-imparfait', this)">Imparfait</button>
+            <button class="gram-btn" onclick="showGrammar('gram-pqp', this)">Plus-que-parfait</button>
+            <button class="gram-btn" onclick="showGrammar('gram-futur', this)">Futur Simple</button>
+            <button class="gram-btn" onclick="showGrammar('gram-proche', this)">Futur Proche</button>
+            <button class="gram-btn" onclick="showGrammar('gram-recent', this)">Passé Récent</button>
+        </div>
 
+        <div id="gram-present" class="theory-content active">
+            <div class="theory-box">
+                <h3>Le Présent de l'Indicatif (El Presente)</h3>
+                <p>Se utiliza para describir acciones que ocurren en el momento de hablar, verdades generales o rutinas.</p>
+                <p>A diferencia del español, en francés <strong>siempre se debe escribir y pronunciar el pronombre sujeto</strong> (je, tu, il...).</p>
+                
+                <div class="note">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>Je mange une pomme.</em> (Como una manzana).<br>• <em>Nous habitons à Paris.</em> (Vivimos en París).</div>
+                
+                <table class="grammar-table">
+                    <tr><th>Pronombre</th><th>-ER (parler)</th><th>-IR (finir)</th><th>-RE (vendre)</th></tr>
+                    <tr><td>Je</td><td>parl<span class="highlight">-e</span></td><td>fin<span class="highlight">-is</span></td><td>vend<span class="highlight">-s</span></td></tr>
+                    <tr><td>Tu</td><td>parl<span class="highlight">-es</span></td><td>fin<span class="highlight">-is</span></td><td>vend<span class="highlight">-s</span></td></tr>
+                    <tr><td>Il/Elle/On</td><td>parl<span class="highlight">-e</span></td><td>fin<span class="highlight">-it</span></td><td>vend<span class="highlight">-</span></td></tr>
+                    <tr><td>Nous</td><td>parl<span class="highlight">-ons</span></td><td>fin<span class="highlight">-issons</span></td><td>vend<span class="highlight">-ons</span></td></tr>
+                    <tr><td>Vous</td><td>parl<span class="highlight">-ez</span></td><td>fin<span class="highlight">-issez</span></td><td>vend<span class="highlight">-ez</span></td></tr>
+                    <tr><td>Ils/Elles</td><td>parl<span class="highlight">-ent</span></td><td>fin<span class="highlight">-issent</span></td><td>vend<span class="highlight">-ent</span></td></tr>
+                </table>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación rodea al verbo conjugado: <strong>ne + verbo + pas</strong>.</p>
+                    <p>• Je <strong>ne</strong> parle <strong>pas</strong> anglais. <em>(No hablo inglés)</em>.</p>
+                    <p>• Il <strong>n'</strong>aime <strong>pas</strong> le chocolat. <em>(No le gusta el chocolate)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-pronominal" class="theory-content">
+            <div class="theory-box" style="border-left-color: var(--fr-orange);">
+                <h3 style="color: var(--fr-orange);">Les Verbes Pronominaux (Verbos reflexivos)</h3>
+                <p>Son verbos que se realizan a uno mismo (ej: <em>se laver</em> - lavarse). Siempre necesitan un <strong>pronombre reflexivo</strong> que concuerda con el sujeto.</p>
+                
+                <table class="grammar-table">
+                    <tr><td>Je <strong>me</strong> / <strong>m'</strong></td><td>Nous <strong>nous</strong></td></tr>
+                    <tr><td>Tu <strong>te</strong> / <strong>t'</strong></td><td>Vous <strong>vous</strong></td></tr>
+                    <tr><td>Il/Elle/On <strong>se</strong> / <strong>s'</strong></td><td>Ils/Elles <strong>se</strong> / <strong>s'</strong></td></tr>
+                </table>
+                <div class="note">💡 Se usa <strong>m', t', s'</strong> cuando el verbo empieza por vocal o 'h' muda.</div>
+
+                <h4>Conjugación afirmativa</h4>
+                <p>• <strong>Présent:</strong> Je <u>me</u> lève à 7h. <em>(Me levanto a las 7)</em>.</p>
+                <p>• <strong>Passé Composé:</strong> Siempre usan el auxiliar <strong>ÊTRE</strong>. <br><em>Elle s'est lavé<strong>e</strong>. / Nous nous sommes levé<strong>s</strong>.</em></p>
+                <p>• <strong>Futur Proche:</strong> El pronombre va antes del infinitivo. <br><em>Je vais <u>me</u> coucher.</em></p>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación "ne ... pas" rodea el bloque [pronombre + verbo].</p>
+                    <p>• <strong>Présent:</strong> Je <strong>ne</strong> me lève <strong>pas</strong> tôt. <em>(No me levanto temprano)</em>.</p>
+                    <p>• <strong>Passé Composé:</strong> Je <strong>ne</strong> me suis <strong>pas</strong> douché. <em>(No me he duchado)</em>.</p>
+                    <p>• <strong>Futur Proche:</strong> Tu <strong>ne</strong> vas <strong>pas</strong> te promener. <em>(No vas a pasear)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-pc" class="theory-content">
+            <div class="theory-box" style="border-left-color: #27ae60;">
+                <h3 style="color: #27ae60;">Le Passé Composé (Pretérito Perfecto / Indefinido)</h3>
+                <p>Se utiliza para acciones pasadas puntuales, específicas y terminadas.</p>
+                <p><strong>Formación:</strong> Auxiliar (<strong>Avoir</strong> o <strong>Être</strong> en presente) + <strong>Participio Pasado</strong>.</p>
+                
+                <div class="note">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>J'ai mangé au restaurant.</em> (He comido en el restaurante).<br>• <em>Elle est allée à l'école.</em> (Ella ha ido a la escuela).</div>
+
+                <h4 style="margin-top: 15px;">¿Avoir o Être? La regla DR & MRS VANDERTRAMP</h4>
+<p>El 90% de los verbos usan "Avoir". Los siguientes verbos de movimiento/estado y TODOS los verbos pronominales usan <strong>Être</strong>:</p>
+
+            <table class="vander-table" style="width: 100%; text-align: left; border-collapse: collapse;">
+                <tr><td colspan="3" style="text-align:center; background:#f0f0f0; color:#333; padding: 8px;"><strong>DR & MRS</strong></td></tr>
+                <tr><td><strong>D</strong>evenir</td><td>convertirse</td><td><em>devenu</em></td></tr>
+                <tr><td><strong>R</strong>evenir</td><td>volver</td><td><em>revenu</em></td></tr>
+                <tr><td><strong>M</strong>onter</td><td>subir</td><td><em>monté</em></td></tr>
+                <tr><td><strong>R</strong>ester</td><td>quedarse</td><td><em>resté</em></td></tr>
+                <tr><td><strong>S</strong>ortir</td><td>salir</td><td><em>sorti</em></td></tr>
+
+                <tr><td colspan="3" style="text-align:center; background:#f0f0f0; color:#333; padding: 8px; margin-top: 10px;"><strong>VANDERTRAMP</strong></td></tr>
+                <tr><td><strong>V</strong>enir</td><td>venir</td><td><em>venu</em></td></tr>
+                <tr><td><strong>A</strong>ller</td><td>ir</td><td><em>allé</em></td></tr>
+                <tr><td><strong>N</strong>aître</td><td>nacer</td><td><em>né</em></td></tr>
+                <tr><td><strong>D</strong>escendre</td><td>bajar</td><td><em>descendu</em></td></tr>
+                <tr><td><strong>E</strong>ntrer</td><td>entrar</td><td><em>entré</em></td></tr>
+                <tr><td><strong>R</strong>entrer</td><td>volver a entrar</td><td><em>rentré</em></td></tr>
+                <tr><td><strong>T</strong>omber</td><td>caer</td><td><em>tombé</em></td></tr>
+                <tr><td><strong>R</strong>etourner</td><td>regresar</td><td><em>retourné</em></td></tr>
+                <tr><td><strong>A</strong>rriver</td><td>llegar</td><td><em>arrivé</em></td></tr>
+                <tr><td><strong>M</strong>ourir</td><td>morir</td><td><em>mort</em></td></tr>
+                <tr><td><strong>P</strong>artir</td><td>irse</td><td><em>parti</em></td></tr>
+                
+                <tr><td colspan="3" style="text-align:center; color:#555; background:#fdfdfd; padding: 12px;"><em>+ Todos los verbos reflexivos<br>(se doucher, se lever...)</em></td></tr>
+            </table>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación rodea ÚNICAMENTE al verbo auxiliar (avoir/être).</p>
+                    <p>• Je <strong>n'</strong>ai <strong>pas</strong> mangé. <em>(No he comido)</em>.</p>
+                    <p>• Ils <strong>ne</strong> sont <strong>pas</strong> venus. <em>(Ellos no han venido)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-pp" class="theory-content">
+            <div class="theory-box" style="border-left-color: var(--fr-purple);">
+                <h3 style="color: var(--fr-purple);">Dictionnaire: 100 Participes Passés Irréguliers</h3>
+                <p>Encuentra rápidamente el auxiliar y el participio pasado de los verbos irregulares más comunes.</p>
+                
+                <input type="text" id="search-pp" placeholder="🔍 Escribe un verbo en francés o español..." onkeyup="filterPP()" style="margin-bottom: 15px; border: 2px solid var(--fr-purple);">
+                
+                <div style="max-height: 500px; overflow-y: auto; border: 1px solid #ddd; border-radius: 8px;">
+                    <table class="grammar-table" id="table-pp" style="margin: 0; border: none;">
+                        <thead style="position: sticky; top: 0; z-index: 1;">
+                            <tr><th>Infinitivo</th><th>Passé Composé</th><th>Español</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>abattre</strong></td><td>avoir <span class="highlight">abattu</span></td><td>derribar</td></tr>
+                            <tr><td><strong>admettre</strong></td><td>avoir <span class="highlight">admis</span></td><td>admitir</td></tr>
+                            <tr><td><strong>aller</strong></td><td>être <span class="highlight">allé</span></td><td>ir</td></tr>
+                            <tr><td><strong>apercevoir</strong></td><td>avoir <span class="highlight">aperçu</span></td><td>percibir</td></tr>
+                            <tr><td><strong>apparaître</strong></td><td>être <span class="highlight">apparu</span></td><td>aparecer</td></tr>
+                            <tr><td><strong>appartenir</strong></td><td>avoir <span class="highlight">appartenu</span></td><td>pertenecer</td></tr>
+                            <tr><td><strong>apprendre</strong></td><td>avoir <span class="highlight">appris</span></td><td>aprender</td></tr>
+                            <tr><td><strong>asseoir</strong></td><td>avoir <span class="highlight">assis</span></td><td>sentar</td></tr>
+                            <tr><td><strong>atteindre</strong></td><td>avoir <span class="highlight">atteint</span></td><td>alcanzar</td></tr>
+                            <tr><td><strong>attendre</strong></td><td>avoir <span class="highlight">attendu</span></td><td>esperar</td></tr>
+                            <tr><td><strong>avoir</strong></td><td>avoir <span class="highlight">eu</span></td><td>tener / haber</td></tr>
+                            <tr><td><strong>battre</strong></td><td>avoir <span class="highlight">battu</span></td><td>batir / golpear</td></tr>
+                            <tr><td><strong>boire</strong></td><td>avoir <span class="highlight">bu</span></td><td>beber</td></tr>
+                            <tr><td><strong>comprendre</strong></td><td>avoir <span class="highlight">compris</span></td><td>comprender</td></tr>
+                            <tr><td><strong>conclure</strong></td><td>avoir <span class="highlight">conclu</span></td><td>concluir</td></tr>
+                            <tr><td><strong>conduire</strong></td><td>avoir <span class="highlight">conduit</span></td><td>conducir</td></tr>
+                            <tr><td><strong>connaître</strong></td><td>avoir <span class="highlight">connu</span></td><td>conocer</td></tr>
+                            <tr><td><strong>consentir</strong></td><td>avoir <span class="highlight">consenti</span></td><td>consentir</td></tr>
+                            <tr><td><strong>construire</strong></td><td>avoir <span class="highlight">construit</span></td><td>construir</td></tr>
+                            <tr><td><strong>contredire</strong></td><td>avoir <span class="highlight">contredit</span></td><td>contradecir</td></tr>
+                            <tr><td><strong>convaincre</strong></td><td>avoir <span class="highlight">convaincu</span></td><td>convencer</td></tr>
+                            <tr><td><strong>convenir</strong></td><td>être/avoir <span class="highlight">convenu</span></td><td>convenir</td></tr>
+                            <tr><td><strong>courir</strong></td><td>avoir <span class="highlight">couru</span></td><td>correr</td></tr>
+                            <tr><td><strong>couvrir</strong></td><td>avoir <span class="highlight">couvert</span></td><td>cubrir</td></tr>
+                            <tr><td><strong>craindre</strong></td><td>avoir <span class="highlight">craint</span></td><td>temer</td></tr>
+                            <tr><td><strong>croire</strong></td><td>avoir <span class="highlight">cru</span></td><td>creer</td></tr>
+                            <tr><td><strong>cuire</strong></td><td>avoir <span class="highlight">cuit</span></td><td>cocinar / cocer</td></tr>
+                            <tr><td><strong>décevoir</strong></td><td>avoir <span class="highlight">déçu</span></td><td>decepcionar</td></tr>
+                            <tr><td><strong>découvrir</strong></td><td>avoir <span class="highlight">découvert</span></td><td>descubrir</td></tr>
+                            <tr><td><strong>décrire</strong></td><td>avoir <span class="highlight">décrit</span></td><td>describir</td></tr>
+                            <tr><td><strong>déduire</strong></td><td>avoir <span class="highlight">déduit</span></td><td>deducir</td></tr>
+                            <tr><td><strong>défendre</strong></td><td>avoir <span class="highlight">défendu</span></td><td>defender / prohibir</td></tr>
+                            <tr><td><strong>descendre</strong></td><td>être/avoir <span class="highlight">descendu</span></td><td>bajar</td></tr>
+                            <tr><td><strong>détruire</strong></td><td>avoir <span class="highlight">détruit</span></td><td>destruir</td></tr>
+                            <tr><td><strong>devenir</strong></td><td>être <span class="highlight">devenu</span></td><td>convertirse</td></tr>
+                            <tr><td><strong>devoir</strong></td><td>avoir <span class="highlight">dû</span></td><td>deber</td></tr>
+                            <tr><td><strong>dire</strong></td><td>avoir <span class="highlight">dit</span></td><td>decir</td></tr>
+                            <tr><td><strong>disparaître</strong></td><td>avoir <span class="highlight">disparu</span></td><td>desaparecer</td></tr>
+                            <tr><td><strong>dormir</strong></td><td>avoir <span class="highlight">dormi</span></td><td>dormir</td></tr>
+                            <tr><td><strong>écrire</strong></td><td>avoir <span class="highlight">écrit</span></td><td>escribir</td></tr>
+                            <tr><td><strong>élire</strong></td><td>avoir <span class="highlight">élu</span></td><td>elegir</td></tr>
+                            <tr><td><strong>endormir</strong></td><td>avoir <span class="highlight">endormi</span></td><td>adormecer</td></tr>
+                            <tr><td><strong>entendre</strong></td><td>avoir <span class="highlight">entendu</span></td><td>escuchar / oír</td></tr>
+                            <tr><td><strong>entreprendre</strong></td><td>avoir <span class="highlight">entrepris</span></td><td>emprender</td></tr>
+                            <tr><td><strong>envoyer</strong></td><td>avoir <span class="highlight">envoyé</span></td><td>enviar</td></tr>
+                            <tr><td><strong>éteindre</strong></td><td>avoir <span class="highlight">éteint</span></td><td>apagar</td></tr>
+                            <tr><td><strong>être</strong></td><td>avoir <span class="highlight">été</span></td><td>ser / estar</td></tr>
+                            <tr><td><strong>faire</strong></td><td>avoir <span class="highlight">fait</span></td><td>hacer</td></tr>
+                            <tr><td><strong>falloir</strong></td><td>avoir <span class="highlight">fallu</span></td><td>ser necesario</td></tr>
+                            <tr><td><strong>fuir</strong></td><td>avoir <span class="highlight">fui</span></td><td>huir</td></tr>
+                            <tr><td><strong>interdire</strong></td><td>avoir <span class="highlight">interdit</span></td><td>prohibir</td></tr>
+                            <tr><td><strong>intervenir</strong></td><td>être <span class="highlight">intervenu</span></td><td>intervenir</td></tr>
+                            <tr><td><strong>joindre</strong></td><td>avoir <span class="highlight">joint</span></td><td>unir / contactar</td></tr>
+                            <tr><td><strong>lire</strong></td><td>avoir <span class="highlight">lu</span></td><td>leer</td></tr>
+                            <tr><td><strong>maintenir</strong></td><td>avoir <span class="highlight">maintenu</span></td><td>mantener</td></tr>
+                            <tr><td><strong>mentir</strong></td><td>avoir <span class="highlight">menti</span></td><td>mentir</td></tr>
+                            <tr><td><strong>mettre</strong></td><td>avoir <span class="highlight">mis</span></td><td>poner</td></tr>
+                            <tr><td><strong>mordre</strong></td><td>avoir <span class="highlight">mordu</span></td><td>morder</td></tr>
+                            <tr><td><strong>mourir</strong></td><td>être <span class="highlight">mort</span></td><td>morir</td></tr>
+                            <tr><td><strong>naître</strong></td><td>être <span class="highlight">né</span></td><td>nacer</td></tr>
+                            <tr><td><strong>nuire</strong></td><td>avoir <span class="highlight">nui</span></td><td>perjudicar</td></tr>
+                            <tr><td><strong>obtenir</strong></td><td>avoir <span class="highlight">obtenu</span></td><td>obtener</td></tr>
+                            <tr><td><strong>offrir</strong></td><td>avoir <span class="highlight">offert</span></td><td>ofrecer</td></tr>
+                            <tr><td><strong>ouvrir</strong></td><td>avoir <span class="highlight">ouvert</span></td><td>abrir</td></tr>
+                            <tr><td><strong>paraître</strong></td><td>avoir <span class="highlight">paru</span></td><td>parecer</td></tr>
+                            <tr><td><strong>partir</strong></td><td>être <span class="highlight">parti</span></td><td>irse / salir</td></tr>
+                            <tr><td><strong>peindre</strong></td><td>avoir <span class="highlight">peint</span></td><td>pintar</td></tr>
+                            <tr><td><strong>perdre</strong></td><td>avoir <span class="highlight">perdu</span></td><td>perder</td></tr>
+                            <tr><td><strong>permettre</strong></td><td>avoir <span class="highlight">permis</span></td><td>permitir</td></tr>
+                            <tr><td><strong>plaire</strong></td><td>avoir <span class="highlight">plu</span></td><td>gustar</td></tr>
+                            <tr><td><strong>pleuvoir</strong></td><td>avoir <span class="highlight">plu</span></td><td>llover</td></tr>
+                            <tr><td><strong>pouvoir</strong></td><td>avoir <span class="highlight">pu</span></td><td>poder</td></tr>
+                            <tr><td><strong>prendre</strong></td><td>avoir <span class="highlight">pris</span></td><td>tomar</td></tr>
+                            <tr><td><strong>produire</strong></td><td>avoir <span class="highlight">produit</span></td><td>producir</td></tr>
+                            <tr><td><strong>promettre</strong></td><td>avoir <span class="highlight">promis</span></td><td>prometer</td></tr>
+                            <tr><td><strong>recevoir</strong></td><td>avoir <span class="highlight">reçu</span></td><td>recibir</td></tr>
+                            <tr><td><strong>reconnaître</strong></td><td>avoir <span class="highlight">reconnu</span></td><td>reconocer</td></tr>
+                            <tr><td><strong>réduire</strong></td><td>avoir <span class="highlight">réduit</span></td><td>reducir</td></tr>
+                            <tr><td><strong>rendre</strong></td><td>avoir <span class="highlight">rendu</span></td><td>devolver / rendir</td></tr>
+                            <tr><td><strong>répondre</strong></td><td>avoir <span class="highlight">répondu</span></td><td>responder</td></tr>
+                            <tr><td><strong>résoudre</strong></td><td>avoir <span class="highlight">résolu</span></td><td>resolver</td></tr>
+                            <tr><td><strong>rire</strong></td><td>avoir <span class="highlight">ri</span></td><td>reír</td></tr>
+                            <tr><td><strong>savoir</strong></td><td>avoir <span class="highlight">su</span></td><td>saber</td></tr>
+                            <tr><td><strong>sentir</strong></td><td>avoir <span class="highlight">senti</span></td><td>sentir / oler</td></tr>
+                            <tr><td><strong>servir</strong></td><td>avoir <span class="highlight">servi</span></td><td>servir</td></tr>
+                            <tr><td><strong>sortir</strong></td><td>être/avoir <span class="highlight">sorti</span></td><td>salir</td></tr>
+                            <tr><td><strong>souffrir</strong></td><td>avoir <span class="highlight">souffert</span></td><td>sufrir</td></tr>
+                            <tr><td><strong>sourire</strong></td><td>avoir <span class="highlight">souri</span></td><td>sonreír</td></tr>
+                            <tr><td><strong>se souvenir</strong></td><td>être <span class="highlight">souvenu</span></td><td>acordarse</td></tr>
+                            <tr><td><strong>suffire</strong></td><td>avoir <span class="highlight">suffi</span></td><td>bastar</td></tr>
+                            <tr><td><strong>suivre</strong></td><td>avoir <span class="highlight">suivi</span></td><td>seguir</td></tr>
+                            <tr><td><strong>se taire</strong></td><td>être <span class="highlight">tu</span></td><td>callarse</td></tr>
+                            <tr><td><strong>tenir</strong></td><td>avoir <span class="highlight">tenu</span></td><td>sostener / tener</td></tr>
+                            <tr><td><strong>traduire</strong></td><td>avoir <span class="highlight">traduit</span></td><td>traducir</td></tr>
+                            <tr><td><strong>valoir</strong></td><td>avoir <span class="highlight">valu</span></td><td>valer</td></tr>
+                            <tr><td><strong>vendre</strong></td><td>avoir <span class="highlight">vendu</span></td><td>vender</td></tr>
+                            <tr><td><strong>venir</strong></td><td>être <span class="highlight">venu</span></td><td>venir</td></tr>
+                            <tr><td><strong>vivre</strong></td><td>avoir <span class="highlight">vécu</span></td><td>vivir</td></tr>
+                            <tr><td><strong>voir</strong></td><td>avoir <span class="highlight">vu</span></td><td>ver</td></tr>
+                            <tr><td><strong>vouloir</strong></td><td>avoir <span class="highlight">voulu</span></td><td>querer</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-imparfait" class="theory-content">
+            <div class="theory-box" style="border-left-color: #f39c12;">
+                <h3 style="color: #f39c12;">L'Imparfait (Pretérito Imperfecto)</h3>
+                <p>Se utiliza para <strong>describir</strong> en el pasado (clima, estado físico/emocional) o para hablar de <strong>hábitos y rutinas pasadas</strong>.</p>
+                <p><strong>Formación:</strong> Se toma la raíz de la 1ª persona del plural (<em>Nous</em>) del presente, se quita la terminación <em>-ons</em>, y se añaden las terminaciones del imperfecto: <strong>-ais, -ais, -ait, -ions, -iez, -aient</strong>.</p>
+                
+                <div class="note">
+                    💡 <strong>Ejemplo con Parler:</strong><br>
+                    1. Presente: Nous <em>parl</em>ons.<br>
+                    2. Raíz: <strong>parl-</strong><br>
+                    3. Imparfait: Je parl<strong>ais</strong>, Tu parl<strong>ais</strong>, Il parl<strong>ait</strong>, Nous parl<strong>ions</strong>...
+                </div>
+
+                <p><strong>La única excepción:</strong> El verbo <em>Être</em>. Su raíz es <strong>ét-</strong> <em>(j'étais, tu étais, il était...)</em>.</p>
+
+                <div class="note">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>Quand j'étais petit, je jouais au foot.</em> (Cuando era pequeño, jugaba al fútbol).<br>• <em>Il faisait très beau hier.</em> (Hacía muy buen clima ayer).</div>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación rodea al verbo conjugado en imperfecto.</p>
+                    <p>• Je <strong>ne</strong> savais <strong>pas</strong> la vérité. <em>(No sabía la verdad)</em>.</p>
+                    <p>• Nous <strong>n'</strong>avions <strong>pas</strong> d'argent. <em>(No teníamos dinero)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-pqp" class="theory-content">
+            <div class="theory-box" style="border-left-color: #8e44ad;">
+                <h3 style="color: #8e44ad;">Le Plus-que-parfait (Pluscuamperfecto)</h3>
+                <p>Expresa una acción pasada que ocurrió <strong>antes de otra acción pasada</strong> (El "pasado del pasado").</p>
+                <p><strong>Formación:</strong> Auxiliar (<strong>Avoir</strong> o <strong>Être</strong>) conjugado en <em>Imparfait</em> + <strong>Participio Pasado</strong>.</p>
+                
+                <div class="note">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>J'<strong>avais</strong> déjà <strong>mangé</strong> quand tu as appelé.</em> (Ya había comido cuando llamaste).<br>• <em>Elle <strong>était partie</strong> avant minuit.</em> (Ella se había ido antes de medianoche).</div>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación rodea al auxiliar conjugado en imperfecto.</p>
+                    <p>• Je <strong>n'</strong>avais <strong>pas</strong> fini mes devoirs. <em>(No había terminado mis deberes)</em>.</p>
+                    <p>• Ils <strong>n'</strong>étaient <strong>pas</strong> rentrés. <em>(Ellos no habían vuelto)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-futur" class="theory-content">
+            <div class="theory-box" style="border-left-color: #2980b9;">
+                <h3 style="color: #2980b9;">Le Futur Simple (Futuro Simple)</h3>
+                <p>Se utiliza para acciones futuras lejanas, predicciones o promesas.</p>
+                <p><strong>Formación regular:</strong> Verbo en <strong>infinitivo completo</strong> + las terminaciones: <strong>-ai, -as, -a, -ons, -ez, -ont</strong>. <em>(Para los verbos que terminan en -RE, se les quita la "e" final, ej: vendr ➔ je vendrai)</em>.</p>
+                
+                <h4 style="margin-top: 15px;">⚡ Raíces Irregulares (Las terminaciones son siempre las mismas)</h4>
+                <div class="irregular-grid">
+                    <div class="irregular-item">Être ➔ <strong>ser-</strong> <em>(je serai)</em></div>
+                    <div class="irregular-item">Avoir ➔ <strong>aur-</strong> <em>(j'aurai)</em></div>
+                    <div class="irregular-item">Aller ➔ <strong>ir-</strong> <em>(j'irai)</em></div>
+                    <div class="irregular-item">Faire ➔ <strong>fer-</strong> <em>(je ferai)</em></div>
+                    <div class="irregular-item">Pouvoir ➔ <strong>pourr-</strong> <em>(je pourrai)</em></div>
+                    <div class="irregular-item">Vouloir ➔ <strong>voudr-</strong> <em>(je voudrai)</em></div>
+                    <div class="irregular-item">Savoir ➔ <strong>saur-</strong> <em>(je saurai)</em></div>
+                    <div class="irregular-item">Voir ➔ <strong>verr-</strong> <em>(je verrai)</em></div>
+                </div>
+
+                <div class="note" style="margin-top:15px;">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>Demain, je finirai mon travail.</em> (Mañana, terminaré mi trabajo).<br>• <em>Tu iras en France l'année prochaine.</em> (Irás a Francia el próximo año).</div>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación rodea al verbo en futuro.</p>
+                    <p>• Je <strong>ne</strong> sortirai <strong>pas</strong> ce soir. <em>(No saldré esta noche)</em>.</p>
+                    <p>• Il <strong>ne</strong> fera <strong>pas</strong> beau demain. <em>(No hará buen clima mañana)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-proche" class="theory-content">
+            <div class="theory-box" style="border-left-color: #16a085;">
+                <h3 style="color: #16a085;">Le Futur Proche (Futuro Próximo)</h3>
+                <p>Expresa una acción que va a ocurrir de forma inminente o una intención segura (Equivale a "Ir a + infinitivo").</p>
+                <p><strong>Formación:</strong> Verbo <strong>Aller en presente</strong> <em>(vais, vas, va, allons, allez, vont)</em> + verbo principal en <strong>Infinitivo</strong>.</p>
+                
+                <div class="note">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>Je vais manger dans cinq minutes.</em> (Voy a comer en cinco minutos).<br>• <em>Nous allons regarder un film.</em> (Vamos a ver una película).</div>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación rodea ÚNICAMENTE al verbo <em>Aller</em> conjugado. El infinitivo queda fuera.</p>
+                    <p>• Je <strong>ne</strong> vais <strong>pas</strong> sortir. <em>(No voy a salir)</em>.</p>
+                    <p>• Ils <strong>ne</strong> vont <strong>pas</strong> pleurer. <em>(Ellos no van a llorar)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-recent" class="theory-content">
+            <div class="theory-box" style="border-left-color: #c0392b;">
+                <h3 style="color: #c0392b;">Le Passé Récent (Pasado Reciente)</h3>
+                <p>Expresa una acción que acaba de suceder instantáneamente (Equivale a "Acabar de + infinitivo").</p>
+                <p><strong>Formación:</strong> Verbo <strong>Venir en presente</strong> <em>(viens, viens, vient, venons, venez, viennent)</em> + la preposición <strong>de / d'</strong> + verbo en <strong>Infinitivo</strong>.</p>
+                
+                <div class="note">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>Je viens de me réveiller.</em> (Acabo de despertarme).<br>• <em>Le train vient d'arriver.</em> (El tren acaba de llegar).</div>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación rodea al verbo <em>Venir</em> conjugado.</p>
+                    <p>• Il <strong>ne</strong> vient <strong>pas</strong> de pleuvoir. <em>(No acaba de llover)</em>.</p>
+                    <p>• Nous <strong>ne</strong> venons <strong>pas</strong> de le voir. <em>(No acabamos de verlo)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-subj" class="theory-content">
+            <div class="theory-box" style="border-left-color: #e84393;">
+                <h3 style="color: #e84393;">Le Subjonctif Présent (Subjuntivo)</h3>
+                <p>Se utiliza para expresar <strong>duda, deseo, emoción, voluntad, obligación o necesidad</strong>. Casi siempre va introducido por la palabra <em>"que"</em>.</p>
+                <p><strong>Formación:</strong> Se toma la raíz de la 3ª persona del plural (<em>Ils</em>) del presente, se le quita <em>-ent</em>, y se añaden las terminaciones: <strong>-e, -es, -e, -ions, -iez, -ent</strong>.</p>
+                
+                <h4 style="margin-top: 15px;">⚡ Los verbos totalmente irregulares:</h4>
+                <ul style="font-size: 0.9em; margin-top: 0;">
+                    <li><strong>Être:</strong> que je sois, que tu sois, qu'il soit, que nous soyons, que vous soyez, qu'ils soient.</li>
+                    <li><strong>Avoir:</strong> que j'aie, que tu aies, qu'il ait, que nous ayons, que vous ayez, qu'ils aient.</li>
+                    <li><strong>Faire:</strong> que je fasse...</li>
+                    <li><strong>Pouvoir:</strong> que je puisse...</li>
+                    <li><strong>Savoir:</strong> que je sache...</li>
+                    <li><strong>Aller:</strong> que j'aille...</li>
+                </ul>
+
+                <div class="note">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>Il faut que je parte.</em> (Es necesario que me vaya).<br>• <em>Je veux que tu viennes.</em> (Quiero que vengas).</div>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación rodea al verbo en subjuntivo.</p>
+                    <p>• Il est important que tu <strong>ne</strong> parles <strong>pas</strong>. <em>(Es importante que no hables)</em>.</p>
+                    <p>• Je doute qu'il <strong>ne</strong> réussisse <strong>pas</strong>. <em>(Dudo que no lo logre)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-cond-pres" class="theory-content">
+            <div class="theory-box" style="border-left-color: #0984e3;">
+                <h3 style="color: #0984e3;">Le Conditionnel Présent (Condicional Simple)</h3>
+                <p>Se utiliza para expresar <strong>cortesía, deseos, consejos, hipótesis o futuros desde el pasado</strong>.</p>
+                <p><strong>Fórmula mágica de la hipótesis:</strong> Si + Imparfait ➔ Conditionnel Présent.</p>
+                
+                <p><strong>Formación:</strong> Es una mezcla. Se usa la RAÍZ del <em>Futur Simple</em> (normalmente el infinitivo) + las TERMINACIONES del <em>Imparfait</em> (<strong>-ais, -ais, -ait, -ions, -iez, -aient</strong>).</p>
+
+                <div class="note">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>Je voudrais un café, s'il vous plaît.</em> (Quisiera un café - Cortesía).<br>• <em>Si j'avais de l'argent, j'achèterais une maison.</em> (Si tuviera dinero, compraría una casa - Hipótesis).</div>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>La negación rodea al verbo en condicional.</p>
+                    <p>• Je <strong>ne</strong> ferais <strong>pas</strong> ça à ta place. <em>(Yo no haría eso en tu lugar)</em>.</p>
+                    <p>• Il <strong>n'</strong>aimerait <strong>pas</strong> cette chanson. <em>(A él no le gustaría esta canción)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gram-cond-pas" class="theory-content">
+            <div class="theory-box" style="border-left-color: #6c5ce7;">
+                <h3 style="color: #6c5ce7;">Le Conditionnel Passé (Condicional Compuesto)</h3>
+                <p>Se utiliza para expresar <strong>arrepentimientos, reproches, o una hipótesis no realizada en el pasado</strong>.</p>
+                <p><strong>Fórmula de la hipótesis irreal:</strong> Si + Plus-que-parfait ➔ Conditionnel Passé.</p>
+                
+                <p><strong>Formación:</strong> Auxiliar (<strong>Avoir</strong> o <strong>Être</strong>) conjugado en <em>Condicional Presente</em> + el <strong>Participio Pasado</strong> del verbo.</p>
+
+                <div class="note">💡 <strong>Ejemplos afirmativos:</strong><br>• <em>J'aurais voulu être un artiste.</em> (Me hubiera gustado ser un artista - Arrepentimiento).<br>• <em>Si tu m'avais appelé, je serais venu.</em> (Si me hubieras llamado, habría venido).</div>
+
+                <div class="negative-box">
+                    <h4>⛔ La Forme Négative</h4>
+                    <p>Como en todos los tiempos compuestos, la negación rodea ÚNICAMENTE al auxiliar.</p>
+                    <p>• Je <strong>n'</strong>aurais <strong>pas</strong> dit ça. <em>(Yo no habría dicho eso)</em>.</p>
+                    <p>• Tu <strong>ne</strong> serais <strong>pas</strong> tombé si tu avais fait attention. <em>(No te habrías caído si hubieras prestado atención)</em>.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
