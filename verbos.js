@@ -106,3 +106,5 @@ const verbs = [
     { fr: "rencontrer", es: "encontrar(se)", icon: "🫂", group: "er", aux: "avoir", pp: "rencontré", comp: "quelqu'un" },
     { fr: "utiliser", es: "utilizar", icon: "🛠️", group: "er", aux: "avoir", pp: "utilisé", comp: "un outil" }
 ];
+// ====================== EXPORTACIÓN GLOBAL ======================
+window.verbs = verbs;
