@@ -164,3 +164,35 @@ function resetVocabQuiz() {
 if (typeof actualizarBotonesVocab === 'function') {
     window.addEventListener('load', actualizarBotonesVocab);
 }
+// ====================== INICIALIZACIÓN VOCAB ======================
+function initVocabUI() {
+    const playContainer = document.getElementById('vocab-play');
+    if (!playContainer) return;
+
+    playContainer.innerHTML = `
+        <div class="quiz-header">
+            <div id="vocab-progress" style="font-weight:700; margin-bottom:8px;">Palabra 1 / 10</div>
+            <div class="progress-container">
+                <div id="vocab-progress-bar" class="progress-bar"></div>
+            </div>
+        </div>
+
+        <div style="text-align:center; font-size:4.5rem; margin:20px 0;" id="vocab-icon">❓</div>
+        <h3 id="vocab-es" style="text-align:center; margin:15px 0; min-height:60px;"></h3>
+
+        <input type="text" id="vocab-input" placeholder="Escribe en francés..." style="text-align:center; font-size:1.3rem;">
+        
+        <div id="vocab-feedback" class="feedback" style="display:none; margin:15px 0; padding:15px; border-radius:12px; font-weight:700;"></div>
+
+        <button id="vocab-btn-check" onclick="checkVocab()" class="btn-action">Comprobar</button>
+        <button id="vocab-btn-next" onclick="advanceVocab()" class="btn-action" style="display:none; background:#f39c12;">Siguiente →</button>
+    `;
+}
+
+// Llamar al cargar
+if (typeof window !== 'undefined') {
+    window.addEventListener('load', () => {
+        setTimeout(initVocabUI, 300);
+        actualizarBotonesVocab();
+    });
+}
