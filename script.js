@@ -353,6 +353,10 @@ window.addEventListener('DOMContentLoaded', () => {
         const grid = document.getElementById('flashcards-grid');
         if (grid) grid.innerHTML = html;
     }
+        // Inicializar quizzes
+    if (typeof initVocabUI === 'function') initVocabUI();
+    if (typeof initConjUI === 'function') initConjUI();
+    if (typeof actualizarBotonesVocab === 'function') actualizarBotonesVocab();
 
     // Touch swipe
     const swipeContainer = document.getElementById('swipe-card-container');
