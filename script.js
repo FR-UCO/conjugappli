@@ -31,10 +31,6 @@ function registerUser() {
     document.getElementById('welcome-screen').style.display = 'none';
 }
 
-
-const pronouns = ["Je", "Tu", "Il/Elle", "Nous", "Vous", "Ils/Elles"];
-const tenseNamesES = { "present": "Presente de Indicativo", "past": "Passé Composé", "imparfait": "Imperfecto", "futur_proche": "Futuro Próximo", "passe_recent": "Pasado Reciente", "future": "Futuro Simple" };
-
 // LA LIGNE VITALE QUI MANQUAIT EST ICI :
 const validVerbsList = verbs;
 
