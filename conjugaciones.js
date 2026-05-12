@@ -1,3 +1,26 @@
+// --- CONFIGURACIÓN DE CONJUGACIÓN ---
+// Cette fonction choisit un pronom au hasard pour les 3èmes personnes
+function getPronoun(pIdx) {
+    const options = [
+        ["Je"],
+        ["Tu"],
+        ["Il", "Elle", "On"], // Index 2: 3ème personne du singulier
+        ["Nous"],
+        ["Vous"],
+        ["Ils", "Elles"]      // Index 5: 3ème personne du pluriel
+    ];
+    const choices = options[pIdx];
+    return choices[Math.floor(Math.random() * choices.length)];
+}
+
+const tenseNamesES = { 
+    "present": "Presente de Indicativo", 
+    "past": "Passé Composé", 
+    "imparfait": "Imperfecto", 
+    "futur_proche": "Futuro Próximo", 
+    "passe_recent": "Pasado Reciente", 
+    "future": "Futuro Simple" 
+};
 // -------------------------------------------------------------------
 // MOTEUR DE CONJUGAISON (100% FIABLE ET BLINDÉ)
 // -------------------------------------------------------------------
