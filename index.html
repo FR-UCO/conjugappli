@@ -59,37 +59,56 @@
             <div class="flashcard-grid" id="flashcards-grid"></div>
         </div>
 
-        <!-- VOCABULARIO -->
-        <div id="sec-vocab" class="section">
-            <h2>Pon a prueba tu vocabulario</h2>
-            <div id="vocab-setup" class="quiz-card quiz-setup">
-                <!-- Contenido cargado por vocabulario.js -->
-            </div>
-            <div id="vocab-play" class="quiz-card" style="display:none;"></div>
-            <div id="vocab-results" class="quiz-card" style="display:none;"></div>
-        </div>
+       <!-- VOCABULARIO -->
+<div id="sec-vocab" class="section">
+    <h2>Pon a prueba tu vocabulario</h2>
+    <div id="vocab-setup" class="quiz-card quiz-setup">
+        <h3>Configuración</h3>
+        <p>¿Cuántas palabras quieres practicar?</p>
+        <select id="vocab-qty-select" class="select-setup">
+            <option value="10">10 palabras</option>
+            <option value="15">15 palabras</option>
+            <option value="20" selected>20 palabras</option>
+        </select>
+        <button onclick="startVocabQuiz()" class="btn-action">🚀 Comenzar Test</button>
+    </div>
+    <div id="vocab-play" class="quiz-card" style="display:none;">
+        <!-- Se llena dinámicamente -->
+    </div>
+    <div id="vocab-results" class="quiz-card" style="display:none;"></div>
+</div>
 
-        <!-- TEORÍA -->
-        <div id="sec-theory" class="section">
-            <!-- Cargado dinámicamente por teoria.js -->
-        </div>
+<!-- CONJUGACIÓN -->
+<div id="sec-conj" class="section">
+    <h2>Practicar la conjugación</h2>
+    
+    <div id="conj-setup" class="quiz-card quiz-setup">
+        <h3>Configuración</h3>
+        
+        <label>Tiempo verbal:</label>
+        <select id="conj-tense-select">
+            <option value="present">Presente</option>
+            <option value="past">Passé Composé</option>
+            <option value="imparfait">Imperfecto</option>
+            <option value="future">Futuro Simple</option>
+            <option value="futur_proche">Futuro Próximo</option>
+            <option value="passe_recent">Pasado Reciente</option>
+            <option value="mixed">Mixto (todos)</option>
+        </select>
 
-        <!-- CONJUGACIÓN -->
-        <div id="sec-conj" class="section">
-            <h2>Practicar la conjugación</h2>
-            
-            <div id="conj-setup" class="quiz-card quiz-setup">
-                <!-- Contenido cargado por conjugaciones.js -->
-            </div>
+        <label>¿Cuántas conjugaciones?</label>
+        <select id="conj-qty-select">
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20" selected>20</option>
+        </select>
 
-            <div style="display: flex; justify-content: center; gap: 15px; margin: 25px 0; flex-wrap: wrap;">
-                <button onclick="continuarPartida()" class="btn-action">▶️ Continuar partida</button>
-                <button onclick="reiniciarProgreso()" class="btn-danger">Nueva partida</button>
-            </div>
+        <button onclick="startConjQuiz()" class="btn-action">🚀 Empezar Conjugaciones</button>
+    </div>
 
-            <div id="conj-play" class="quiz-card" style="display:none;"></div>
-            <div id="conj-results" class="quiz-card" style="display:none;"></div>
-        </div>
+    <div id="conj-play" class="quiz-card" style="display:none;"></div>
+    <div id="conj-results" class="quiz-card" style="display:none;"></div>
+</div>
 
         <!-- TROFEOS -->
         <div id="sec-badges" class="section">
