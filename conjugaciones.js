@@ -181,7 +181,7 @@ function startConjQuiz() {
     conjCurrentQuestion = 0; 
     askedQuestions = []; 
     quizMistakes = []; 
-    verbBag = [...validVerbsList].sort(() => Math.random() - 0.5); 
+    verbBag = [...verbs].sort(() => Math.random() - 0.5);
     
     document.getElementById('conj-setup').style.display = 'none'; 
     document.getElementById('conj-results').style.display = 'none'; 
@@ -205,7 +205,7 @@ function generateConjQuestion() {
 
     let verb, pIdx, targetTense, combination; let attempt = 0;
     do {
-        if (verbBag.length === 0) verbBag = [...validVerbsList].sort(() => Math.random() - 0.5);
+        if (verbBag.length === 0) verbBag = [...verbs].sort(() => Math.random() - 0.5);
         verb = verbBag.pop(); pIdx = Math.floor(Math.random() * 6); targetTense = selectedTenseSetting;
         if (targetTense === "mixed") targetTense = ["present", "past", "imparfait", "futur_proche", "passe_recent", "future"][Math.floor(Math.random() * 6)];
         combination = `${verb.fr}-${pIdx}-${targetTense}`; attempt++;
