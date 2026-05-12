@@ -321,79 +321,91 @@ window.addEventListener('DOMContentLoaded', () => {
         const grid = document.getElementById('flashcards-grid');
         if (grid) grid.innerHTML = html;
     }
+    // ====================== INICIALIZACIÓN ======================
+if (typeof renderSwipeCard === 'function') renderSwipeCard();
+if (typeof renderBadges === 'function') renderBadges();
 
-    // Inicialización de componentes (TU CÓDIGO)
-    if (typeof renderSwipeCard === 'function') renderSwipeCard();
-    if (typeof renderBadges === 'function') renderBadges();
-    
-    // MEJORA #4: Añadimos la carga del ranking al iniciar la app
-    if (typeof cargarRanking === 'function') cargarRanking(); 
-});
+// MEJORA #4: Cargar ranking al iniciar la app
+if (typeof cargarRanking === 'function') cargarRanking();
+
 // ====================== BADGES ======================
 function awardBadge(count, tense, time) {
-    let earnedBadges = JSON.parse(localStorage.getItem('badges')) || [];
-    let badgeId = `${count} ${tense}`;
+    let earnedBadges = JSON.parse(localStorage.getItem('badges') || '[]');
     
-    let alreadyHasIt = earnedBadges.some(badge => (badge.id === badgeId || badge === badgeId));
-    
+    // Mejor ID de insignia (incluye el tiempo)
+    let badgeId = `${count} ${tense}` + (time ? ` - ${time}` : '');
+
+    // Verificar si ya tiene la insignia
+    let alreadyHasIt = earnedBadges.some(badge => badge.id === badgeId);
+
     if (!alreadyHasIt) {
         let studentName = localStorage.getItem('studentName');
+        
         if (!studentName) {
             studentName = prompt("¡Felicidades! ¿Cómo te llamas?");
-            if (!studentName) studentName = "Estudiante";
+            if (!studentName || studentName.trim() === "") {
+                studentName = "Estudiante";
+            }
             localStorage.setItem('studentName', studentName);
         }
 
-        let today = new Date().toLocaleDateString('es-ES');
-        
-        earnedBadges.push({ 
-            id: badgeId, 
-            date: today, 
+        const today = new Date().toLocaleDateString('es-ES');
+
+        earnedBadges.push({
+            id: badgeId,
+            date: today,
             name: studentName,
-            duration: time 
+            duration: time || "--"
         });
-        
+
         localStorage.setItem('badges', JSON.stringify(earnedBadges));
-        alert(`🎉 ¡INCREÍBLE ${studentName.toUpperCase()}! Has ganado la insignia: ${badgeId}`);
-        renderBadges(); 
+        
+        alert(`🎉 ¡INCREÍBLE ${studentName.toUpperCase()}! Has ganado la insignia:\n${badgeId}`);
+        
+        // Actualizar visualmente las insignias
+        if (typeof renderBadges === 'function') renderBadges();
     }
 }
 
 function renderBadges() {
-    let earnedBadges = JSON.parse(localStorage.getItem('badges')) || [];
-    let badgeContainer = document.getElementById('badges-grid');
+    let earnedBadges = JSON.parse(localStorage.getItem('badges') || '[]');
+    const badgeContainer = document.getElementById('badges-grid');
     
     if (!badgeContainer) return;
 
     if (earnedBadges.length === 0) {
-        badgeContainer.innerHTML = "<p style='grid-column: span 2; text-align:center;'>Aún no tienes insignias. 💪</p>";
+        badgeContainer.innerHTML = `
+            <p style='grid-column: span 2; text-align:center; padding: 20px;'>
+                Aún no tienes insignias. ¡Sigue practicando! 💪
+            </p>`;
         return;
     }
 
     let html = "";
     earnedBadges.forEach(badge => {
-        let name = badge.name || "Estudiante";
-        let title = badge.id || badge;
-        let date = badge.date || "Hoy";
-        let time = badge.duration || "--";
-        
+        const name = badge.name || "Estudiante";
+        const title = badge.id || badge;
+        const date = badge.date || "Hoy";
+        const time = badge.duration || "--";
+
         html += `
         <div class="badge-card">
-            <div style="font-size: 0.7rem; opacity: 0.7; margin-bottom: -5px;">${name}</div>
-            <span class="material-symbols-outlined" style="font-size: 40px; color: #FFD700; font-variation-settings: 'FILL' 1;">award_star</span>
+            <div style="font-size: 0.75rem; opacity: 0.8; margin-bottom: -4px;">${name}</div>
+            <span class="material-symbols-outlined" style="font-size: 42px; color: #FFD700; font-variation-settings: 'FILL' 1;">award_star</span>
             <div class="badge-title">${title}</div>
             <div class="badge-date">📅 ${date}</div>
-            <div style="font-size: 0.75rem; color: #0055A4; font-weight: bold; margin-top: 2px;">⏱️ ${time}</div>
-        </div>`; 
+            <div style="font-size: 0.8rem; color: #0055A4; font-weight: bold;">⏱️ ${time}</div>
+        </div>`;
     });
+
     badgeContainer.innerHTML = html;
 }
 
 function resetBadges() {
-    if(confirm("⚠️ ¿Estás seguro de que quieres borrar todos tus trofeos?")) {
+    if (confirm("⚠️ ¿Estás seguro de que quieres borrar todos tus trofeos?")) {
         localStorage.removeItem('badges');
         localStorage.removeItem('studentName');
-        renderBadges();
+        if (typeof renderBadges === 'function') renderBadges();
     }
 }
 
@@ -402,15 +414,20 @@ async function sumarPuntoRanking() {
     const user = JSON.parse(localStorage.getItem('app_user'));
     if (!user) return;
 
-    fetch(G_SHEETS_URL, {
-        method: 'POST',
-        mode: 'no-cors', 
-        body: JSON.stringify({
-            nombre: user.nombre,
-            id: user.id,
-            puntos: 1
-        })
-    });
+    try {
+        await fetch(G_SHEETS_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                nombre: user.nombre,
+                id: user.id,
+                puntos: 1
+            })
+        });
+    } catch (e) {
+        console.log("Punto enviado (modo no-cors)");
+    }
 }
 
 async function cargarRanking() {
@@ -421,7 +438,7 @@ async function cargarRanking() {
 
     try {
         const response = await fetch(G_SHEETS_URL);
-        const datos = await response.json(); 
+        const datos = await response.json();
 
         if (!datos || datos.length === 0) {
             lista.innerHTML = "<li style='text-align:center; padding:10px;'>Aún no hay puntuaciones.</li>";
@@ -430,11 +447,7 @@ async function cargarRanking() {
 
         let html = "";
         datos.forEach((jugador, index) => {
-            let icono = "";
-            if (index === 0) icono = "🥇";
-            else if (index === 1) icono = "🥈";
-            else if (index === 2) icono = "🥉";
-            else icono = `<span style="color:#95a5a6;">${index + 1}</span>`;
+            let icono = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `<span style="color:#95a5a6;">${index + 1}</span>`;
 
             html += `
                 <li style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bg-app); border-radius: 12px; margin-bottom: 8px;">
@@ -442,66 +455,69 @@ async function cargarRanking() {
                     <span style="color: #0055A4; font-weight: bold;">${jugador[2]} pts</span>
                 </li>`;
         });
+
         lista.innerHTML = html;
     } catch (error) {
         console.error("Error al leer ranking:", error);
         lista.innerHTML = "<li style='text-align:center; padding:10px; color:red;'>No se pudo cargar el ranking.</li>";
     }
 }
-// Función para el Botón 1
-function continuarPartida() {
-    // Como el progreso ya se cargó automáticamente, solo enviamos al usuario a estudiar.
-    // 'sec-flashcards' es el ID de tu pestaña de tarjetas. Si quieres que vaya a otra, cámbialo aquí.
-    if (typeof switchTab === 'function') {
-        switchTab('sec-flashcards'); 
-    }
-}
-//TESTS EN PROGRESO//
-let testActual = {
-    indice: 0,
-    preguntas: [],
-    puntos: 0,
-    activo: false
-};
-//GUARDAR PROGRESO DEL TEST//
-function guardarProgresoTest() {
-    localStorage.setItem('progreso_test_vocabulario', JSON.stringify(testActual));
-}
-// BOTÓN: Continuar Partida
+
+// ====================== TEST / PARTIDA ======================
+// Función única (se eliminó la duplicada)
 function continuarPartida() {
     const guardado = localStorage.getItem('progreso_test_vocabulario');
     
     if (guardado) {
         testActual = JSON.parse(guardado);
         testActual.activo = true;
+
+        if (typeof renderizarTest === 'function') {
+            renderizarTest();
+        }
+
+        // Cambiar vistas
+        const setupContainer = document.getElementById('setup-test-container');
+        const gameContainer = document.getElementById('game-test-container');
         
-        // Aquí debes llamar a la función que "dibuja" el test en tu pantalla
-        // Por ejemplo: mostrarPantallaTest(); o renderizarPregunta();
-        renderizarTest(); 
-        
-        // Ocultamos el menú de configuración y mostramos el juego
-        document.getElementById('setup-test-container').style.display = 'none';
-        document.getElementById('game-test-container').style.display = 'block';
+        if (setupContainer) setupContainer.style.display = 'none';
+        if (gameContainer) gameContainer.style.display = 'block';
     } else {
         alert("No tienes ninguna partida guardada. ¡Inicia una nueva!");
     }
 }
 
-// BOTÓN: Nueva Partida
 function reiniciarProgreso() {
     const seguro = confirm("¿Estás seguro? Se borrará tu avance en el test actual.");
     
     if (seguro) {
-        // Limpiamos el almacenamiento
         localStorage.removeItem('progreso_test_vocabulario');
         
-        // Reiniciamos la variable
-        testActual = { indice: 0, preguntas: [], puntos: 0, activo: false };
+        testActual = {
+            indice: 0,
+            preguntas: [],
+            puntos: 0,
+            activo: false
+        };
+
+        const setupContainer = document.getElementById('setup-test-container');
+        const gameContainer = document.getElementById('game-test-container');
         
-        // Mostramos la pantalla de configuración inicial para elegir número de verbos
-        document.getElementById('setup-test-container').style.display = 'block';
-        document.getElementById('game-test-container').style.display = 'none';
-        
-        alert("Partida borrada. Configura tu nuevo test.");
+        if (setupContainer) setupContainer.style.display = 'block';
+        if (gameContainer) gameContainer.style.display = 'none';
+
+        alert("Partida reiniciada. Configura tu nuevo test.");
     }
+}
+
+// Variable global del test
+let testActual = {
+    indice: 0,
+    preguntas: [],
+    puntos: 0,
+    activo: false
+};
+
+function guardarProgresoTest() {
+    localStorage.setItem('progreso_test_vocabulario', JSON.stringify(testActual));
 }
