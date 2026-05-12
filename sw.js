@@ -1,5 +1,5 @@
 // 1. CHANGE LE NUMÉRO DE VERSION ICI (Passe à v3 pour forcer la mise à jour d'aujourd'hui)
-const CACHE_NAME = 'fr-app-cache-v86'; 
+const CACHE_NAME = 'fr-app-cache-v87'; 
 
 const urlsToCache = [
   '/',
