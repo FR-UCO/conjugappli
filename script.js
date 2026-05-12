@@ -262,13 +262,19 @@ window.addEventListener('DOMContentLoaded', () => {
     // Lógica de Tema (Modo Oscuro)
     if (localStorage.getItem('theme') === 'dark') {
         document.body.classList.add('dark-mode');
-        
+            
         const themeIcon = document.getElementById('theme-icon');
         if (themeIcon) {
             themeIcon.innerText = 'light_mode';
         }
-    }
-   
+    } // <-- Aquí termina el bloque del Modo Oscuro
+    
+    // Cargar la teoría dinámicamente (Independiente del modo oscuro)
+    if (typeof cargarTeoria === 'function') cargarTeoria();
+
+    // ... (Aquí continúa el resto del código que ya tenías dentro del DOMContentLoaded, 
+    // como cargar las tarjetas, inicializar el ranking, etc.) ...
+}); // <-- Aquí termina todo el evento DOMContentLoaded
    // Asegúrate de que esto esté dentro de tu window.onload o DOMContentLoaded
     
    // =================================================================
