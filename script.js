@@ -18,21 +18,14 @@ function registerUser() {
         return;
     }
 
+    // Generar código único (ej: ID-123456)
     const uniqueId = "ID-" + Math.floor(Math.random() * 1000000);
     
     const userData = {
         nombre: nameInput,
         id: uniqueId,
-        fechaRegistro: new Date().toLocaleDateString(),
-        puntos: 0 // Añadimos los puntos iniciales
+        fechaRegistro: new Date().toLocaleDateString()
     };
-
-    localStorage.setItem('app_user', JSON.stringify(userData));
-    document.getElementById('welcome-screen').style.display = 'none';
-    
-    // Sincronizar el nuevo usuario con la base de datos
-    syncScoreBackend(userData.id, userData.nombre, userData.puntos);
-}
 
     localStorage.setItem('app_user', JSON.stringify(userData));
     document.getElementById('welcome-screen').style.display = 'none';
