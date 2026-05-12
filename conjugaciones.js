@@ -235,7 +235,7 @@ function generateConjQuestion() {
         else if (targetTense === "passe_recent") answer = [["viens", "viens", "vient", "venons", "venez", "viennent"][pIdx] + " de " + getReflexive(pIdx, vName) + vName];
     } else answer = baseAnswers;
     
-    let displayPronoun = pronouns[pIdx];
+    let displayPronoun = getPronoun(pIdx);
     let firstWord = (answer && answer.length > 0 && answer[0]) ? answer[0] : " ";
     if (pIdx === 0) displayPronoun = "aeiouyhéèêh".includes(firstWord.charAt(0).toLowerCase()) ? "J'" : "Je "; else displayPronoun += " ";
     
