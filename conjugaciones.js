@@ -465,3 +465,33 @@ function resetConjQuiz() {
     const continueBtn = document.getElementById('btn-continue-conj');
     if (continueBtn) continueBtn.style.display = 'none';
 }
+// ====================== INICIALIZACIÓN CONJUGACIÓN ======================
+function initConjUI() {
+    const playContainer = document.getElementById('conj-play');
+    if (!playContainer) return;
+
+    playContainer.innerHTML = `
+        <div class="quiz-header">
+            <div id="conj-progress" style="font-weight:700; margin-bottom:8px;">Pregunta 1 / 10</div>
+            <div class="progress-container">
+                <div id="conj-progress-bar" class="progress-bar"></div>
+            </div>
+            <div id="conj-tense-display" style="text-align:center; font-weight:700; color:var(--primary); margin:10px 0;"></div>
+        </div>
+
+        <div id="conj-prompt" style="font-size:1.35rem; text-align:center; min-height:80px; margin:20px 0;"></div>
+        <div id="conj-es" style="text-align:center; color:#666; margin-bottom:15px;"></div>
+
+        <input type="text" id="answer-input" placeholder="Escribe la conjugación..." style="text-align:center; font-size:1.3rem;">
+
+        <div id="conj-feedback" class="feedback" style="display:none; margin:15px 0; padding:15px; border-radius:12px;"></div>
+
+        <button id="conj-btn-check" onclick="checkConj()" class="btn-action">Comprobar</button>
+        <button id="conj-btn-next" onclick="advanceConj()" class="btn-action" style="display:none; background:#f39c12;">Siguiente →</button>
+    `;
+}
+
+// Inicializar
+window.addEventListener('load', () => {
+    setTimeout(initConjUI, 400);
+});
