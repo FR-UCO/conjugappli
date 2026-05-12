@@ -146,200 +146,322 @@ function getReflexive(pIdx, nextWord) {
     return "aeiouyhéèêh".includes(nextWord.charAt(0).toLowerCase()) ? ["m'", "t'", "s'", "nous ", "vous ", "s'"][pIdx] : ["me ", "te ", "se ", "nous ", "vous ", "se "][pIdx]; 
 }
 
-function updateProgressBar() { 
-    document.getElementById('conj-progress-bar').style.width = ((conjCurrentQuestion / conjMaxQuestions) * 100) + "%"; 
+// ====================== FUNCIONES DE PROGRESO Y CONTROL ======================
+
+function updateProgressBar() {
+    const progressBar = document.getElementById('conj-progress-bar');
+    if (progressBar && conjMaxQuestions > 0) {
+        const percentage = (conjCurrentQuestion / conjMaxQuestions) * 100;
+        progressBar.style.width = percentage + "%";
+    }
 }
 
-function saveProgress() { 
-    localStorage.setItem('conjSaveState', JSON.stringify({ score: conjScore, maxQuestions: conjMaxQuestions, currentQuestion: conjCurrentQuestion, tenseSetting: selectedTenseSetting, verbBag: verbBag, askedQuestions: askedQuestions, quizMistakes: quizMistakes, currentConj: currentConj })); 
+function saveProgress() {
+    const state = {
+        score: conjScore,
+        maxQuestions: conjMaxQuestions,
+        currentQuestion: conjCurrentQuestion,
+        tenseSetting: selectedTenseSetting,
+        verbBag: verbBag,
+        askedQuestions: askedQuestions,
+        quizMistakes: quizMistakes,
+        currentConj: currentConj
+    };
+    localStorage.setItem('conjSaveState', JSON.stringify(state));
 }
 
 function loadProgress(data) {
-    conjScore = data.score; conjMaxQuestions = data.maxQuestions; conjCurrentQuestion = data.currentQuestion; selectedTenseSetting = data.tenseSetting; verbBag = data.verbBag; askedQuestions = data.askedQuestions; quizMistakes = data.quizMistakes || []; currentConj = data.currentConj;
-    document.getElementById('conj-setup').style.display = 'none'; document.getElementById('conj-results').style.display = 'none'; document.getElementById('conj-play').style.display = 'block';
+    conjScore = data.score || 0;
+    conjMaxQuestions = data.maxQuestions || 10;
+    conjCurrentQuestion = data.currentQuestion || 0;
+    selectedTenseSetting = data.tenseSetting || "present";
+    verbBag = data.verbBag || [];
+    askedQuestions = data.askedQuestions || [];
+    quizMistakes = data.quizMistakes || [];
+    currentConj = data.currentConj;
+
+    // Cambiar vistas
+    document.getElementById('conj-setup').style.display = 'none';
+    document.getElementById('conj-results').style.display = 'none';
+    document.getElementById('conj-play').style.display = 'block';
+
+    // Actualizar interfaz
     document.getElementById('conj-progress').innerText = `Pregunta ${conjCurrentQuestion} / ${conjMaxQuestions}`;
-    document.getElementById('conj-tense-display').innerText = `Tiempo a conjugar: ${tenseNamesES[currentConj.targetTense]}`;
-    document.getElementById('conj-prompt').innerHTML = `${currentConj.verb.icon} <strong>${currentConj.displayPronoun}</strong> ___ (${currentConj.verb.fr}) <span style="color:#7f8c8d; font-weight:normal;">${currentConj.verb.comp}</span>.`;
-    document.getElementById('conj-es').innerText = `Traducción: ${currentConj.verb.es} ${currentConj.verb.comp}`;
-    document.getElementById('conj-btn-check').style.display = 'block'; document.getElementById('conj-btn-next').style.display = 'none'; document.getElementById('conj-feedback').style.display = "none";
-    let inputField = document.getElementById('answer-input'); inputField.disabled = false; inputField.value = ""; inputField.focus(); updateProgressBar();
+    
+    if (currentConj) {
+        document.getElementById('conj-tense-display').innerText = 
+            `Tiempo a conjugar: ${tenseNamesES[currentConj.targetTense] || '—'}`;
+
+        document.getElementById('conj-prompt').innerHTML = `
+            ${currentConj.verb.icon || ''} 
+            <strong>${currentConj.displayPronoun}</strong> ___ 
+            (${currentConj.verb.fr}) 
+            <span style="color:#7f8c8d; font-weight:normal;">${currentConj.verb.comp || ''}</span>.
+        `;
+
+        document.getElementById('conj-es').innerText = 
+            `Traducción: ${currentConj.verb.es} ${currentConj.verb.comp || ''}`;
+    }
+
+    document.getElementById('conj-btn-check').style.display = 'block';
+    document.getElementById('conj-btn-next').style.display = 'none';
+    document.getElementById('conj-feedback').style.display = "none";
+
+    const inputField = document.getElementById('answer-input');
+    if (inputField) {
+        inputField.disabled = false;
+        inputField.value = "";
+        inputField.focus();
+    }
+
+    updateProgressBar();
 }
 
-function continueConjQuiz() { 
-    const savedState = localStorage.getItem('conjSaveState'); 
-    if (savedState) loadProgress(JSON.parse(savedState)); 
+function continueConjQuiz() {
+    const savedState = localStorage.getItem('conjSaveState');
+    if (savedState) {
+        loadProgress(JSON.parse(savedState));
+    } else {
+        alert("No hay ninguna partida guardada.");
+    }
 }
 
 function startConjQuiz() {
-    // ⏱️ LE CHRONOMÈTRE DÉMARRE ICI !
-    window.conjStartTime = Date.now(); 
+    window.conjStartTime = Date.now();
 
-    localStorage.removeItem('conjSaveState'); 
-    selectedTenseSetting = document.getElementById('conj-tense-select').value; 
-    conjMaxQuestions = parseInt(document.getElementById('conj-qty-select').value); 
-    conjScore = 0; 
-    conjCurrentQuestion = 0; 
-    askedQuestions = []; 
-    quizMistakes = []; 
+    localStorage.removeItem('conjSaveState');
+    
+    selectedTenseSetting = document.getElementById('conj-tense-select').value || "present";
+    conjMaxQuestions = parseInt(document.getElementById('conj-qty-select').value) || 10;
+    
+    conjScore = 0;
+    conjCurrentQuestion = 0;
+    askedQuestions = [];
+    quizMistakes = [];
     verbBag = [...verbs].sort(() => Math.random() - 0.5);
-    
-    document.getElementById('conj-setup').style.display = 'none'; 
-    document.getElementById('conj-results').style.display = 'none'; 
-    document.getElementById('conj-play').style.display = 'block'; 
-    
+
+    document.getElementById('conj-setup').style.display = 'none';
+    document.getElementById('conj-results').style.display = 'none';
+    document.getElementById('conj-play').style.display = 'block';
+
     generateConjQuestion();
 }
 
 function generateConjQuestion() {
-    if (conjCurrentQuestion >= conjMaxQuestions) { endConjQuiz(); return; }
-    isCheckingAnswer = false; conjCurrentQuestion++; 
-    document.getElementById('conj-progress').innerText = `Pregunta ${conjCurrentQuestion} / ${conjMaxQuestions}`; 
-    updateProgressBar();
-    
-    document.getElementById('conj-btn-check').style.display = 'block'; 
-    document.getElementById('conj-btn-next').style.display = 'none'; 
-    document.getElementById('conj-feedback').style.display = "none";
-    
-    let inputField = document.getElementById('answer-input'); 
-    inputField.disabled = false; inputField.value = ""; inputField.focus();
+    if (conjCurrentQuestion >= conjMaxQuestions) {
+        endConjQuiz();
+        return;
+    }
 
-    let verb, pIdx, targetTense, combination; let attempt = 0;
+    isCheckingAnswer = false;
+    conjCurrentQuestion++;
+
+    document.getElementById('conj-progress').innerText = `Pregunta ${conjCurrentQuestion} / ${conjMaxQuestions}`;
+    updateProgressBar();
+
+    document.getElementById('conj-btn-check').style.display = 'block';
+    document.getElementById('conj-btn-next').style.display = 'none';
+    document.getElementById('conj-feedback').style.display = "none";
+
+    const inputField = document.getElementById('answer-input');
+    if (inputField) {
+        inputField.disabled = false;
+        inputField.value = "";
+        inputField.focus();
+    }
+
+    // Selección de verbo
+    let verb = null;
+    let pIdx, targetTense, combination;
+    let attempt = 0;
+
     do {
-        if (verbBag.length === 0) verbBag = [...verbs].sort(() => Math.random() - 0.5);
-        verb = verbBag.pop(); pIdx = Math.floor(Math.random() * 6); targetTense = selectedTenseSetting;
-        if (targetTense === "mixed") targetTense = ["present", "past", "imparfait", "futur_proche", "passe_recent", "future"][Math.floor(Math.random() * 6)];
-        combination = `${verb.fr}-${pIdx}-${targetTense}`; attempt++;
-        if (askedQuestions.includes(combination)) { verbBag.unshift(verb); verb = null; }
+        if (verbBag.length === 0) {
+            verbBag = [...verbs].sort(() => Math.random() - 0.5);
+        }
+
+        verb = verbBag.pop();
+        pIdx = Math.floor(Math.random() * 6);
+        targetTense = selectedTenseSetting;
+
+        if (targetTense === "mixed") {
+            const tenses = ["present", "past", "imparfait", "futur_proche", "passe_recent", "future"];
+            targetTense = tenses[Math.floor(Math.random() * tenses.length)];
+        }
+
+        combination = `${verb.fr}-${pIdx}-${targetTense}`;
+        attempt++;
+
+        if (askedQuestions.includes(combination)) {
+            verbBag.unshift(verb);
+            verb = null;
+        }
     } while (!verb && attempt < 50);
-    
-    if (!verb) { verb = validVerbsList[Math.floor(Math.random() * validVerbsList.length)]; pIdx = Math.floor(Math.random() * 6); targetTense = selectedTenseSetting === "mixed" ? "present" : selectedTenseSetting; }
-    
-    askedQuestions.push(combination); 
+
+    // Fallback
+    if (!verb) {
+        verb = verbs[Math.floor(Math.random() * verbs.length)];
+        pIdx = Math.floor(Math.random() * 6);
+        targetTense = selectedTenseSetting === "mixed" ? "present" : selectedTenseSetting;
+    }
+
+    askedQuestions.push(combination);
+
+    // Configurar la pregunta
     document.getElementById('conj-tense-display').innerText = `Tiempo a conjugar: ${tenseNamesES[targetTense]}`;
-    
-    let vName = verb.root || verb.fr; 
-    let proxyVerb = {...verb, fr: vName}; 
+
+    const vName = verb.root || verb.fr;
+    const proxyVerb = { ...verb, fr: vName };
     let baseAnswers = [];
-    
-    if (targetTense === "present") baseAnswers = [conjugatePresent(proxyVerb, pIdx)]; 
-    else if (targetTense === "future") baseAnswers = [conjugateFuture(proxyVerb, pIdx)]; 
-    else if (targetTense === "imparfait") baseAnswers = [conjugateImparfait(proxyVerb, pIdx)]; 
-    else if (targetTense === "futur_proche") baseAnswers = [conjugateFuturProche(proxyVerb, pIdx)]; 
-    else if (targetTense === "passe_recent") baseAnswers = [conjugatePasseRecent(proxyVerb, pIdx)]; 
+
+    if (targetTense === "present") baseAnswers = [conjugatePresent(proxyVerb, pIdx)];
+    else if (targetTense === "future") baseAnswers = [conjugateFuture(proxyVerb, pIdx)];
+    else if (targetTense === "imparfait") baseAnswers = [conjugateImparfait(proxyVerb, pIdx)];
+    else if (targetTense === "futur_proche") baseAnswers = [conjugateFuturProche(proxyVerb, pIdx)];
+    else if (targetTense === "passe_recent") baseAnswers = [conjugatePasseRecent(proxyVerb, pIdx)];
     else if (targetTense === "past") baseAnswers = conjugatePast(proxyVerb, pIdx);
-    
+
     let answer = [];
     if (verb.pron) {
-        if (["present", "future", "imparfait", "past"].includes(targetTense)) answer = baseAnswers.map(a => getReflexive(pIdx, a) + a);
-        else if (targetTense === "futur_proche") answer = [["vais", "vas", "va", "allons", "allez", "vont"][pIdx] + " " + getReflexive(pIdx, vName) + vName];
-        else if (targetTense === "passe_recent") answer = [["viens", "viens", "vient", "venons", "venez", "viennent"][pIdx] + " de " + getReflexive(pIdx, vName) + vName];
-    } else answer = baseAnswers;
-    
+        if (["present", "future", "imparfait", "past"].includes(targetTense)) {
+            answer = baseAnswers.map(a => getReflexive(pIdx, a) + a);
+        } else if (targetTense === "futur_proche") {
+            answer = [["vais", "vas", "va", "allons", "allez", "vont"][pIdx] + " " + getReflexive(pIdx, vName) + vName];
+        } else if (targetTense === "passe_recent") {
+            answer = [["viens", "viens", "vient", "venons", "venez", "viennent"][pIdx] + " de " + getReflexive(pIdx, vName) + vName];
+        }
+    } else {
+        answer = baseAnswers;
+    }
+
     let displayPronoun = getPronoun(pIdx);
     let firstWord = (answer && answer.length > 0 && answer[0]) ? answer[0] : " ";
-    if (pIdx === 0) displayPronoun = "aeiouyhéèêh".includes(firstWord.charAt(0).toLowerCase()) ? "J'" : "Je "; else displayPronoun += " ";
-    
-    currentConj = { verb: verb, answer: answer, displayPronoun: displayPronoun.trim(), targetTense: targetTense };
-    
-    document.getElementById('conj-prompt').innerHTML = `${verb.icon} <strong>${displayPronoun}</strong> ___ (${verb.fr}) <span style="color:#7f8c8d; font-weight:normal;">${verb.comp}</span>.`;
-    document.getElementById('conj-es').innerText = `Traducción: ${verb.es} ${verb.comp}`;
+    if (pIdx === 0) {
+        displayPronoun = "aeiouyhéèêh".includes(firstWord.charAt(0).toLowerCase()) ? "J'" : "Je ";
+    } else {
+        displayPronoun += " ";
+    }
+
+    currentConj = {
+        verb: verb,
+        answer: answer,
+        displayPronoun: displayPronoun.trim(),
+        targetTense: targetTense
+    };
+
+    document.getElementById('conj-prompt').innerHTML = `
+        ${verb.icon || ''} <strong>${currentConj.displayPronoun}</strong> ___ 
+        (${verb.fr}) <span style="color:#7f8c8d; font-weight:normal;">${verb.comp || ''}</span>.
+    `;
+
+    document.getElementById('conj-es').innerText = `Traducción: ${verb.es} ${verb.comp || ''}`;
+
     saveProgress();
 }
 
 function checkConj() {
-    if (isCheckingAnswer) return; 
-    
-    // CORRECTION ICI : on cherche 'answer-input' au lieu de 'conj-input'
-    let inputField = document.getElementById('answer-input'); 
-    
-    let ans = inputField.value.trim().toLowerCase().replace(/\s+/g, ' ').replace(/['’´]/g, "'"); 
+    if (isCheckingAnswer) return;
+
+    const inputField = document.getElementById('answer-input');
+    let ans = inputField.value.trim().toLowerCase().replace(/\s+/g, ' ').replace(/['’´]/g, "'");
     if (ans === "") return;
-    
-    isCheckingAnswer = true; 
-    inputField.disabled = true; 
-    document.getElementById('conj-btn-check').style.display = 'none'; 
-    let fb = document.getElementById('conj-feedback'); 
+
+    isCheckingAnswer = true;
+    inputField.disabled = true;
+    document.getElementById('conj-btn-check').style.display = 'none';
+
+    const fb = document.getElementById('conj-feedback');
     fb.style.display = "block";
-    
-    if (currentConj.answer.some(a => a.toLowerCase().replace(/['’´]/g, "'") === ans)) {
-        conjScore++; 
-        fb.className = "feedback correct"; 
-        fb.innerText = "✅ ¡Perfecto!"; 
 
-        // === ENVIAR PUNTO AL RANKING ===
-        sumarPuntoRanking(); 
-        // ===============================
+    const isCorrect = currentConj.answer.some(a => 
+        a.toLowerCase().replace(/['’´]/g, "'") === ans
+    );
 
+    if (isCorrect) {
+        conjScore++;
+        fb.className = "feedback correct";
+        fb.innerText = "✅ ¡Perfecto!";
+        if (typeof sumarPuntoRanking === 'function') sumarPuntoRanking(1);
         setTimeout(generateConjQuestion, 1000);
     } else {
-        quizMistakes.push({ pronoun: currentConj.displayPronoun, verb: currentConj.verb.fr, comp: currentConj.verb.comp, expected: currentConj.answer.join(' o '), actual: ans });
-        fb.className = "feedback wrong"; 
-        fb.innerHTML = `❌ Error. La respuesta correcta es: <br><strong style="font-size:1.2em;">${currentConj.answer.join(' o ')}</strong>`;
+        quizMistakes.push({
+            pronoun: currentConj.displayPronoun,
+            verb: currentConj.verb.fr,
+            comp: currentConj.verb.comp,
+            expected: currentConj.answer.join(' o '),
+            actual: ans
+        });
+        fb.className = "feedback wrong";
+        fb.innerHTML = `❌ Error. La respuesta correcta es:<br><strong style="font-size:1.2em;">${currentConj.answer.join(' o ')}</strong>`;
         document.getElementById('conj-btn-next').style.display = 'block';
     }
 }
-function advanceConj() { generateConjQuestion(); }
+
+function advanceConj() {
+    generateConjQuestion();
+}
 
 // =========================================================
 // --- FIN DEL TEST DE CONJUGACIÓN ---
 // =========================================================
 function endConjQuiz() {
-    localStorage.removeItem('conjSaveState'); 
-    document.getElementById('conj-play').style.display = 'none'; 
+    localStorage.removeItem('conjSaveState');
+    document.getElementById('conj-play').style.display = 'none';
     document.getElementById('conj-results').style.display = 'block';
-    
-    let percentage = Math.round((conjScore / conjMaxQuestions) * 100); 
-    let scoreDisplay = document.getElementById('conj-score-display');
-    scoreDisplay.innerText = `${conjScore} / ${conjMaxQuestions} (${percentage}%)`;
-    
-    // --- 🏆 SISTEMA DE BADGES ---
-    if (percentage >= 80) {
-        let tenseSelect = document.getElementById('conj-tense-select');
-        let currentTense = tenseSelect ? tenseSelect.options[tenseSelect.selectedIndex].text : "Verbos";
-        
-        let durationMs = Date.now() - (window.conjStartTime || Date.now());
-        let mins = Math.floor(durationMs / 60000);
-        let secs = Math.floor((durationMs % 60000) / 1000);
-        let timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
 
-        awardBadge(conjMaxQuestions.toString(), currentTense, timeStr);
+    const percentage = Math.round((conjScore / conjMaxQuestions) * 100);
+    const scoreDisplay = document.getElementById('conj-score-display');
+    scoreDisplay.innerText = `${conjScore} / ${conjMaxQuestions} (${percentage}%)`;
+
+    // Sistema de badges
+    if (percentage >= 80) {
+        const tenseSelect = document.getElementById('conj-tense-select');
+        const currentTense = tenseSelect ? tenseSelect.options[tenseSelect.selectedIndex].text : "Verbos";
+        
+        const durationMs = Date.now() - (window.conjStartTime || Date.now());
+        const mins = Math.floor(durationMs / 60000);
+        const secs = Math.floor((durationMs % 60000) / 1000);
+        const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+
+        if (typeof awardBadge === 'function') {
+            awardBadge(conjMaxQuestions.toString(), currentTense, timeStr);
+        }
     }
-    
-    // Mensaje según puntuación
-    if(percentage >= 80) { 
-        scoreDisplay.style.color = "var(--fr-blue)"; 
-        scoreDisplay.innerHTML += "<br>¡Bravo, es excelente! 🏆"; 
-    } 
-    else if (percentage >= 50) { 
-        scoreDisplay.style.color = "#f39c12"; 
-        scoreDisplay.innerHTML += "<br>¡Vas por buen camino! 👍"; 
-    } 
-    else { 
-        scoreDisplay.style.color = "var(--fr-red)"; 
-        scoreDisplay.innerHTML += "<br>¡Un poco más de práctica! 💪"; 
+
+    // Estilo según puntuación
+    if (percentage >= 80) {
+        scoreDisplay.style.color = "var(--fr-blue)";
+        scoreDisplay.innerHTML += "<br>¡Bravo, es excelente! 🏆";
+    } else if (percentage >= 50) {
+        scoreDisplay.style.color = "#f39c12";
+        scoreDisplay.innerHTML += "<br>¡Vas por buen camino! 👍";
+    } else {
+        scoreDisplay.style.color = "var(--fr-red)";
+        scoreDisplay.innerHTML += "<br>¡Un poco más de práctica! 💪";
     }
-    
+
     // Mostrar errores
-    let mistakesDisplay = document.getElementById('conj-mistakes-display');
+    const mistakesDisplay = document.getElementById('conj-mistakes-display');
     if (quizMistakes.length > 0) {
         let html = `<h4 style="text-align: left; color: var(--fr-red);">📝 Resumen de errores:</h4><div class="mistakes-container">`;
         quizMistakes.forEach((m, i) => {
             html += `<div class="mistake-item">
                 <strong>${i+1}. ${m.pronoun} ___ (${m.verb}) 
-                <span style="color:#7f8c8d; font-weight:normal;">${m.comp}</span></strong><br>
+                <span style="color:#7f8c8d; font-weight:normal;">${m.comp || ''}</span></strong><br>
                 <span style="color:#721c24;">❌ Escribiste: <strong>${m.actual}</strong></span><br>
                 <span style="color:#155724;">✅ Correcto: <strong>${m.expected}</strong></span>
             </div>`;
         });
-        mistakesDisplay.innerHTML = html + `</div>`; 
+        mistakesDisplay.innerHTML = html + `</div>`;
         mistakesDisplay.style.display = 'block';
     } else {
         mistakesDisplay.style.display = 'none';
     }
 }
 
-function resetConjQuiz() { 
-    document.getElementById('conj-setup').style.display = 'block'; 
-    document.getElementById('conj-results').style.display = 'none'; 
-    document.getElementById('btn-continue-conj').style.display = 'none'; 
+function resetConjQuiz() {
+    document.getElementById('conj-setup').style.display = 'block';
+    document.getElementById('conj-results').style.display = 'none';
+    const continueBtn = document.getElementById('btn-continue-conj');
+    if (continueBtn) continueBtn.style.display = 'none';
 }
