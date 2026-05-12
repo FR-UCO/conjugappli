@@ -1,26 +1,3 @@
-// --- CONFIGURACIÓN DE CONJUGACIÓN ---
-// Cette fonction choisit un pronom au hasard pour les 3èmes personnes
-function getPronoun(pIdx) {
-    const options = [
-        ["Je"],
-        ["Tu"],
-        ["Il", "Elle", "On"], // Index 2: 3ème personne du singulier
-        ["Nous"],
-        ["Vous"],
-        ["Ils", "Elles"]      // Index 5: 3ème personne du pluriel
-    ];
-    const choices = options[pIdx];
-    return choices[Math.floor(Math.random() * choices.length)];
-}
-
-const tenseNamesES = { 
-    "present": "Presente de Indicativo", 
-    "past": "Passé Composé", 
-    "imparfait": "Imperfecto", 
-    "futur_proche": "Futuro Próximo", 
-    "passe_recent": "Pasado Reciente", 
-    "future": "Futuro Simple" 
-};
 // -------------------------------------------------------------------
 // MOTEUR DE CONJUGAISON (100% FIABLE ET BLINDÉ)
 // -------------------------------------------------------------------
@@ -147,7 +124,6 @@ function getReflexive(pIdx, nextWord) {
 }
 
 // ====================== FUNCIONES DE PROGRESO Y CONTROL ======================
-
 function updateProgressBar() {
     const progressBar = document.getElementById('conj-progress-bar');
     if (progressBar && conjMaxQuestions > 0) {
@@ -187,9 +163,9 @@ function loadProgress(data) {
 
     // Actualizar interfaz
     document.getElementById('conj-progress').innerText = `Pregunta ${conjCurrentQuestion} / ${conjMaxQuestions}`;
-    
+   
     if (currentConj) {
-        document.getElementById('conj-tense-display').innerText = 
+        document.getElementById('conj-tense-display').innerText =
             `Tiempo a conjugar: ${tenseNamesES[currentConj.targetTense] || '—'}`;
 
         document.getElementById('conj-prompt').innerHTML = `
@@ -228,12 +204,11 @@ function continueConjQuiz() {
 
 function startConjQuiz() {
     window.conjStartTime = Date.now();
-
     localStorage.removeItem('conjSaveState');
-    
+   
     selectedTenseSetting = document.getElementById('conj-tense-select').value || "present";
     conjMaxQuestions = parseInt(document.getElementById('conj-qty-select').value) || 10;
-    
+   
     conjScore = 0;
     conjCurrentQuestion = 0;
     askedQuestions = [];
@@ -326,9 +301,9 @@ function generateConjQuestion() {
         if (["present", "future", "imparfait", "past"].includes(targetTense)) {
             answer = baseAnswers.map(a => getReflexive(pIdx, a) + a);
         } else if (targetTense === "futur_proche") {
-            answer = [["vais", "vas", "va", "allons", "allez", "vont"][pIdx] + " " + getReflexive(pIdx, vName) + vName];
+            answer = [[["vais", "vas", "va", "allons", "allez", "vont"][pIdx] + " " + getReflexive(pIdx, vName) + vName]];
         } else if (targetTense === "passe_recent") {
-            answer = [["viens", "viens", "vient", "venons", "venez", "viennent"][pIdx] + " de " + getReflexive(pIdx, vName) + vName];
+            answer = [[["viens", "viens", "vient", "venons", "venez", "viennent"][pIdx] + " de " + getReflexive(pIdx, vName) + vName]];
         }
     } else {
         answer = baseAnswers;
@@ -406,16 +381,16 @@ function advanceConj() {
 // =========================================================
 function endConjQuiz() {
     localStorage.removeItem('conjSaveState');
-    
+   
     const play = document.getElementById('conj-play');
     const results = document.getElementById('conj-results');
-    
+   
     if (play) play.style.display = 'none';
     if (results) results.style.display = 'block';
 
     const percentage = Math.round((conjScore / conjMaxQuestions) * 100);
     const scoreDisplay = document.getElementById('conj-score-display');
-    
+   
     if (scoreDisplay) {
         scoreDisplay.innerText = `${conjScore} / ${conjMaxQuestions} (${percentage}%)`;
 
@@ -431,6 +406,21 @@ function endConjQuiz() {
         }
     }
 
+    // Sistema de badges
+    if (percentage >= 80) {
+        const tenseSelect = document.getElementById('conj-tense-select');
+        const currentTense = tenseSelect ? tenseSelect.options[tenseSelect.selectedIndex].text : "Verbos";
+       
+        const durationMs = Date.now() - (window.conjStartTime || Date.now());
+        const mins = Math.floor(durationMs / 60000);
+        const secs = Math.floor((durationMs % 60000) / 1000);
+        const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+
+        if (typeof awardBadge === 'function') {
+            awardBadge(conjMaxQuestions.toString(), currentTense, timeStr);
+        }
+    }
+
     // Mostrar errores
     const mistakesDisplay = document.getElementById('conj-mistakes-display');
     if (mistakesDisplay && quizMistakes.length > 0) {
@@ -443,53 +433,8 @@ function endConjQuiz() {
             </div>`;
         });
         mistakesDisplay.innerHTML = html + `</div>`;
-    }
-
-    actualizarBotonesVocab(); // Si existe
-}
-
-    // Sistema de badges
-    if (percentage >= 80) {
-        const tenseSelect = document.getElementById('conj-tense-select');
-        const currentTense = tenseSelect ? tenseSelect.options[tenseSelect.selectedIndex].text : "Verbos";
-        
-        const durationMs = Date.now() - (window.conjStartTime || Date.now());
-        const mins = Math.floor(durationMs / 60000);
-        const secs = Math.floor((durationMs % 60000) / 1000);
-        const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
-
-        if (typeof awardBadge === 'function') {
-            awardBadge(conjMaxQuestions.toString(), currentTense, timeStr);
-        }
-    }
-
-    // Estilo según puntuación
-    if (percentage >= 80) {
-        scoreDisplay.style.color = "var(--fr-blue)";
-        scoreDisplay.innerHTML += "<br>¡Bravo, es excelente! 🏆";
-    } else if (percentage >= 50) {
-        scoreDisplay.style.color = "#f39c12";
-        scoreDisplay.innerHTML += "<br>¡Vas por buen camino! 👍";
-    } else {
-        scoreDisplay.style.color = "var(--fr-red)";
-        scoreDisplay.innerHTML += "<br>¡Un poco más de práctica! 💪";
-    }
-
-    // Mostrar errores
-    const mistakesDisplay = document.getElementById('conj-mistakes-display');
-    if (quizMistakes.length > 0) {
-        let html = `<h4 style="text-align: left; color: var(--fr-red);">📝 Resumen de errores:</h4><div class="mistakes-container">`;
-        quizMistakes.forEach((m, i) => {
-            html += `<div class="mistake-item">
-                <strong>${i+1}. ${m.pronoun} ___ (${m.verb}) 
-                <span style="color:#7f8c8d; font-weight:normal;">${m.comp || ''}</span></strong><br>
-                <span style="color:#721c24;">❌ Escribiste: <strong>${m.actual}</strong></span><br>
-                <span style="color:#155724;">✅ Correcto: <strong>${m.expected}</strong></span>
-            </div>`;
-        });
-        mistakesDisplay.innerHTML = html + `</div>`;
         mistakesDisplay.style.display = 'block';
-    } else {
+    } else if (mistakesDisplay) {
         mistakesDisplay.style.display = 'none';
     }
 }
@@ -497,9 +442,8 @@ function endConjQuiz() {
 function resetConjQuiz() {
     document.getElementById('conj-setup').style.display = 'block';
     document.getElementById('conj-results').style.display = 'none';
-    const continueBtn = document.getElementById('btn-continue-conj');
-    if (continueBtn) continueBtn.style.display = 'none';
 }
+
 // ====================== INICIALIZACIÓN CONJUGACIÓN ======================
 function initConjUI() {
     const playContainer = document.getElementById('conj-play');
@@ -513,20 +457,39 @@ function initConjUI() {
             </div>
             <div id="conj-tense-display" style="text-align:center; font-weight:700; color:var(--primary); margin:10px 0;"></div>
         </div>
-
         <div id="conj-prompt" style="font-size:1.35rem; text-align:center; min-height:80px; margin:20px 0;"></div>
         <div id="conj-es" style="text-align:center; color:#666; margin-bottom:15px;"></div>
-
         <input type="text" id="answer-input" placeholder="Escribe la conjugación..." style="text-align:center; font-size:1.3rem;">
-
         <div id="conj-feedback" class="feedback" style="display:none; margin:15px 0; padding:15px; border-radius:12px;"></div>
-
         <button id="conj-btn-check" onclick="checkConj()" class="btn-action">Comprobar</button>
         <button id="conj-btn-next" onclick="advanceConj()" class="btn-action" style="display:none; background:#f39c12;">Siguiente →</button>
     `;
 }
 
-// Inicializar
+// Inicializar UI
 window.addEventListener('load', () => {
     setTimeout(initConjUI, 400);
 });
+
+// ====================== HELPERS ======================
+function getPronoun(pIdx) {
+    const options = [
+        ["Je"],
+        ["Tu"],
+        ["Il", "Elle", "On"],
+        ["Nous"],
+        ["Vous"],
+        ["Ils", "Elles"]
+    ];
+    const choices = options[pIdx];
+    return choices[Math.floor(Math.random() * choices.length)];
+}
+
+const tenseNamesES = { 
+    "present": "Presente de Indicativo", 
+    "past": "Passé Composé", 
+    "imparfait": "Imperfecto", 
+    "futur_proche": "Futuro Próximo", 
+    "passe_recent": "Pasado Reciente", 
+    "future": "Futuro Simple" 
+};
