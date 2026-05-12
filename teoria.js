@@ -1,18 +1,53 @@
- <div id="sec-theory" class="section">
-        <h2>Lecciones de Gramática</h2>
-        
-        <div class="gram-menu">
-            <button class="gram-btn active" onclick="showGrammar('gram-present', this)">Présent</button>
-            <button class="gram-btn gram-btn-orange" onclick="showGrammar('gram-pronominal', this)">Pronominaux (se...)</button>
-            <button class="gram-btn" onclick="showGrammar('gram-pc', this)">Passé Composé</button>
-            <button class="gram-btn gram-btn-special" onclick="showGrammar('gram-pp', this)">Participes passés</button>
-            <button class="gram-btn" onclick="showGrammar('gram-imparfait', this)">Imparfait</button>
-            <button class="gram-btn" onclick="showGrammar('gram-pqp', this)">Plus-que-parfait</button>
-            <button class="gram-btn" onclick="showGrammar('gram-futur', this)">Futur Simple</button>
-            <button class="gram-btn" onclick="showGrammar('gram-proche', this)">Futur Proche</button>
-            <button class="gram-btn" onclick="showGrammar('gram-recent', this)">Passé Récent</button>
-        </div>
+// teoria.js
+const htmlTeoria = `
+    <h2>Lecciones de Gramática</h2>
+    
+    <div class="gram-menu">
+        <button class="gram-btn active" onclick="showGrammar('gram-present', this)">Présent</button>
+        <button class="gram-btn gram-btn-orange" onclick="showGrammar('gram-pronominal', this)">Pronominaux (se...)</button>
+        <button class="gram-btn" onclick="showGrammar('gram-pc', this)">Passé Composé</button>
+        <button class="gram-btn gram-btn-special" onclick="showGrammar('gram-pp', this)">Participes passés</button>
+        <button class="gram-btn" onclick="showGrammar('gram-imparfait', this)">Imparfait</button>
+        <button class="gram-btn" onclick="showGrammar('gram-pqp', this)">Plus-que-parfait</button>
+        <button class="gram-btn" onclick="showGrammar('gram-futur', this)">Futur Simple</button>
+        <button class="gram-btn" onclick="showGrammar('gram-proche', this)">Futur Proche</button>
+        <button class="gram-btn" onclick="showGrammar('gram-recent', this)">Passé Récent</button>
+    </div>
 
+    `;
+
+// Esta función inyectará el contenido cuando la app cargue
+function cargarTeoria() {
+    const contenedor = document.getElementById('sec-theory');
+    if (contenedor) {
+        contenedor.innerHTML = htmlTeoria;
+    }
+}
+
+// Lógica para cambiar entre lecciones
+function showGrammar(id, btn) {
+    document.querySelectorAll('.theory-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.gram-btn').forEach(el => el.classList.remove('active'));
+    
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+}
+
+// Filtro para el buscador de participios pasados
+function filterPP() {
+    let input = document.getElementById("search-pp").value.toLowerCase();
+    let table = document.getElementById("table-pp");
+    let tr = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < tr.length; i++) {
+        let textRow = tr[i].innerText.toLowerCase();
+        if (textRow.includes(input)) {
+            tr[i].style.display = "";
+        } else {
+            tr[i].style.display = "none";
+        }
+    }
+}
         <div id="gram-present" class="theory-content active">
             <div class="theory-box">
                 <h3>Le Présent de l'Indicatif (El Presente)</h3>
