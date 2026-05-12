@@ -1,7 +1,7 @@
 // ====================== CONFIGURACIÓN ======================
 const G_SHEETS_URL = "https://script.google.com/macros/s/AKfycbz4akXg7EPytPwD7EsQJVOwJakbSk9k8sxpdhpwMHmcGZnFsZIZyP6o8qxzf7iPOLyG/exec";
 
-// TTS
+// ====================== TTS ======================
 function speak(text) {
     if ('speechSynthesis' in window) {
         const msg = new SpeechSynthesisUtterance(text);
@@ -27,7 +27,7 @@ function registerUser() {
     }
 
     const uniqueId = "ID-" + Math.floor(Math.random() * 1000000);
-    
+   
     const userData = {
         nombre: nameInput,
         id: uniqueId,
@@ -36,7 +36,7 @@ function registerUser() {
 
     localStorage.setItem('app_user', JSON.stringify(userData));
     document.getElementById('welcome-screen').style.display = 'none';
-    
+   
     console.log("Usuario registrado:", userData);
 }
 
@@ -44,7 +44,7 @@ function registerUser() {
 function showGrammar(topicId, btnElement) {
     document.querySelectorAll('.theory-content').forEach(c => c.classList.remove('active'));
     document.querySelectorAll('.gram-btn').forEach(b => b.classList.remove('active'));
-    
+   
     const content = document.getElementById(topicId);
     if (content) content.classList.add('active');
     if (btnElement) btnElement.classList.add('active');
@@ -53,7 +53,7 @@ function showGrammar(topicId, btnElement) {
 function switchTab(tabId) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    
+   
     document.getElementById(tabId).classList.add('active');
     const btn = document.getElementById('btn-' + tabId);
     if (btn) btn.classList.add('active');
@@ -67,8 +67,8 @@ function switchTab(tabId) {
 function actualizarTarjetaUsuario() {
     const user = JSON.parse(localStorage.getItem('app_user'));
     if (user) {
-        document.getElementById('display-username').innerText = user.nombre;
-        document.getElementById('display-userid').innerText = user.id;
+        document.getElementById('display-username').innerText = user.nombre || '---';
+        document.getElementById('display-userid').innerText = user.id || 'ID-000000';
     }
 }
 
@@ -90,6 +90,7 @@ function updateStreak() {
 
     localStorage.setItem('streak', streak);
     localStorage.setItem('lastVisit', today);
+    
     const streakEl = document.getElementById('streak-count');
     if (streakEl) streakEl.innerText = streak;
 }
@@ -103,12 +104,11 @@ let swipeTouchStartY = 0;
 function createCardHTML(v, isLarge = false) {
     const irregClass = (v.group !== 'er' || v.irreg || v.pron) ? 'irregular-border' : '';
     const safeFr = v.fr.replace(/'/g, "\\'");
-    const safeEs = v.es.replace(/'/g, "\\'");
     
     const baseClass = isLarge ? 'flashcard' : 'flashcard-mini';
     const frontClass = isLarge ? 'flashcard-front' : 'flashcard-mini-front';
     const backClass = isLarge ? 'flashcard-back' : 'flashcard-mini-back';
-    
+   
     const audioScript = !isLarge ? `if(isAudioEnabled) speak('${safeFr}');` : '';
 
     return `
@@ -128,12 +128,16 @@ function createCardHTML(v, isLarge = false) {
 function renderSwipeCard() {
     const counter = document.getElementById('swipe-counter');
     const container = document.getElementById('swipe-card-container');
-    
-    if (counter) counter.innerText = `Carta ${swipeIndex + 1} / ${verbs.length}`;
-    if (container) container.innerHTML = createCardHTML(verbs[swipeIndex], true);
+   
+    if (counter) counter.innerText = `Carta ${swipeIndex + 1} / ${verbs ? verbs.length : 0}`;
+    if (container && verbs && verbs[swipeIndex]) {
+        container.innerHTML = createCardHTML(verbs[swipeIndex], true);
+    }
 
     setTimeout(() => {
-        if (isAudioEnabled && verbs[swipeIndex]) speak(verbs[swipeIndex].fr);
+        if (isAudioEnabled && verbs && verbs[swipeIndex]) {
+            speak(verbs[swipeIndex].fr);
+        }
     }, 150);
 }
 
@@ -145,7 +149,7 @@ function prevSwipe() {
 }
 
 function nextSwipe() {
-    if (swipeIndex < verbs.length - 1) {
+    if (verbs && swipeIndex < verbs.length - 1) {
         swipeIndex++;
         renderSwipeCard();
     }
@@ -170,10 +174,10 @@ function toggleAudio() {
 function toggleTheme() {
     const body = document.body;
     const icon = document.getElementById('theme-icon');
-    
+   
     body.classList.toggle('dark-mode');
     const isDark = body.classList.contains('dark-mode');
-    
+   
     if (icon) icon.innerText = isDark ? 'light_mode' : 'dark_mode';
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
 }
@@ -203,8 +207,9 @@ function awardBadge(count, tense, time) {
 
     localStorage.setItem('badges', JSON.stringify(earnedBadges));
     alert(`🎉 ¡INCREÍBLE ${studentName.toUpperCase()}! Has ganado:\n${badgeId}`);
-    
+   
     if (typeof renderBadges === 'function') renderBadges();
+    sumarPuntoRanking(3); // +3 puntos por insignia
 }
 
 function renderBadges() {
@@ -240,18 +245,27 @@ function resetBadges() {
 }
 
 // ====================== RANKING ======================
-async function sumarPuntoRanking() {
+async function sumarPuntoRanking(cantidad = 1) {
     const user = JSON.parse(localStorage.getItem('app_user'));
-    if (!user) return;
+    if (!user) return false;
 
     try {
         await fetch(G_SHEETS_URL, {
             method: 'POST',
             mode: 'no-cors',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ nombre: user.nombre, id: user.id, puntos: 1 })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: user.id,
+                nombre: user.nombre,
+                puntos: cantidad
+            })
         });
-    } catch (e) {}
+        console.log(`✅ ${cantidad} punto(s) enviado(s) para ${user.nombre}`);
+        return true;
+    } catch (error) {
+        console.warn("No se pudo enviar punto al ranking:", error);
+        return false;
+    }
 }
 
 async function cargarRanking() {
@@ -274,12 +288,13 @@ async function cargarRanking() {
             const icono = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `<span style="color:#95a5a6;">${i+1}</span>`;
             html += `
             <li style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--bg-app);border-radius:12px;margin-bottom:8px;">
-                <span>${icono} <strong>${jugador[1]}</strong></span>
-                <span style="color:#0055A4;font-weight:bold;">${jugador[2]} pts</span>
+                <span>${icono} <strong>${jugador.nombre || jugador[1]}</strong></span>
+                <span style="color:#0055A4;font-weight:bold;">${jugador.puntos || jugador[2]} pts</span>
             </li>`;
         });
         lista.innerHTML = html;
     } catch (e) {
+        console.error(e);
         lista.innerHTML = "<li style='text-align:center;color:red;padding:10px;'>Error al cargar ranking</li>";
     }
 }
@@ -306,7 +321,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // Cargar teoría
     if (typeof cargarTeoria === 'function') cargarTeoria();
 
-    // Inicializaciones
+    // Inicializaciones principales
     if (typeof renderSwipeCard === 'function') renderSwipeCard();
     if (typeof renderBadges === 'function') renderBadges();
     if (typeof cargarRanking === 'function') cargarRanking();
