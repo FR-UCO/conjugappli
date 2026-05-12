@@ -131,26 +131,33 @@ function advanceVocab() {
 function endVocabQuiz() {
     localStorage.removeItem('progreso_vocabulario');
     
-    document.getElementById('vocab-play').style.display = 'none';
-    document.getElementById('vocab-results').style.display = 'block';
+    const play = document.getElementById('vocab-play');
+    const results = document.getElementById('vocab-results');
+    
+    if (play) play.style.display = 'none';
+    if (results) results.style.display = 'block';
 
     const percentage = Math.round((vocabScore / vocabMaxQuestions) * 100);
     const scoreDisplay = document.getElementById('vocab-score-display');
-    scoreDisplay.innerText = `${vocabScore} / ${vocabMaxQuestions} (${percentage}%)`;
+    
+    if (scoreDisplay) {
+        scoreDisplay.innerText = `${vocabScore} / ${vocabMaxQuestions} (${percentage}%)`;
 
-    if (percentage >= 80) scoreDisplay.style.color = "var(--fr-blue)";
-    else if (percentage >= 50) scoreDisplay.style.color = "#f39c12";
-    else scoreDisplay.style.color = "var(--fr-red)";
+        if (percentage >= 80) scoreDisplay.style.color = "var(--fr-blue)";
+        else if (percentage >= 50) scoreDisplay.style.color = "#f39c12";
+        else scoreDisplay.style.color = "var(--fr-red)";
+    }
 
     // Mostrar errores
     const mistakesDisplay = document.getElementById('vocab-mistakes-display');
-    if (vocabMistakes.length > 0) {
+    if (mistakesDisplay && vocabMistakes.length > 0) {
         let html = `<h4>📝 Errores:</h4><div class="mistakes-container">`;
         vocabMistakes.forEach((m, i) => {
             html += `<div class="mistake-item"><strong>${i+1}. ${m.es}</strong><br>❌ ${m.actual}<br>✅ <strong>${m.fr}</strong></div>`;
         });
         mistakesDisplay.innerHTML = html + "</div>";
     }
+
     actualizarBotonesVocab();
 }
 
