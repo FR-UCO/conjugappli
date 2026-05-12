@@ -190,36 +190,3 @@ function resetVocabQuiz() {
     document.getElementById('vocab-results').style.display = 'none'; 
     actualizarBotonesVocab();
 }
-// ====================== EVENTS & THEME ======================
-document.addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-        if (document.getElementById('sec-vocab').classList.contains('active')) {
-            let playArea = document.getElementById('vocab-play');
-            if(playArea.style.display === 'block') { 
-                if (!isCheckingVocab) checkVocab(); 
-                else if (document.getElementById('vocab-btn-next').style.display === 'block') advanceVocab(); 
-            }
-        }
-        else if (document.getElementById('sec-conj').classList.contains('active')) {
-            let playArea = document.getElementById('conj-play');
-            if (playArea.style.display === 'block') { 
-                if (!isCheckingAnswer) checkConj(); 
-                else if (document.getElementById('conj-btn-next').style.display === 'block') advanceConj(); 
-            }
-        }
-    }
-});
-
-function toggleTheme() {
-    const body = document.body;
-    const icon = document.getElementById('theme-icon');
-    
-    body.classList.toggle('dark-mode');
-    const isDark = body.classList.contains('dark-mode');
-    
-    if (icon) {
-        icon.innerText = isDark ? 'light_mode' : 'dark_mode';
-    }
-    
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-}
